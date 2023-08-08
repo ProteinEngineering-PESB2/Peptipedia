@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.ho:hover {
+  text-shadow: none !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  -webkit-transform: scale(1.1) !important;
+  -ms-transform: scale(1.1) !important;
+  transform: scale(1.1) !important;
+  z-index: 2;
+}
+
+.node__root > circle {
+  fill: #2962ff;
+}
+
+.node__branch > circle {
+  fill: #2196f3;
+}
+
+

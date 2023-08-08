@@ -1,0 +1,149 @@
+{
+  "sidebar": {
+    "home": [
+      "home"
+    ],
+    "navigate": [
+      "activities",
+      "sources",
+      "search",
+      "blast"
+    ]
+  },
+
+  "home": {
+    "title": "Peptipedia",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium ornare tellus eu aliquam. Curabitur semper, ligula vel elementum elementum, purus felis sodales nisi, eu rutrum quam nisl scelerisque enim. Quisque iaculis, risus non volutpat dictum, arcu nunc viverra lorem, at elementum turpis metus id erat. Aenean in sem eu quam mollis aliquam. Vestibulum eu rhoncus massa, at imperdiet nisi. Proin varius elit sed malesuada feugiat. Duis sed ullamcorper mauris. Sed faucibus dui ac aliquet ultricies. Quisque in justo a ex faucibus mollis eu vel nulla. Curabitur a pulvinar turpis. Nulla facilisi. Maecenas volutpat blandit lorem a auctor. Duis ut feugiat mi, eu convallis urna. Sed tincidunt nulla nec vulputate condimentum. Cras ligula urna, mattis eu blandit quis, convallis et velit. Aenean et porta purus, non tincidunt leo. ",
+    "route": "/",
+    "team": [
+      {
+        "name": "David Medina",
+        "image": "/src/assets/team/david.jpeg",
+        "rol": "Researcher",
+        "github": "https://github.com/GabrielCabas",
+        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4"
+      },
+      {
+        "name": "Gabriel Cabas",
+        "image": "/src/assets/team/gabriel.jpeg",
+        "rol": "Software developer",
+        "github": "https://github.com/GabrielCabas",
+        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
+      },
+      {
+        "name": "Alvaro Olivera",
+        "image": "/src/assets/team/aolivera.jpg",
+        "rol": "Researcher",
+        "github": "https://github.com/GabrielCabas",
+        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
+      },
+      {
+        "name": "Roberto Uribe",
+        "image": "/src/assets/team/roberto.jpg",
+        "rol": "Researcher",
+        "github": "https://github.com/GabrielCabas",
+        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
+      },
+      {
+        "name": "Marcelo Navarrete",
+        "image": "/src/assets/team/marcelo.jpg",
+        "rol": "Researcher",
+        "github": "https://github.com/GabrielCabas",
+        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
+      }
+    ],
+    "links": {
+      "title": "Our Links",
+      "data": [
+        {
+          "title": "Repository",
+          "description": "Check out the source code of Pepti Tools, as well as how its services are developed.",
+          "icon": "https://www.svgrepo.com/show/507321/github.svg",
+          "button": "Visit Github",
+          "redirect": "https://github.com/ProteinEngineering-PESB2/pepti-tools"
+        },
+        {
+          "title": "Organization",
+          "description": "Check out the PESB2 organization's github, as well as this and many more of their projects.",
+          "icon": "https://cdn-icons-png.flaticon.com/512/993/993854.png",
+          "button": "Visit PESB2",
+          "redirect": "https://github.com/ProteinEngineering-PESB2"
+        },
+        {
+          "title": "Peptipedia",
+          "description": "Peptipedia is a peptide database developed by PESB2 and is the basis of our services.",
+          "icon": "https://www.svgrepo.com/show/509077/database.svg",
+          "button": "Visit Peptipedia",
+          "redirect": "https://peptipedia.cl/"
+        }
+      ]
+    },
+    "cites": {
+      "title": "How to Cite",
+      "data": [
+        {
+          "cite": "Quiroz C, Saavedra YB, Armijo-Galdames B, Amado-Hinojosa J, Olivera-Nappa Á, Sanchez-Daza A, Medina-Ortiz D. Peptipedia: a user-friendly web application and a comprehensive database for peptide research supported by Machine Learning approach. Database (Oxford). 2021 Sep 3;2021:baab055. doi: 10.1093/database/baab055. PMID: 34478499; PMCID: PMC8415426.",
+          "link": "https://www.nature.com/subjects/bioinformatics"
+        }
+      ]
+    },
+    "entities": [
+      {
+        "url": "https://www.redcampussustentable.cl/wp-content/uploads/2022/07/UMAG-PNG.png",
+        "alt": "Universidad de Magallanes",
+        "width": "310rem",
+        "height": "100rem"
+      },
+      {
+        "url": "https://avatars.githubusercontent.com/u/64513653?s=200&v=4",
+        "alt": "Centro Austral de Tecnología Genómica",
+        "width": "100rem",
+        "height": "100rem"
+      },
+      {
+        "url": "https://www.anid.cl/wp-content/themes/anid-wp/assets/images/anid_rojo_azul.png",
+        "alt": "Agencia Nacional de Investigación y Desarrollo",
+        "width": "100rem",
+        "height": "100rem"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Mineduc.svg/1200px-Mineduc.svg.png",
+        "alt": "Ministerio de Educación",
+        "width": "100rem",
+        "height": "100rem"
+      },
+      {
+        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIqpFJZDcjpuWx0cLf8LiiQjZFb3qtGC-cjg&usqp=CAU",
+        "alt": "Centro Asistencial Docente e Investigación",
+        "width": "230rem",
+        "height": "100rem"
+      }
+    ],
+    "api": "/api/get_home_statistics/"
+  },
+  
+  "activities": {
+    "title": "Activities",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium ornare tellus eu aliquam. Curabitur semper, ligula vel elementum elementum, purus felis sodales nisi, eu rutrum quam nisl scelerisque enim. Quisque iaculis, risus non volutpat dictum, arcu nunc viverra lorem, at elementum turpis metus id erat. Aenean in sem eu quam mollis aliquam. Vestibulum eu rhoncus massa, at imperdiet nisi. Proin varius elit sed malesuada feugiat. Duis sed ullamcorper mauris. Sed faucibus dui ac aliquet ultricies. Quisque in justo a ex faucibus mollis eu vel nulla. Curabitur a pulvinar turpis. Nulla facilisi. Maecenas volutpat blandit lorem a auctor. Duis ut feugiat mi, eu convallis urna. Sed tincidunt nulla nec vulputate condimentum. Cras ligula urna, mattis eu blandit quis, convallis et velit. Aenean et porta purus, non tincidunt leo. ",
+    "route": "/activities",
+    "api": "/api/get_count_activities/"
+  },
+  "sources": {
+    "title": "Sources",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium ornare tellus eu aliquam. Curabitur semper, ligula vel elementum elementum, purus felis sodales nisi, eu rutrum quam nisl scelerisque enim. Quisque iaculis, risus non volutpat dictum, arcu nunc viverra lorem, at elementum turpis metus id erat. Aenean in sem eu quam mollis aliquam. Vestibulum eu rhoncus massa, at imperdiet nisi. Proin varius elit sed malesuada feugiat. Duis sed ullamcorper mauris. Sed faucibus dui ac aliquet ultricies. Quisque in justo a ex faucibus mollis eu vel nulla. Curabitur a pulvinar turpis. Nulla facilisi. Maecenas volutpat blandit lorem a auctor. Duis ut feugiat mi, eu convallis urna. Sed tincidunt nulla nec vulputate condimentum. Cras ligula urna, mattis eu blandit quis, convallis et velit. Aenean et porta purus, non tincidunt leo. ",
+    "route": "/sources",
+    "api": "/api/get_count_sources/"
+  },
+  "search": {
+    "title": "Search",
+    "description": "Convert your input to fasta format.",
+    "route": "/search",
+    "api": "/api/activities/"
+  },
+  "blast": {
+    "title": "Blastp",
+    "description": "Convert your input to fasta format.",
+    "route": "/blastp",
+    "api": "/api/activities/"
+  }
+}

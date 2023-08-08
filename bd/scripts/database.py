@@ -72,12 +72,12 @@ if __name__ == "__main__":
     print("gene_ontology")
     db.insert_data("../tables/peptide_has_go.csv", PeptideHasGO, chunk=5000)
     print("peptide_has_go")
-    db.insert_data("../tables/peptide_has_activity.csv", PeptideHasActivity, chunk=5000)
+    """
+    db.insert_data("../tables/peptide_has_activity.csv", PeptideHasActivity, chunk=100)
     print("peptide_has_activity")
     db.create_mv(MVPeptidesByDatabase)
     db.create_mv(MVGeneralInformation)
     db.create_mv(MVPeptideWithActivity)
     db.create_mv(MVPeptidesGeneralCounts)
     db.create_mv(MVLabeledPeptidesGeneralCounts)
-    """
     db.create_mv(MVPeptidesByActivity)

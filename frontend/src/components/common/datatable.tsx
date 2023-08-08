@@ -12,15 +12,23 @@ interface Props {
 
 export default function DataTable({ table, title }: Props) {
   return (
-  <MUIDataTable
-      data={table.data}
-      columns={table.columns}
-      title={title}
-      options={{
-        selectableRowsHideCheckboxes: true,
-        rowsPerPageOptions: [5, 10, 100],
-        download: false,
-        print: false,
-    }}
-  />)
+    <>
+    {
+      (table !== undefined) &&
+      (
+        <MUIDataTable
+            data={table.data}
+            columns={table.columns}
+            title={title}
+            options={{
+              selectableRowsHideCheckboxes: true,
+              rowsPerPageOptions: [5, 10, 100],
+              download: false,
+              print: false,
+          }}
+        />
+      )
+    }
+    </>
+  )
 }

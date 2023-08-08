@@ -1,9 +1,9 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Main } from "../layout/main";
-import { DrawerHeader } from "./drawer_header";
-import Entities from "./entities"
+import { DrawerHeader } from "../layout/drawer_header";
+import Entities from "../layout/entities"
 import Aside from "../layout/aside";
 
 interface Props {

@@ -10,7 +10,7 @@ import Sources from "./pages/sources";
 
 
 import { Routes, Route } from "react-router-loading";
-import LoadingComponent from "./components/common/loading";
+import LoadingComponent from "./components/layout/loading";
 import useHandlerBackendUrl from "./hooks/useHandlerBackendUrl";
 import config from "./config.json"
 

@@ -3,7 +3,7 @@ import SummaryCard from "./summary_card"
 export default function CardsList({general_table}) {
     return (
         <>
-        <Grid container spacing={2} sx={{ marginTop: 5 }}>
+        <Grid container spacing={2} sx={{ marginTop: 1}}>
             {
                 (general_table !== undefined) &&
                 (

@@ -26,12 +26,13 @@ export default function BarChart({ x, y, title }: Props) {
         font: {
           size: 15,
         },
-        width:1700
+        width: 1000
       }}
       config={{
         displayModeBar: true,
         responsive: true,
-        autosizable: true
+        autosizable: true,
+        displaylogo: false
       }}
       useResizeHandler
       className="w-full h-full"

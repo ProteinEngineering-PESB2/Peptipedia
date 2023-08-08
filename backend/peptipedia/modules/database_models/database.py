@@ -61,6 +61,7 @@ class Database:
     def get_home_statistics(self):
         stmt_general_counts = select(MVGeneralInformation)
         df_general_counts = self.get_table_query(stmt_general_counts)
+        df_general_counts = df_general_counts.astype(str)
         stmt_peptides = select(MVPeptidesGeneralCounts)
         df_peptides = self.get_table_query(stmt_peptides)
         stmt_labeled_peptides = select(MVLabeledPeptidesGeneralCounts)

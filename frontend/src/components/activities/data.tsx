@@ -24,7 +24,7 @@ export default function Data() {
     (data !== undefined)&&
     (
       <>
-        <Box sx={{ padding: 2 }}>
+        <Box >
           <BarChart x={data.plot.x} y={data.plot.y} title={"Activities"} ></BarChart>
         </Box>
         <Box sx={{ padding: 2 }}>

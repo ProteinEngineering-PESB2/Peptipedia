@@ -5,9 +5,8 @@ import DashboardLayout from "../components/common/dashboard_layout";
 import Team from "../components/home/team";
 import Links from "../components/home/links"
 import Cite from "../components/home/cite"
-import Entities from "../components/common/entities"
 import Data from "../components/home/data"
-import Front from "../components/common/front"
+import Front from "../components/layout/front"
 import config from "../config.json"
 
 export default function Home() {
@@ -20,7 +19,7 @@ export default function Home() {
         <Box sx={{ padding: 2 }}>
           <Front obj = {config.home}></Front>
         </Box>
-
+        
         <Box sx={{ padding: 2 }}>
           <Data></Data>
         </Box>
@@ -29,11 +28,11 @@ export default function Home() {
           <Links></Links>
         </Box>
 
-        <Box sx={{ padding: 5 }}>
+        <Box sx={{ padding: 3 }}>
           <Cite></Cite>
         </Box>
 
-        <Box sx={{ padding: 5, background: "#f5f5f5"}}>
+        <Box sx={{ padding: 3, background: "#f5f5f5"}}>
           <Team></Team>
         </Box>
       </>

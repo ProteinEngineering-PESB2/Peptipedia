@@ -1,5 +1,5 @@
 import { Drawer, ListItemButton } from "@mui/material";
-import { drawerWidth } from "../common/drawerWith";
+import { drawerWidth } from "./drawerWith";
 import List from "@mui/material/List";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";

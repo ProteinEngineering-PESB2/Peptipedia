@@ -18,16 +18,14 @@ export default function Data() {
 
     useEffect(() => {
         getHomeData();
-        console.log(data);
     }, []);
 
-  return (/* 
+  return (
     <>
-    <Box padding={3}>
-      <CardsList general_table={data.general_table} ></CardsList>
-    </Box>
-      <DataTable table={data.peptides_table} title={"General peptides information"} ></DataTable>
-    </> */
-    <></>
+      <Box padding={3}>
+        <CardsList general_table={data.general_table} ></CardsList>
+        <DataTable table={data.peptides_table} title={"General peptides information"} > </DataTable>
+      </Box>
+    </> 
   );
 }

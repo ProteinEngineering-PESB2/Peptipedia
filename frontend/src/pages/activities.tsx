@@ -12,15 +12,15 @@ export default function Activities() {
   useLoadingComponent();
 
   return (
-  <DashboardLayout>
-    <>
-      <Box sx={{ padding: 2 }}>
-        <Front obj={obj}></Front>
-      </Box>
-      <Box sx={{ padding: 2 }}>
-        <Data></Data>
-      </Box>
-    </>
-  </DashboardLayout>
+    <DashboardLayout>
+      <>
+        <Box sx={{ padding: 2 }}>
+          <Front obj={obj}></Front>
+        </Box>
+        <Box sx={{ padding: 2 }}>
+          <Data></Data>
+        </Box>
+      </>
+    </DashboardLayout>
   )
 }

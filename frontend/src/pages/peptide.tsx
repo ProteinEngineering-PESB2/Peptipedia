@@ -8,19 +8,19 @@ import Front from "../components/layout/front";
 import { useState, useEffect } from "react";
 
 export default function Peptide() {
-    const [obj, setObj] = useState({});
-    const { peptide_id } = useParams();
+  const [obj, setObj] = useState({});
+  const { peptide_id } = useParams();
   
-    useHandleSection({ section: "peptide" });
-    useLoadingComponent();
-    return (
-        <DashboardLayout>
-        <>
-            <Box sx={{ padding: 2 }}>
-                {/* <Front obj={obj}></Front> */}
-                <h1>{peptide_id}</h1>
-            </Box>
-        </>
-        </DashboardLayout>
-    )
+  useHandleSection({ section: "peptide" });
+  useLoadingComponent();
+  return (
+    <DashboardLayout>
+    <>
+      <Box sx={{ padding: 2 }}>
+        {/* <Front obj={obj}></Front> */}
+        <h1>{peptide_id}</h1>
+      </Box>
+    </>
+    </DashboardLayout>
+  )
 }

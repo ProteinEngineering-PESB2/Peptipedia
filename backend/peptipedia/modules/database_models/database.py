@@ -1,5 +1,4 @@
 """Database functionalities module"""
-import json
 import pandas as pd
 from sqlalchemy import create_engine, text
 from dotenv import dotenv_values

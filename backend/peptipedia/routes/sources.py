@@ -1,5 +1,5 @@
 """Home routes"""
-from flask import Blueprint
+from flask import Blueprint, request
 from peptipedia.modules.database_models.database import Database
 from sqlalchemy.orm import Session
 db = Database()
@@ -26,11 +26,12 @@ def get_source(id_source):
         print(e)
         session.rollback()
 
-@sources_blueprint.route("/get_sequences_by_source/<id_source>", methods=["GET"])
+@sources_blueprint.route("/get_sequences_by_source/<id_source>", methods=["POST"])
 def get_sequences_by_source(id_source):
     """Gets count of peptides by activity"""
     try:
-        res = db.get_sequences_by_source(id_source)
+        post_data = request.json
+        res = db.get_sequences_by_source(id_source, post_data)
         return res
     except Exception as e:
         print(e)

@@ -14,7 +14,7 @@ export default function Data() {
           <BarChart plot={plot} title={"Activities"} ></BarChart>
         </Box> 
         <Box sx={{ padding: 2 , cursor: "pointer"}}>
-          <DataTable table={table} title={"Activities"} redirect_api = {config.activities.redirect} ></DataTable>
+          <DataTable table={table} title={"Activities"} redirect_api = {config.activities.redirect}></DataTable>
         </Box>
       </>
   );

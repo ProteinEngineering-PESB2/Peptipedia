@@ -1,5 +1,5 @@
 import MUIDataTable from "mui-datatables";
-import { useNavigate } from "react-router-dom";
+
 interface ITable {
   columns: Array<string>;
   data: Array<Array<any>>;
@@ -10,14 +10,10 @@ interface Props {
   redirect_api?: string;
 }
 
-
 export default function DataTable({ table, title, redirect_api = undefined}: Props) {
-  const navigate = useNavigate()
+
   const clickFunction = (rowData:string[]) =>{
-    if (redirect_api !== undefined){
-      console.log(redirect_api + rowData[0])
-      window.open(redirect_api + rowData[0])
-    }
+    if (redirect_api !== undefined) window.open(redirect_api + rowData[0])
   }
   const editDisplayColumns = () =>{
     let columns:any[] = []
@@ -40,6 +36,7 @@ export default function DataTable({ table, title, redirect_api = undefined}: Pro
     })
     return {columns}
   }
+
   const {columns} = editDisplayColumns()
 
   return (
@@ -53,9 +50,7 @@ export default function DataTable({ table, title, redirect_api = undefined}: Pro
               rowsPerPageOptions: [5, 10, 100],
               download: false,
               print: false,
-              onRowClick: (rowData)=>{
-                clickFunction(rowData);
-              }
+              onRowClick: (rowData)=> clickFunction(rowData),
           }}
         ></MUIDataTable>
     </>

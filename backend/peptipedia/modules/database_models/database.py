@@ -7,10 +7,8 @@ from peptipedia.modules.database_models.materialized_views import *
 from sqlalchemy import select
 import peptipedia.config as config
 
-
 class Database:
     """Database class"""
-
     def __init__(self):
         # Config connection
         user = config.user
@@ -127,12 +125,20 @@ class Database:
             "description": df["description"][0]
         }
     
-    def get_sequences_by_activity(self, id_activity):
-        stmt_activity = select(MVSequencesByActivity).where(MVSequencesByActivity.id_activity == id_activity)
+    def get_sequences_by_activity(self, id_activity, data):
+        limit = data["rowsPerPage"]
+        page = data["page"]
+        search_text = data["searchText"]
+        stmt_activity = (
+            select(MVSequencesByActivity)
+            .where(MVSequencesByActivity.id_activity == id_activity))
+        if search_text is not None:
+            stmt_activity = stmt_activity.where(MVSequencesByActivity.sequence.contains(search_text))
+        stmt_activity = stmt_activity.offset(limit*page).limit(limit)
+
         df_canon = self.get_table_query(stmt_activity)
         df_canon = df_canon.drop(columns = ["id_activity", "is_canon"])
         df_canon = df_canon.astype(str)
-        df_canon["_id"] = df_canon["id_peptide"]
         df_canon["sequence"] = df_canon["sequence"].map(split_sequence)
         
         return {
@@ -142,18 +148,27 @@ class Database:
             }
         }
 
-    def get_sequences_by_source(self, id_sources):
-        stmt_activity = select(MVSequencesBySource).where(MVSequencesBySource.id_source == id_sources)
-        df_canon = self.get_table_query(stmt_activity)
+    def get_sequences_by_source(self, id_sources, data):
+        limit = data["rowsPerPage"]
+        page = data["page"]
+        search_text = data["searchText"]
+        stmt_sequences = (
+            select(MVSequencesBySource)
+            .where(MVSequencesBySource.id_source == id_sources)
+        )
+        if search_text is not None:
+            stmt_sequences = stmt_sequences.where(MVSequencesBySource.sequence.contains(search_text))    
+        stmt_sequences = stmt_sequences.offset(limit*page).limit(limit)
+
+        df_canon = self.get_table_query(stmt_sequences)
         df_canon = df_canon.drop(columns = ["id_source", "is_canon"])
         df_canon = df_canon.astype(str)
-        df_canon["_id"] = df_canon["id_peptide"]
         df_canon["sequence"] = df_canon["sequence"].map(split_sequence)
-        
+
         return {
             "table":{
                 "data": df_canon.values.tolist(),
-                "columns": [capitalize_phrase(phrase) for phrase in df_canon.columns.to_list()]
+                "columns": [capitalize_phrase(phrase) for phrase in df_canon.columns.to_list()],
             }
         }
 

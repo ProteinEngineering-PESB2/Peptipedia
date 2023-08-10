@@ -1,18 +1,18 @@
-
 import config from "../../config.json";
-import DataTable from "../common/datatable";
+import SequencesDataTable from "../common/sequences_datatable";
 import Box from "@mui/material/Box";
-import useGetTable from "../../hooks/useGetTable";
+
 interface Props{
   source_id: string | undefined;
+  count: number
 }
 
-export default function Data({source_id}:Props) {
-  const {table} = useGetTable(config.source.sequences_api + source_id)
+export default function Data({source_id, count}:Props) {
+  const table_api = config.source.sequences_api + source_id
   return (
       <>
         <Box sx={{ padding: 2 , cursor: "pointer"}}>
-          <DataTable table={table} title={"Sequences"} redirect_api={config.source.redirect} ></DataTable>
+          <SequencesDataTable title={"Sequences"} count={count} table_api = {table_api} redirect_api={config.source.redirect} ></SequencesDataTable>
         </Box>
       </>
   );

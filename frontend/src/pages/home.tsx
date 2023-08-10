@@ -10,6 +10,7 @@ import Front from "../components/layout/front"
 import config from "../config.json"
 
 export default function Home() {
+  const obj = config.home
   useHandleSection({ section: "home" });
   useLoadingComponent();
 
@@ -17,7 +18,7 @@ export default function Home() {
     <DashboardLayout>
       <>
         <Box sx={{ padding: 2 }}>
-          <Front obj = {config.home}></Front>
+          <Front obj = {obj}></Front>
         </Box>
         
         <Box sx={{ padding: 2 }}>

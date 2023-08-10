@@ -44,7 +44,8 @@ class Source(Base):
     __tablename__ = "source"
     id_source = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-
+    description = Column(String)
+    url = Column(String)
     peptide_has_source_r = relationship("PeptideHasSource")
     def __repr__(self):
         return f"Source(id={self.id}, name={self.name})"  
@@ -54,7 +55,7 @@ class Activity(Base):
     __tablename__ = "activity"
     id_activity = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-
+    description = Column(String, nullable=True)
     peptide_has_activity_r = relationship("PeptideHasActivity")
     def __repr__(self):
         return f"Activity(id={self.id}, name={self.name})"

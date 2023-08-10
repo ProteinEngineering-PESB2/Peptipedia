@@ -15,4 +15,23 @@ def get_count_sources():
     except Exception as e:
         print(e)
         session.rollback()
-        
+
+@sources_blueprint.route("/get_source/<id_source>", methods=["GET"])
+def get_source(id_source):
+    """Gets activity information"""
+    try:
+        res = db.get_source(id_source)
+        return res
+    except Exception as e:
+        print(e)
+        session.rollback()
+
+@sources_blueprint.route("/get_sequences_by_source/<id_source>", methods=["GET"])
+def get_sequences_by_source(id_source):
+    """Gets count of peptides by activity"""
+    try:
+        res = db.get_sequences_by_source(id_source)
+        return res
+    except Exception as e:
+        print(e)
+        session.rollback()

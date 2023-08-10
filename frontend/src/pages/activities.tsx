@@ -7,19 +7,20 @@ import Box from "@mui/material/Box";
 import config from "../config.json"
 
 export default function Activities() {
-    useHandleSection({ section: "activities" });
-    useLoadingComponent();
-  
-    return (
-    <DashboardLayout>
-      <>
-        <Box sx={{ padding: 2 }}>
-          <Front obj={config.activities}></Front>
-        </Box>
-        <Box sx={{ padding: 2 }}>
-          <Data></Data>
-        </Box>
-      </>
-    </DashboardLayout>
-    )
+  const obj = config.activities;
+  useHandleSection({ section: "activities" });
+  useLoadingComponent();
+
+  return (
+  <DashboardLayout>
+    <>
+      <Box sx={{ padding: 2 }}>
+        <Front obj={obj}></Front>
+      </Box>
+      <Box sx={{ padding: 2 }}>
+        <Data></Data>
+      </Box>
+    </>
+  </DashboardLayout>
+  )
 }

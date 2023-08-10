@@ -6,7 +6,7 @@ import pandas as pd
 from table_models import Base as BaseTables
 from materialized_views import Base as BaseMV
 from materialized_views import (MVPeptidesByActivity, MVPeptidesByDatabase, MVGeneralInformation, MVPeptideWithActivity,
-                                MVPeptidesGeneralCounts, MVLabeledPeptidesGeneralCounts)
+                                MVPeptidesGeneralCounts, MVLabeledPeptidesGeneralCounts, MVSequencesByActivity)
 import config
 from table_models import Peptide, Source, PeptideHasSource, GeneOntology, PeptideHasGO, Activity, PeptideHasActivity
 from sqlalchemy import text
@@ -51,15 +51,15 @@ class Connection():
     def create_mv(self, model):
         definition = text(model().definition())
         refresh = text(model().refresh())
-        self.session.execute(definition)
-        self.session.commit()
+        """self.session.execute(definition)
+        self.session.commit()"""
         self.session.execute(refresh)
         self.session.commit()
         
 if __name__ == "__main__":
     db = Connection(config=config)
-    """
     db.create_tables()
+    """
     db.insert_data("../tables/activity.csv", Activity, chunk=100)
     print("activity")
     db.insert_data("../tables/peptide.csv", Peptide, chunk=5000)
@@ -72,12 +72,18 @@ if __name__ == "__main__":
     print("gene_ontology")
     db.insert_data("../tables/peptide_has_go.csv", PeptideHasGO, chunk=5000)
     print("peptide_has_go")
-    """
     db.insert_data("../tables/peptide_has_activity.csv", PeptideHasActivity, chunk=100)
     print("peptide_has_activity")
+    
     db.create_mv(MVPeptidesByDatabase)
     db.create_mv(MVGeneralInformation)
+    """
     db.create_mv(MVPeptideWithActivity)
-    db.create_mv(MVPeptidesGeneralCounts)
+    print("1")
+    """db.create_mv(MVPeptidesGeneralCounts)"""
     db.create_mv(MVLabeledPeptidesGeneralCounts)
+    print("2")
     db.create_mv(MVPeptidesByActivity)
+    print("3")
+    db.create_mv(MVSequencesByActivity)
+    print("4")

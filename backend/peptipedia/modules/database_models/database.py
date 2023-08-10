@@ -78,19 +78,15 @@ class Database:
                 "columns": [capitalize_phrase(phrase) for phrase in df.columns.to_list()]
             }
         }
-    
 
     def get_count_activities(self):
         stmt_count_activities = select(MVPeptidesByActivity)
         df_count_activities = self.get_table_query(stmt_count_activities)
-        ids = df_count_activities["id_activity"].to_list()
-        df_count_activities = df_count_activities.drop(columns=["id_activity"])
-        df_count_activities["name"] = df_count_activities["name"].map(capitalize_phrase)
+        df_count_activities = df_count_activities.rename(columns={"id_activity": "_id"})
         return {
             "table":{
                 "data": df_count_activities.values.tolist(),
-                "columns": [capitalize_phrase(phrase) for phrase in df_count_activities.columns.to_list()],
-                "ids": ids
+                "columns": [capitalize_phrase(phrase) for phrase in df_count_activities.columns.to_list()]
             },
             "plot":{
                 "x": df_count_activities["name"].to_list(),
@@ -101,14 +97,75 @@ class Database:
     def get_count_sources(self):
         stmt_count_sources = select(MVPeptidesByDatabase)
         df_count_sources = self.get_table_query(stmt_count_sources)
+        df_count_sources = df_count_sources.rename(columns={"id_source": "_id"})
         df_count_sources["name"] = df_count_sources["name"].map(capitalize_phrase)
         return {
-            "data": df_count_sources.values.tolist(),
-            "columns": [capitalize_phrase(phrase) for phrase in df_count_sources.columns.to_list()],
-            "x": df_count_sources["name"].to_list(),
-            "y": df_count_sources["count_peptide"].to_list()
+            "table":{
+                "data": df_count_sources.values.tolist(),
+                "columns": [capitalize_phrase(phrase) for phrase in df_count_sources.columns.to_list()]
+            },
+            "plot":{
+                "x": df_count_sources["name"].to_list(),
+                "y": df_count_sources["count_peptide"].to_list()
+            }
+        }
+
+    def get_activity(self, id_activity):
+        stmt_activity = select(Activity).where(Activity.id_activity == id_activity)
+        df = self.get_table_query(stmt_activity)
+        df = df.fillna("")
+        return {
+            "name": df["name"][0],
+            "description": df["description"][0]
         }
     
+    def get_source(self, id_source):
+        stmt_source = select(Source).where(Source.id_source == id_source)
+        df = self.get_table_query(stmt_source)
+        df = df.fillna("")
+        return {
+            "name": df["name"][0],
+            "description": df["description"][0]
+        }
+    
+    def get_sequences_by_activity(self, id_activity):
+        stmt_activity = select(MVSequencesByActivity).where(MVSequencesByActivity.id_activity == id_activity)
+        df_canon = self.get_table_query(stmt_activity)
+        df_canon = df_canon.drop(columns = ["id_activity", "is_canon"])
+        df_canon = df_canon.astype(str)
+        df_canon["_id"] = df_canon["id_peptide"]
+        df_canon["sequence"] = df_canon["sequence"].map(split_sequence)
+        
+        return {
+            "table":{
+                "data": df_canon.values.tolist(),
+                "columns": [capitalize_phrase(phrase) for phrase in df_canon.columns.to_list()]
+            }
+        }
+
+    def get_sequences_by_source(self, id_sources):
+        stmt_activity = select(MVSequencesBySource).where(MVSequencesBySource.id_source == id_sources)
+        df_canon = self.get_table_query(stmt_activity)
+        df_canon = df_canon.drop(columns = ["id_source", "is_canon"])
+        df_canon = df_canon.astype(str)
+        df_canon["_id"] = df_canon["id_peptide"]
+        df_canon["sequence"] = df_canon["sequence"].map(split_sequence)
+        
+        return {
+            "table":{
+                "data": df_canon.values.tolist(),
+                "columns": [capitalize_phrase(phrase) for phrase in df_canon.columns.to_list()]
+            }
+        }
+
 def capitalize_phrase(phrase):
-    phrase = phrase.replace("_", " ")
-    return phrase.capitalize()
+    if phrase[0] != "_":
+        phrase = phrase.replace("_", " ")
+        phrase = phrase.capitalize()
+    return phrase
+
+def split_sequence(sequence):
+    n = 80
+    sequence = [sequence[i:i+n] for i in range(0, len(sequence), n)]
+    sequence = "\n".join(sequence)
+    return sequence

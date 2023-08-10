@@ -1,8 +1,12 @@
 import { Container, Typography } from "@mui/material";
-export default function Front({obj}) {
+interface Props{
+  description: string;
+  title: string;
+  route: string;
+}
+export default function Front({obj}: Props) {
   return (
     <>
-    {(obj !== undefined)&&(
       <Container
       sx={{ textAlign: "center" }}
       maxWidth="lg"
@@ -19,7 +23,6 @@ export default function Front({obj}) {
           </Typography>
         </Container>
       </Container>
-    )}
     </>
   );
 }

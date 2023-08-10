@@ -15,3 +15,23 @@ def get_count_activities():
     except Exception as e:
         print(e)
         session.rollback()
+
+@activities_blueprint.route("/get_activity/<id_activity>", methods=["GET"])
+def get_activity(id_activity):
+    """Gets activity information"""
+    try:
+        res = db.get_activity(id_activity)
+        return res
+    except Exception as e:
+        print(e)
+        session.rollback()
+
+@activities_blueprint.route("/get_sequences_by_activity/<id_activity>", methods=["GET"])
+def get_sequences_by_activity(id_activity):
+    """Gets sequences by activity"""
+    try:
+        res = db.get_sequences_by_activity(id_activity)
+        return res
+    except Exception as e:
+        print(e)
+        session.rollback()

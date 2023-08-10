@@ -89,31 +89,31 @@
     },
     "entities": [
       {
-        "url": "https://www.redcampussustentable.cl/wp-content/uploads/2022/07/UMAG-PNG.png",
+        "url": "/src/assets/entities/umag.jpeg",
         "alt": "Universidad de Magallanes",
-        "width": "310rem",
+        "width": "100rem",
         "height": "100rem"
       },
       {
-        "url": "https://avatars.githubusercontent.com/u/64513653?s=200&v=4",
+        "url": "/src/assets/entities/catg.png",
         "alt": "Centro Austral de Tecnología Genómica",
         "width": "100rem",
         "height": "100rem"
       },
       {
-        "url": "https://www.anid.cl/wp-content/themes/anid-wp/assets/images/anid_rojo_azul.png",
+        "url": "/src/assets/entities/anid.png",
         "alt": "Agencia Nacional de Investigación y Desarrollo",
         "width": "100rem",
         "height": "100rem"
       },
       {
-        "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Mineduc.svg/1200px-Mineduc.svg.png",
+        "url": "/src/assets/entities/mineduc.jpg",
         "alt": "Ministerio de Educación",
         "width": "100rem",
         "height": "100rem"
       },
       {
-        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIqpFJZDcjpuWx0cLf8LiiQjZFb3qtGC-cjg&usqp=CAU",
+        "url": "/src/assets/entities/cadi.jpeg",
         "alt": "Centro Asistencial Docente e Investigación",
         "width": "230rem",
         "height": "100rem"
@@ -126,14 +126,39 @@
     "title": "Activities",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium ornare tellus eu aliquam. Curabitur semper, ligula vel elementum elementum, purus felis sodales nisi, eu rutrum quam nisl scelerisque enim. Quisque iaculis, risus non volutpat dictum, arcu nunc viverra lorem, at elementum turpis metus id erat. Aenean in sem eu quam mollis aliquam. Vestibulum eu rhoncus massa, at imperdiet nisi. Proin varius elit sed malesuada feugiat. Duis sed ullamcorper mauris. Sed faucibus dui ac aliquet ultricies. Quisque in justo a ex faucibus mollis eu vel nulla. Curabitur a pulvinar turpis. Nulla facilisi. Maecenas volutpat blandit lorem a auctor. Duis ut feugiat mi, eu convallis urna. Sed tincidunt nulla nec vulputate condimentum. Cras ligula urna, mattis eu blandit quis, convallis et velit. Aenean et porta purus, non tincidunt leo. ",
     "route": "/activities",
-    "api": "/api/get_count_activities/"
+    "api": "/api/get_count_activities/",
+    "redirect": "/activity/"
   },
+
   "sources": {
     "title": "Sources",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium ornare tellus eu aliquam. Curabitur semper, ligula vel elementum elementum, purus felis sodales nisi, eu rutrum quam nisl scelerisque enim. Quisque iaculis, risus non volutpat dictum, arcu nunc viverra lorem, at elementum turpis metus id erat. Aenean in sem eu quam mollis aliquam. Vestibulum eu rhoncus massa, at imperdiet nisi. Proin varius elit sed malesuada feugiat. Duis sed ullamcorper mauris. Sed faucibus dui ac aliquet ultricies. Quisque in justo a ex faucibus mollis eu vel nulla. Curabitur a pulvinar turpis. Nulla facilisi. Maecenas volutpat blandit lorem a auctor. Duis ut feugiat mi, eu convallis urna. Sed tincidunt nulla nec vulputate condimentum. Cras ligula urna, mattis eu blandit quis, convallis et velit. Aenean et porta purus, non tincidunt leo. ",
     "route": "/sources",
-    "api": "/api/get_count_sources/"
+    "api": "/api/get_count_sources/",
+    "redirect": "/source/"
   },
+
+
+  "activity": {
+    "route": "/activity/:activity_id",
+    "api": "/api/get_activity/",
+    "sequences_api": "/api/get_sequences_by_activity/",
+    "redirect": "/peptide/"
+  },
+
+  "peptide": {
+    "route": "/peptide/:peptide_id",
+    "api": "/api/get_activity/"
+  },
+
+  "source": {
+    "route": "/source/:source_id",
+    "api": "/api/get_source/",
+    "sequences_api": "/api/get_sequences_by_source/",
+    "redirect": "/peptide/"
+  },
+
+
   "search": {
     "title": "Search",
     "description": "Convert your input to fasta format.",

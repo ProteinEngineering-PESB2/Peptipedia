@@ -1,34 +1,19 @@
-import axios from "axios";
 import config from "../../config.json";
 import DataTable from "../common/datatable";
-import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import BarChart from "../plots/bar";
+import useGetTableAndBarchart from "../../hooks/useGetTableAndBarchart";
 
 export default function Data() {
-    const [data, setData] = useState({});
-    const getActivitiesData = async () => {
-        try {
-          const response = await axios.get(config.sources.api);
-          setData(response.data);
-        } catch (error) {
-            setData({});
-        }
-      };
-
-    useEffect(() => {
-        getActivitiesData();
-    }, []);
-
+  const {table, plot } = useGetTableAndBarchart(config.sources.api)
   return (
-
     <>
       <Box sx={{ padding: 2 }}>
-        <BarChart x={data.x} y={data.y} title={"Sources"} ></BarChart>
+        <BarChart plot={plot} title={"Sources"} ></BarChart>
       </Box>
-      <Box sx={{ padding: 2 }}>
-        <DataTable table={data} title={"Sources"} ></DataTable>
+      <Box sx={{ padding: 2 , cursor: "pointer"}}>
+        <DataTable table={table} title={"Sources"} redirect_api = {config.sources.redirect} ></DataTable>
       </Box>
     </>
-  );
+  )
 }

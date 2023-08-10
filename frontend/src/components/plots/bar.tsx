@@ -1,18 +1,21 @@
 import Plot from "react-plotly.js"
 
+interface IData {
+  x: Array<any>;
+  y: Array<number>;
+}
 interface Props {
-  x: any[];
-  y: number[];
+  plot: IData;
   title: string;
 }
 
-export default function BarChart({ x, y, title }: Props) {
+export default function BarChart({ plot, title }: Props) {
   return (
     <Plot
       data={[
         {
-          x,
-          y,
+          x: plot.x,
+          y: plot.y,
           type: "bar",
           marker: {
             color: "#2962ff",
@@ -20,7 +23,6 @@ export default function BarChart({ x, y, title }: Props) {
         },
       ]}
       layout={{
-        /* autosize: true, */
         height: 700,
         title: title,
         font: {

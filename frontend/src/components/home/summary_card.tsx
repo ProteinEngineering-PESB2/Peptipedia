@@ -1,8 +1,8 @@
-import StorageIcon from "@mui/icons-material/Storage";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+
 export default function SummaryCard({info}) {
     return (
       <>
@@ -22,6 +22,7 @@ export default function SummaryCard({info}) {
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "end",
+                        alignItems: "center"
                     }}
                     >
                     <Typography fontWeight="bold" variant="h5">
@@ -31,7 +32,6 @@ export default function SummaryCard({info}) {
                         {info.value}
                     </Typography>
                 </Box>
-                <StorageIcon fontSize="large" />
             </Box>
             </CardContent>
         </Card>

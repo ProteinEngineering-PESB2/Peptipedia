@@ -44,8 +44,8 @@ class Source(Base):
     __tablename__ = "source"
     id_source = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    description = Column(String)
-    url = Column(String)
+    description = Column(String, nullable=False)
+    url = Column(String, nullable=False)
     peptide_has_source_r = relationship("PeptideHasSource")
     def __repr__(self):
         return f"Source(id={self.id}, name={self.name})"  
@@ -56,9 +56,11 @@ class Activity(Base):
     id_activity = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
+    id_parent = Column(Integer, ForeignKey("activity.id_activity"), nullable=True)
     peptide_has_activity_r = relationship("PeptideHasActivity")
+    activity_has_parent_r = relationship("Activity")
     def __repr__(self):
-        return f"Activity(id={self.id}, name={self.name})"
+        return f"Activity(id={self.id_activity}, name={self.name})"
 
 class GeneOntology(Base):
     """Gene ontology table"""

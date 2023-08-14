@@ -6,6 +6,8 @@ from peptipedia.modules.database_models.table_models import *
 from peptipedia.modules.database_models.materialized_views import *
 from sqlalchemy import select
 import peptipedia.config as config
+from peptipedia.modules.database_models.table_models import Base as BaseTables
+from sqlalchemy.orm import Session
 
 class Database:
     """Database class"""
@@ -22,13 +24,39 @@ class Database:
         self.conn = self.engine.connect()
         # Config max items for selects
         self.max_items = config.select_limit
-
+        self.session = Session(self.engine, future=True)
+    
     def get_table(self, query):
         return pd.read_sql(text(query), con=self.conn)
     
     def get_table_query(self, stmt):
         """Applies a select for a previous stmt"""
         return pd.read_sql(stmt, con = self.conn)
+
+    def insert_data(self, data_file, model, chunk):
+        """Insert data from csv files"""
+        tablename = model.__tablename__
+        data = pd.read_csv(data_file, low_memory=False)
+        data.to_sql(tablename,
+            con = self.engine,
+            if_exists = "append",
+            method = "multi",
+            chunksize = chunk,
+            index = False,
+            schema="public")
+
+    def create_tables(self):
+        """Create tables from ddl"""
+        BaseTables.metadata.create_all(self.engine)
+
+    def create_mv(self, model):
+        definition = text(model().definition())
+        refresh = text(model().refresh())
+        self.session.execute(definition)
+        self.session.commit()
+        self.session.execute(refresh)
+        self.session.commit()
+
 
     def create_fasta_from_peptides(self):
         """Create fasta in files folder"""
@@ -183,3 +211,33 @@ def split_sequence(sequence):
     sequence = [sequence[i:i+n] for i in range(0, len(sequence), n)]
     sequence = "\n".join(sequence)
     return sequence
+
+
+if __name__ == "__main__":
+    db = Database()
+    db.create_tables()
+    """
+    db.insert_data("../tables/peptide.csv", Peptide, chunk=5000)
+    print("peptide")
+    db.insert_data("../tables/activity.csv", Activity, chunk=100)
+    print("activity")
+    db.insert_data("../tables/peptide_has_activity.csv", PeptideHasActivity, chunk=100)
+    print("peptide_has_activity")
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/source.csv", Source, chunk=100)
+    print("source")
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_source.csv", PeptideHasSource, chunk=100)
+    print("peptide_has_source")
+    db.insert_data("../tables/gene_ontology.csv", GeneOntology, chunk=5000)
+    print("gene_ontology")
+    db.insert_data("../tables/peptide_has_go.csv", PeptideHasGO, chunk=5000)
+    print("peptide_has_go")
+    
+    """
+    db.create_mv(MVPeptidesByDatabase)
+    db.create_mv(MVPeptidesByActivity)
+    db.create_mv(MVGeneralInformation)
+    db.create_mv(MVPeptideWithActivity)
+    db.create_mv(MVPeptidesGeneralCounts)
+    db.create_mv(MVLabeledPeptidesGeneralCounts)
+    db.create_mv(MVSequencesByActivity)
+    db.create_mv(MVSequencesBySource)

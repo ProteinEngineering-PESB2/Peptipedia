@@ -11,6 +11,7 @@ import Data from "../components/activity/data"
 
 export default function Activity() {
   const [obj, setObj] = useState({});
+  const [count, setCount] = useState(0)
   const { activity_id } = useParams();
 
   useHandleSection({ section: "activity" });
@@ -23,6 +24,7 @@ export default function Activity() {
         "title": "Activity: " + response.data.name,
         "description": response.data.description
       })
+      setCount(response.data.count)
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +40,7 @@ export default function Activity() {
           <Front obj={obj}></Front>
         </Box>
         <Box sx={{ padding: 2 }}>
-          <Data activity_id={activity_id}></Data>
+          <Data activity_id={activity_id} count = {count}></Data>
         </Box>
       </>
     </DashboardLayout>

@@ -5,7 +5,7 @@ import Front from "../components/layout/front"
 import Data from "../components/activities/data"
 import Box from "@mui/material/Box";
 import config from "../config.json"
-
+import CustomizedTreeView from "../components/activities/tree"
 export default function Activities() {
   const obj = config.activities;
   useHandleSection({ section: "activities" });
@@ -16,6 +16,9 @@ export default function Activities() {
       <>
         <Box sx={{ padding: 2 }}>
           <Front obj={obj}></Front>
+        </Box>
+        <Box sx={{ padding: 2}}>
+          <CustomizedTreeView></CustomizedTreeView>
         </Box>
         <Box sx={{ padding: 2 }}>
           <Data></Data>

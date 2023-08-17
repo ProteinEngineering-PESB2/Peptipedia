@@ -50,6 +50,20 @@
         "rol": "Researcher",
         "github": "https://github.com/GabrielCabas",
         "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
+      },
+      {
+        "name": "Anamaria Sanchez",
+        "image": "/src/assets/team/anita.jpg",
+        "rol": "Researcher",
+        "github": "https://github.com/GabrielCabas",
+        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4"
+      },
+      {
+        "name": "Lindybeth Gonzalez",
+        "image": "/src/assets/team/lindybeth.jpg",
+        "rol": "Researcher",
+        "github": "https://github.com/GabrielCabas",
+        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4"
       }
     ],
     "links": {
@@ -127,7 +141,8 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium ornare tellus eu aliquam. Curabitur semper, ligula vel elementum elementum, purus felis sodales nisi, eu rutrum quam nisl scelerisque enim. Quisque iaculis, risus non volutpat dictum, arcu nunc viverra lorem, at elementum turpis metus id erat. Aenean in sem eu quam mollis aliquam. Vestibulum eu rhoncus massa, at imperdiet nisi. Proin varius elit sed malesuada feugiat. Duis sed ullamcorper mauris. Sed faucibus dui ac aliquet ultricies. Quisque in justo a ex faucibus mollis eu vel nulla. Curabitur a pulvinar turpis. Nulla facilisi. Maecenas volutpat blandit lorem a auctor. Duis ut feugiat mi, eu convallis urna. Sed tincidunt nulla nec vulputate condimentum. Cras ligula urna, mattis eu blandit quis, convallis et velit. Aenean et porta purus, non tincidunt leo. ",
     "route": "/activities",
     "api": "/api/get_count_activities/",
-    "redirect": "/activity/"
+    "redirect": "/activity/",
+    "tree_api": "/api/get_tree/"
   },
 
   "sources": {
@@ -148,7 +163,8 @@
 
   "peptide": {
     "route": "/peptide/:peptide_id",
-    "api": "/api/get_activity/"
+    "api": "/api/get_peptide/",
+    "redirect": "/activity/"
   },
 
   "source": {

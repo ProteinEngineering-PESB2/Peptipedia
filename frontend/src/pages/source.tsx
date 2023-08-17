@@ -12,7 +12,7 @@ import Data from "../components/source/data";
 export default function Source() {
     const [obj, setObj] = useState({});
     const { source_id } = useParams();
-  
+    const [count, setCount] = useState(0);
     useHandleSection({ section: "source" });
     useLoadingComponent();
 
@@ -24,6 +24,7 @@ export default function Source() {
             "title": "Source: " + response.data.name,
             "description": response.data.description
           })
+          setCount(response.data.count);
         } catch (error) {
           console.log(error);
         }
@@ -39,7 +40,7 @@ export default function Source() {
                 <Front obj={obj}></Front>
             </Box>
             <Box sx={{ padding: 2 }}>
-                <Data source_id={source_id} count={1000}></Data>
+                <Data source_id={source_id} count={count}></Data>
             </Box>
         </>
         </DashboardLayout>

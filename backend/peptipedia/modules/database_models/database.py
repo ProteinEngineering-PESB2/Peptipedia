@@ -8,6 +8,8 @@ from sqlalchemy import select
 import peptipedia.config as config
 from peptipedia.modules.database_models.table_models import Base as BaseTables
 from sqlalchemy.orm import Session
+import networkx as nx
+from networkx.readwrite import json_graph
 
 class Database:
     """Database class"""
@@ -108,6 +110,7 @@ class Database:
         stmt_count_activities = select(MVPeptidesByActivity)
         df_count_activities = self.get_table_query(stmt_count_activities)
         df_count_activities = df_count_activities.rename(columns={"id_activity": "_id"})
+        df_count_activities = df_count_activities.drop(columns=["description", "id_parent"])
         return {
             "table":{
                 "data": df_count_activities.values.tolist(),
@@ -123,6 +126,7 @@ class Database:
         stmt_count_sources = select(MVPeptidesByDatabase)
         df_count_sources = self.get_table_query(stmt_count_sources)
         df_count_sources = df_count_sources.rename(columns={"id_source": "_id"})
+        df_count_sources = df_count_sources.drop(columns=["description", "url"])
         df_count_sources["name"] = df_count_sources["name"].map(capitalize_phrase)
         return {
             "table":{
@@ -136,21 +140,25 @@ class Database:
         }
 
     def get_activity(self, id_activity):
-        stmt_activity = select(Activity).where(Activity.id_activity == id_activity)
+        stmt_activity = select(MVPeptidesByActivity).where(MVPeptidesByActivity.id_activity == id_activity)
         df = self.get_table_query(stmt_activity)
         df = df.fillna("")
+        df = df.astype(str)
         return {
             "name": df["name"][0],
-            "description": df["description"][0]
+            "description": df["description"][0],
+            "count": int(df["count_peptide"][0])
         }
     
     def get_source(self, id_source):
-        stmt_source = select(Source).where(Source.id_source == id_source)
+        stmt_source = select(MVPeptidesByDatabase).where(MVPeptidesByDatabase.id_source == id_source)
         df = self.get_table_query(stmt_source)
         df = df.fillna("")
+        df = df.astype(str)
         return {
             "name": df["name"][0],
-            "description": df["description"][0]
+            "description": df["description"][0],
+            "count": int(df["count_peptide"][0])
         }
     
     def get_sequences_by_activity(self, id_activity, data):
@@ -200,6 +208,66 @@ class Database:
             }
         }
 
+    def iterate_over_tree(self, df, tree):
+        for row in tree:
+            if "children" in row.keys():
+                self.iterate_over_tree(df, row["children"])
+            name = df[df["id_activity"] == row["id"]]["name"].values[0]
+            count = df[df["id_activity"] == row["id"]]["count_peptide"].values[0]
+            row["name"] = f"""{name} ({count})"""
+
+    def get_tree(self):
+        stmt = select(MVPeptidesByActivity)
+        df = self.get_table_query(stmt)
+        G = nx.DiGraph()
+        G.add_node(0)
+        df = df.fillna(0)
+        for _, row in df.iterrows():
+            G.add_node(row.id_activity)
+        for _, row in df.iterrows():
+            G.add_edge(row.id_parent, row.id_activity)
+        data = json_graph.tree_data(G, ident= "id", root=0, children="children")
+        self.iterate_over_tree(df, data["children"])
+        return { "tree": data }
+    
+    def get_peptide(self, id_peptide):
+        stmt = select(MVPeptideProfile).where(MVPeptideProfile.id_peptide == id_peptide)
+        df = self.get_table_query(stmt)
+        df = df.astype(str)
+        
+        sequence = dict(df.iloc[0])["sequence"]
+
+        phy_prop = df[["length", "molecular_weight", "charge",
+                       "charge_density", "charge", "instability_index",
+                       "aromaticity", "aliphatic_index", "boman_index",
+                       "isoelectric_point", "hydrophobic_ratio" ]].T
+        
+        phy_prop["property"] = phy_prop.index
+        phy_prop["value"] = phy_prop[0]
+        phy_prop = phy_prop[["property", "value"]]
+        phy_prop["property"] = phy_prop["property"].map(capitalize_phrase)
+
+        phy_prop_table = {
+            "data": phy_prop.values.tolist(),
+            "columns": [capitalize_phrase(phrase)
+                        for phrase in phy_prop.columns.to_list()]
+        }
+        activities = eval(df["activities"][0])
+        id_activities = eval(df["id_activities"][0])
+        if activities[0] == None:
+            activities.pop(0)
+            id_activities.pop(0)
+        acts = []
+        for i, j in zip(activities, id_activities):
+            acts.append({"name": i, "id": j})
+        return {
+            "peptide": {
+                "sequence": sequence,
+                "physicochemical_properties": {"table": phy_prop_table},
+                "activities": acts
+            }
+        }
+
 def capitalize_phrase(phrase):
     if phrase[0] != "_":
         phrase = phrase.replace("_", " ")
@@ -212,10 +280,14 @@ def split_sequence(sequence):
     sequence = "\n".join(sequence)
     return sequence
 
-
 if __name__ == "__main__":
     db = Database()
     db.create_tables()
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/activity.csv", Activity, chunk=100)
+    print("activity")
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_activity.csv", PeptideHasActivity, chunk=100)
+    print("peptide_has_activity")
+
     """
     db.insert_data("../tables/peptide.csv", Peptide, chunk=5000)
     print("peptide")

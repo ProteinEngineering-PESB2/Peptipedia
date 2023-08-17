@@ -36,3 +36,13 @@ def get_sequences_by_activity(id_activity):
     except Exception as e:
         print(e)
         session.rollback()
+
+@activities_blueprint.route("/get_tree/", methods=["GET"])
+def get_tree():
+    """Gets tree data"""
+    try:
+        res = db.get_tree()
+        return res
+    except Exception as e:
+        print(e)
+        session.rollback()

@@ -40,12 +40,13 @@ function Aside({ open }: Props) {
         {
           config.sidebar.navigate.map((a)=>{
             return (
-            <ListItemButton sx={{ pl: 4 }} onClick={() => navigate(config[a].route)}>
-              <ListItemIcon>
-                <KeyboardDoubleArrowRightIcon sx={{ color: "#000" }} />
-              </ListItemIcon>
-              <ListItemText primary={config[a].title} />
-            </ListItemButton>)
+              <ListItemButton sx={{ pl: 4 }} onClick={() => navigate(config[a].route)}>
+                <ListItemIcon>
+                  <KeyboardDoubleArrowRightIcon sx={{ color: "#000" }} />
+                </ListItemIcon>
+                <ListItemText primary={config[a].title} />
+              </ListItemButton>
+            )
             }
           )
         }

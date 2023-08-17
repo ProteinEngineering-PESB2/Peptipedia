@@ -153,7 +153,6 @@
     "redirect": "/source/"
   },
 
-
   "activity": {
     "route": "/activity/:activity_id",
     "api": "/api/get_activity/",
@@ -174,13 +173,12 @@
     "redirect": "/peptide/"
   },
 
-
   "search": {
     "title": "Search",
     "description": "Convert your input to fasta format.",
-    "route": "/search",
-    "api": "/api/activities/"
+    "route": "/search"
   },
+
   "blast": {
     "title": "Blastp",
     "description": "Convert your input to fasta format.",

@@ -17,19 +17,19 @@ interface Props{
 }
 
 export default function SelectOptions({options, setQuery, query}: Props) {
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [activities, setActivities] = React.useState<string[]>([]);
   const names = options.name
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  const handleChange = (event: SelectChangeEvent<typeof activities>) => {
     const { target: { value }} = event;
-    setPersonName(
+    setActivities(
       typeof value === 'string' ? value.split(',') : value,
     );
   };
   
   useEffect(() => {
-    setQuery({ ...query, activities: personName })
-  }, [personName]);
+    setQuery({ ...query, activities: activities })
+  }, [activities]);
 
 
   return (
@@ -40,7 +40,7 @@ export default function SelectOptions({options, setQuery, query}: Props) {
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
-          value={personName}
+          value={activities}
           onChange={handleChange}
           input={<OutlinedInput label="Activity" />}
           renderValue={(selected) => selected.join(', ')}
@@ -48,7 +48,7 @@ export default function SelectOptions({options, setQuery, query}: Props) {
         >
           {names.map((name) => (
             <MenuItem key={name} value={name}>
-              <Checkbox checked={personName.indexOf(name) > -1} />
+              <Checkbox checked={activities.indexOf(name) > -1} />
               <ListItemText primary={name} />
             </MenuItem>
           ))}

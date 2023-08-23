@@ -20,11 +20,12 @@ export default function Source() {
     const getSpecificSourceData = async () => {
         try {
           const response = await axios.get(config.source.api + source_id);
+          console.log(response.data)
           setObj({
-            "title": "Source: " + response.data.name,
-            "description": response.data.description
+            "title": "Source: " + response.data.results.name,
+            "description": response.data.results.description
           })
-          setCount(response.data.count);
+          setCount(response.data.results.count);
         } catch (error) {
           console.log(error);
         }

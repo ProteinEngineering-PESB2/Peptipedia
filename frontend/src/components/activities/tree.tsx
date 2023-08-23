@@ -86,9 +86,8 @@ export default function CustomizedTreeView() {
   const getTree = async () =>{
     try {
       const response = await axios.get(config.activities.tree_api);
-      console.log(response)
       setTreeElement(
-        renderTree(response.data.tree)
+        renderTree(response.data.results.tree)
       )
     }
     catch (error) {

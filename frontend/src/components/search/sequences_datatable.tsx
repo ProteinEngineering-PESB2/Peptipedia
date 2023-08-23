@@ -1,6 +1,6 @@
 import MUIDataTable from "mui-datatables";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useState } from "react";
 
 interface Props {
   title: string;
@@ -9,14 +9,13 @@ interface Props {
   table_api: string;
 }
 
-export default function SequencesDataTable({ title, table_api, count, redirect_api = undefined}: Props) {
-  const clickFunction = (rowData:string[]) =>{
-    if (redirect_api !== undefined) window.open(redirect_api + rowData[0])
-  }
+export default function SequencesDataTable({ title, table_api, query,
+  count, redirect_api = undefined}: Props) {
   const [table, setTable] = useState({"data": [], "columns": []})
-  const getData = async (tableState: any) => {
+
+  const getData = async ( tableState: {}) => {
+    const post_data = {...query, ...tableState};
     try{
-      const post_data = tableState
       const response = await axios.post(table_api, post_data);
       setTable({data: response.data.results.table.data,
         columns: response.data.results.table.columns});
@@ -24,6 +23,14 @@ export default function SequencesDataTable({ title, table_api, count, redirect_a
       console.log(error)
     }
   }
+
+  const clickFunction = (rowData:string[]) =>{
+    if (redirect_api !== undefined) window.open(redirect_api + rowData[0])
+  }
+  useEffect(()=>{
+    getData({rowsPerPage:10, page:0});
+  }, [count])
+
   return (
     <MUIDataTable
       data = {table.data}
@@ -35,19 +42,17 @@ export default function SequencesDataTable({ title, table_api, count, redirect_a
         rowsPerPageOptions: [5, 10, 100],
         download: false,
         print: false,
+        search:false,
         onRowClick: (rowData)=> clickFunction(rowData),
         serverSide: true,
         onTableChange: (action, tableState) => {
           switch(action){
-            case "changePage" :
+            case "changePage":
               getData(tableState)
             case "changeRowsPerPage":
               getData(tableState)
-            case "search":
-              getData(tableState)
           }
-        },
-        onTableInit: (action, tableState) => getData(tableState)
+        }
       }}
     />
   )

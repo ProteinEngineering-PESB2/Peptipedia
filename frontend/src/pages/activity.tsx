@@ -21,10 +21,10 @@ export default function Activity() {
     try {
       const response = await axios.get(config.activity.api + activity_id);
       setObj({
-        "title": "Activity: " + response.data.name,
-        "description": response.data.description
+        "title": "Activity: " + response.data.results.name,
+        "description": response.data.results.description
       })
-      setCount(response.data.count)
+      setCount(response.data.results.count)
     } catch (error) {
       console.log(error);
     }

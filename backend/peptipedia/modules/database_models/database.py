@@ -1,15 +1,15 @@
 """Database functionalities module"""
 import pandas as pd
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text,select, func
+from sqlalchemy.orm import Session
 from dotenv import dotenv_values
 from peptipedia.modules.database_models.table_models import *
 from peptipedia.modules.database_models.materialized_views import *
-from sqlalchemy import select
 import peptipedia.config as config
 from peptipedia.modules.database_models.table_models import Base as BaseTables
-from sqlalchemy.orm import Session
 import networkx as nx
 from networkx.readwrite import json_graph
+
 
 class Database:
     """Database class"""
@@ -238,7 +238,7 @@ class Database:
         sequence = dict(df.iloc[0])["sequence"]
 
         phy_prop = df[["length", "molecular_weight", "charge",
-                       "charge_density", "charge", "instability_index",
+                       "charge_density", "instability_index",
                        "aromaticity", "aliphatic_index", "boman_index",
                        "isoelectric_point", "hydrophobic_ratio" ]].T
         
@@ -267,6 +267,43 @@ class Database:
                 "activities": acts
             }
         }
+    def get_peptide_params(self):
+        stmt = select(MVPeptideParams)
+        df = self.get_table_query(stmt)
+        df.index = ["min", "max"]
+        params = df.to_dict(orient="dict")
+        stmt = select(Activity)
+        df = self.get_table_query(stmt)[["id_activity", "name"]]
+        activities = df.to_dict(orient="list")
+        return {"physicochemical_properties": params,
+                "activities": activities}
+    
+    def get_count_search(self, query):
+        stmt = select(func.count(MVSearchPeptide.id_peptide))
+        stmt = parse_data_query(query, MVSearchPeptide, stmt)
+        df = self.get_table_query(stmt)
+        count = int(df.values[0][0])
+        return {"count": count}
+    
+
+    def get_sequences_by_search(self, data):
+        print(data)
+        limit = data["rowsPerPage"]
+        page = data["page"]
+        stmt = select(MVSearchPeptide.id_peptide, MVSearchPeptide.sequence)
+        stmt = parse_data_query(data, MVSearchPeptide, stmt)
+        stmt_sequences = stmt.offset(limit*page).limit(limit)
+        df_canon = self.get_table_query(stmt_sequences)
+        df_canon = df_canon.drop(columns = ["id_source", "is_canon"], errors='ignore')
+        df_canon = df_canon.astype(str)
+        df_canon["sequence"] = df_canon["sequence"].map(split_sequence)
+
+        return {
+            "table":{
+                "data": df_canon.values.tolist(),
+                "columns": [capitalize_phrase(phrase) for phrase in df_canon.columns.to_list()],
+            }
+        }
 
 def capitalize_phrase(phrase):
     if phrase[0] != "_":
@@ -280,31 +317,41 @@ def split_sequence(sequence):
     sequence = "\n".join(sequence)
     return sequence
 
+def parse_data_query(query, Model, stmt):
+    if "sequence" in query.keys():
+        stmt = stmt.where(Model.sequence.like(f'%{query["sequence"]}%'))
+
+    if "length" in query.keys():
+        stmt = stmt.where(Model.length >= query["length"][0])
+        stmt = stmt.where(Model.length <= query["length"][1])
+        
+    if "molecular_weight" in query.keys():
+        stmt = stmt.where(Model.molecular_weight >= query["molecular_weight"][0])
+        stmt = stmt.where(Model.molecular_weight <= query["molecular_weight"][1])
+        
+    if "charge" in query.keys():
+        stmt = stmt.where(Model.charge >= query["charge"][0])
+        stmt = stmt.where(Model.charge <= query["charge"][1])
+    
+    if "activities" in query.keys():
+        for act in query["activities"]:
+            stmt = stmt.where(Model.activities.any(act))
+    return stmt
+
 if __name__ == "__main__":
     db = Database()
-    db.create_tables()
-    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/activity.csv", Activity, chunk=100)
-    print("activity")
-    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_activity.csv", PeptideHasActivity, chunk=100)
-    print("peptide_has_activity")
-
     """
-    db.insert_data("../tables/peptide.csv", Peptide, chunk=5000)
+    db.create_tables()
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide.csv", Peptide, chunk=5000)
     print("peptide")
-    db.insert_data("../tables/activity.csv", Activity, chunk=100)
-    print("activity")
-    db.insert_data("../tables/peptide_has_activity.csv", PeptideHasActivity, chunk=100)
-    print("peptide_has_activity")
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/source.csv", Source, chunk=100)
     print("source")
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_source.csv", PeptideHasSource, chunk=100)
     print("peptide_has_source")
-    db.insert_data("../tables/gene_ontology.csv", GeneOntology, chunk=5000)
-    print("gene_ontology")
-    db.insert_data("../tables/peptide_has_go.csv", PeptideHasGO, chunk=5000)
-    print("peptide_has_go")
-    
-    """
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/activity.csv", Activity, chunk=100)
+    print("activity")
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_activity.csv", PeptideHasActivity, chunk=100)
+    print("peptide_has_activity")
     db.create_mv(MVPeptidesByDatabase)
     db.create_mv(MVPeptidesByActivity)
     db.create_mv(MVGeneralInformation)
@@ -313,3 +360,6 @@ if __name__ == "__main__":
     db.create_mv(MVLabeledPeptidesGeneralCounts)
     db.create_mv(MVSequencesByActivity)
     db.create_mv(MVSequencesBySource)
+    db.create_mv(MVPeptideProfile)
+    db.create_mv(MVPeptideParams)
+    """

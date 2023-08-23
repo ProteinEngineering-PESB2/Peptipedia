@@ -15,7 +15,7 @@ export default function Data({activity_id, count}:Props) {
         <Box sx={{ padding: 2 , cursor: "pointer"}}>
           <SequencesDataTable count = {count} title={"Sequences"}
           redirect_api = {config.activity.redirect}
-          table_api={table_api}></SequencesDataTable>
+          table_api={table_api}/>
         </Box>
       </>
   );

@@ -1,7 +1,8 @@
 """Profile routes"""
-from flask import Blueprint, request
+from flask import Blueprint
 from peptipedia.modules.database_models.database import Database
 from sqlalchemy.orm import Session
+from peptipedia.modules.utils import parse_response
 db = Database()
 session = Session()
 profile_blueprint = Blueprint("profile_blueprint", __name__)
@@ -11,4 +12,4 @@ profile_blueprint = Blueprint("profile_blueprint", __name__)
 def get_peptide(idpeptide):
     """Gets all go terms from a peptide"""
     result = db.get_peptide(idpeptide)
-    return {"result": result}
+    return parse_response(result)

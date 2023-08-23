@@ -5,7 +5,7 @@ const useGetTable = (api:string) =>{
     const getTable = async () => {
         try {
           const response = await axios.get(api);
-          setTable(response.data.table);
+          setTable(response.data.results.table);
         } catch (error) {
           console.log(error);
         }

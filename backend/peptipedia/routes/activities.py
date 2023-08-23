@@ -2,6 +2,7 @@
 from flask import Blueprint, request
 from peptipedia.modules.database_models.database import Database
 from sqlalchemy.orm import Session
+from peptipedia.modules.utils import parse_response
 db = Database()
 session = Session()
 activities_blueprint = Blueprint("activities_blueprint", __name__)
@@ -11,7 +12,7 @@ def get_count_activities():
     """Gets count of peptides by activity"""
     try:
         res = db.get_count_activities()
-        return res
+        return parse_response(res)
     except Exception as e:
         print(e)
         session.rollback()
@@ -21,7 +22,7 @@ def get_activity(id_activity):
     """Gets activity information"""
     try:
         res = db.get_activity(id_activity)
-        return res
+        return parse_response(res)
     except Exception as e:
         print(e)
         session.rollback()
@@ -32,7 +33,7 @@ def get_sequences_by_activity(id_activity):
     try:
         post_data = request.json
         res = db.get_sequences_by_activity(id_activity, post_data)
-        return res
+        return parse_response(res)
     except Exception as e:
         print(e)
         session.rollback()
@@ -42,7 +43,7 @@ def get_tree():
     """Gets tree data"""
     try:
         res = db.get_tree()
-        return res
+        return parse_response(res)
     except Exception as e:
         print(e)
         session.rollback()

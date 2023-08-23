@@ -1,19 +1,18 @@
 """Home routes"""
 from flask import Blueprint
-import peptipedia.config as config
 from peptipedia.modules.database_models.database import Database
 from sqlalchemy.orm import Session
+from peptipedia.modules.utils import parse_response
+
 db = Database()
 session = Session()
 home_blueprint = Blueprint("home_blueprint", __name__)
 
-@home_blueprint.route("/get_general_counts/", methods=["GET"])
-def get_general_counts():
-    """Get count of peptides, activities, databases and last update"""
+@home_blueprint.route("/get_home_statistics/", methods=["GET"])
+def api_get_home_statistics():
     try:
-        res = db.get_general_counts()
-        return res
+        res = db.get_home_statistics()
+        return parse_response(res)
     except Exception as e:
         print(e)
         session.rollback()
-

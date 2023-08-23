@@ -17,9 +17,9 @@ export default function Data({peptide_id}: Props) {
     const getSpecificPeptideData = async () => {
       try {
         const response = await axios.get(config.peptide.api + peptide_id);
-        setSequence(response.data.result.peptide.sequence)
-        setTable(response.data.result.peptide.physicochemical_properties.table)
-        setActivities(response.data.result.peptide.activities)
+        setSequence(response.data.results.peptide.sequence)
+        setTable(response.data.results.peptide.physicochemical_properties.table)
+        setActivities(response.data.results.peptide.activities)
       } catch (error) {
         console.log(error);
       }

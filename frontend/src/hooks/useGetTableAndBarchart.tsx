@@ -7,8 +7,8 @@ const useGetTableAndBarchart = (api:string) =>{
   const getData = async () => {
     try {
       const response = await axios.get(api);
-      setTable(response.data.table);
-      setPlot(response.data.plot);
+      setTable(response.data.results.table);
+      setPlot(response.data.results.plot);
     } catch (error) {
       console.log(error);
     }

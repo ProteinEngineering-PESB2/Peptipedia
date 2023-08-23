@@ -21,6 +21,7 @@ class Folders:
     def makeblastdb(self):
         os.system(f"""makeblastdb -in {config.blastdb_folder}/peptipedia.fasta -dbtype prot""")
         print("creado")
+        
 def parse_response(res):
     """Parse response and return results"""
     if isinstance(res, (list, dict)):

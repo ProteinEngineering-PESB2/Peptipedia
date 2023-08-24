@@ -28,6 +28,7 @@
     "react-d3-tree": "^3.3.4",
     "react-dom": "^18.0.0",
     "react-hot-toast": "^2.2.0",
+    "react-json-to-csv": "^1.2.0",
     "react-jsx-highcharts": "^5.0.0",
     "react-markdown": "^8.0.3",
     "react-plotly.js": "^2.5.1",

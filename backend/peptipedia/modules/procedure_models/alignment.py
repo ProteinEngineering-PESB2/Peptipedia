@@ -1,84 +1,76 @@
 """Blast alignment module"""
 from re import split
 import pandas as pd
-from peptipedia.modules.utils import ConfigTool
+import peptipedia.config as config
 from Bio.Blast.Applications import NcbiblastpCommandline
-
-class BlastAlignment(ConfigTool):
+import json
+class BlastAlignment:
     """Alignment class, it performs a blast+ function for to align against Peptipedia Database"""
 
-    def __init__(self, data, is_file, config):
-        super().__init__("blast", data, config, is_file)
-        alignment_folder = config["folders"]["alignments_folder"]
-        alignment_file = self.temp_file_path.replace(".fasta", ".align").split("/")[-1]
-        self.output_path = f"{alignment_folder}/{alignment_file}"
+    def __init__(self, data):
+        alignment_folder = config.alignments_folder
+        alignment_file = "file.fasta"
+        self.temp_file_path = f"{alignment_folder}/{alignment_file}"
+        self.output_path = self.temp_file_path.replace(".fasta", ".out")
+        self.fasta_text_to_file(data["fasta_text"])
         self.ids = []
 
-    def execute_blastp(self):
+    def fasta_text_to_file(self, fasta):
+        with open(self.temp_file_path, mode="w", encoding="utf-8") as file:
+            file.write(fasta)
+
+    def __execute_blastp(self):
         """Execute blastp with an e-value 0.5, against Peptipedia database"""
-        cline = NcbiblastpCommandline(db="peptipedia.fasta", out=self.output_path, query= self.temp_file_path)
+        cline = NcbiblastpCommandline(db="files/blastdb/peptipedia.fasta", out=self.output_path, query= self.temp_file_path, outfmt="15")
         cline()
-        return self.output_path
 
-    def parse_response(self):
-        """Transforms blast+ output to data table"""
+    def __parse_response(self):
         with open(self.output_path, "r", encoding="utf-8") as output_file:
-            res = output_file.read()
-        # Specific zones in text.
-        inicio = res.find("Value") + 7
-        text = res[inicio:]
-        fin = text.find("\n\n")
-        text = text[:fin]
-        # Splits text by lines.
-        splitted = [row for row in text.splitlines() if row != ""]
-        if len(splitted) <= 1:
-            return {"status": "error", "description": "No significant results"}
-        # Store alignment values in a list.
-        data = []
-        for row in splitted:
-            row_splitted = [a for a in split(r"\s+", row) if a != ""]
-            data.append(
-                [row_splitted[0], float(row_splitted[-2]), float(row_splitted[-1])]
-            )
-        new_text = [
-            row.strip() for row in res[inicio + fin :].split("\n>") if row.strip() != ""
-        ]
-        # Store values in a dataframe
-        blast_dataframe = pd.DataFrame(data, columns=["id", "score", "e_value"])
-        for index, row in enumerate(new_text):
-            details_text = row[row.find("Identities =") : row.find("\n\nQuery")]
-            row_details = []
-            for detail in details_text.split(","):
-                percentaje = detail[detail.find("(") + 1 : -1]
-                row_details.append(float(percentaje.replace("%", "")) / 100)
-            blast_dataframe.loc[index, "identity"] = row_details[0]
-            blast_dataframe.loc[index, "similarity"] = row_details[1]
-            blast_dataframe.loc[index, "gaps"] = row_details[2]
-        self.ids = blast_dataframe.id.tolist()
-        return {
-            "status": "success",
-            "data": blast_dataframe.values.tolist(),
-            "columns": blast_dataframe.columns.tolist(),
-        }
+            json_data = json.loads(output_file.read())
+        try:
+            id_query = json_data["BlastOutput2"][0]["report"]["results"]["search"]["query_title"]
+            hits = json_data["BlastOutput2"][0]["report"]["results"]["search"]["hits"]
+            data = []
+            for hit in hits:
+                for hsp in hit["hsps"]:
+                    id_sbjct = hit["description"][0]["title"]
+                    align_length = hsp["align_len"]
+                    identity = hsp["identity"]
+                    gaps = hsp["gaps"]
+                    similarity = hsp["positive"]
+                    row = {"id": id_sbjct}
+                    row["bit_score"] = hsp["bit_score"]
+                    row["e_value"] = hsp["evalue"]
+                    row["length"] = align_length
+                    row["identity"] = f"""{identity}/{align_length} ({
+                        round(identity*100/align_length, 2)} %)"""
+                    row["gaps"] = f"""{gaps}/{align_length} ({
+                        round(gaps*100/align_length, 2)} %)"""
+                    row["similarity"] = f"""{similarity}/{align_length} ({
+                        round(similarity*100/align_length, 2)} %)"""
+                    row["alignment"] = [
+                        {
+                            "id": 1,
+                            "label": id_sbjct,
+                            "sequence": hsp["qseq"],
+                            "startIndex": hsp["hit_from"]
+                            },
+                        {
+                            "id": 2,
+                            "label": id_query,
+                            "sequence": hsp["hseq"],
+                            "startIndex": hsp["query_from"]
+                            }
+                    ]
+                    data.append(row)
+            return data
+        except KeyError:
+            return None
 
-    def get_alignments(self):
-        """Function parses all the alignments and returns as json"""
-        with open(self.output_path, "r", encoding="utf-8") as file:
-            res = file.read()
-        id_query = res.split("Query= ")[1].split(" ")[0]
-        splitted = res.split(">")
-        response = {}
-        for id_label, j in zip(self.ids, splitted[1:]):
-            inicio = j.find("Query")
-            row = j[inicio:]
-            query = "".join(
-                [split(r"\s+", q)[2] for q in row.split("\n") if "Query" in q]
-            )
-            sbjct = "".join(
-                [split(r"\s+", sb)[2] for sb in row.split("\n") if "Sbjct" in sb]
-            )
-            response[id_label] = [
-                {"id": 1, "label": id_label, "sequence": sbjct},
-                {"id": 2, "label": id_query, "sequence": query},
-            ]
-        return response
+    def run_process(self):
+        """Runs blastp full process"""
+        self.__execute_blastp()
+        res = self.__parse_response()
+        if res:
+            return {"data": res}
+        return {"error": "No significant results"}

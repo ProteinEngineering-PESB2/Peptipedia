@@ -63,11 +63,11 @@ class Database:
     def create_fasta_from_peptides(self):
         """Create fasta in files folder"""
         #Deja los péptidos en fasta en la carpeta 
-        stmt = select(Peptide.id_peptide, Peptide.sequence).where(Peptide.is_canon == True).limit(1000)
+        stmt = select(Peptide.id_peptide, Peptide.sequence).where(Peptide.is_canon == True).limit(20000)
         peptides = self.get_table_query(stmt)
         fasta_text = ""
         for _,row in peptides.iterrows():
-            fasta_text += f">{row.id_peptide}  \n{row.sequence}\n"
+            fasta_text += f">{row.id_peptide}\n{row.sequence}\n"
 
         with open(config.blastdb_folder + "/peptipedia.fasta", mode="w", encoding="utf-8") as file:
             file.write(fasta_text)

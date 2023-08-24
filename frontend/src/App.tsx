@@ -11,6 +11,7 @@ import Activity from "./pages/activity";
 import Peptide from "./pages/peptide";
 import Source from "./pages/source";
 import AdvancedSearch from "./pages/search";
+import Blast from "./pages/blast";
 
 import { Routes, Route } from "react-router-loading";
 import LoadingComponent from "./components/layout/loading";
@@ -35,6 +36,7 @@ export default function App() {
               <Route path={config.peptide.route} element={<Peptide />} loading />
               <Route path={config.source.route} element={<Source />} loading />
               <Route path={config.search.route} element={<AdvancedSearch />} loading />
+              <Route path={config.blast.route} element={<Blast />} loading />
             </Routes>
           </BrowserRouter>
           <Toaster />

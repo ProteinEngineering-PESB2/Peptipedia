@@ -1,7 +1,7 @@
 downloads_folder = "./files/downloads"
 blastdb_folder = "./files/blastdb"
 static_folder = "./files/static_folder"
-
+alignments_folder = "./files/alignments"
 
 min_sequences = 1
 max_sequences = 1

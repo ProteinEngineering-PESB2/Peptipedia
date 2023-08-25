@@ -6,7 +6,7 @@ import PeptideSequence from "./sequence"
 import DataTable from "../common/datatable";
 import Box from "@mui/material/Box";
 import Activities from "./activities";
-
+import Structure from "./structure";
 interface Props{
     peptide_id: string;
 }
@@ -32,13 +32,13 @@ export default function Data({peptide_id}: Props) {
     return (
       <>
         <Box sx={{ padding: 2 }}>
-          <PeptideSequence sequence = {sequence}></PeptideSequence>
+          <PeptideSequence sequence = {sequence}/>
         </Box>
         <Box sx={{ padding: 2 }}>
-          <Activities activities={ activities }></Activities>
+          <Activities activities={ activities }/>
         </Box>
         <Box sx={{padding: 2}}>
-          <DataTable title={"Physicochemical Properties"} table={table}></DataTable>
+          <DataTable title={"Physicochemical Properties"} table={table}/>
         </Box>
       </>
     )

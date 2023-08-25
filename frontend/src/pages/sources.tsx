@@ -15,10 +15,10 @@ export default function Sources() {
   <DashboardLayout>
     <>
     <Box sx={{ padding: 2 }}>
-      <Front obj={obj}></Front>
+      <Front obj={obj}/>
     </Box>
     <Box sx={{ padding: 2 }}>
-      <Data></Data>
+      <Data/>
     </Box>
     </>
   </DashboardLayout>

@@ -38,10 +38,10 @@ export default function Source() {
         <DashboardLayout>
         <>
             <Box sx={{ padding: 2 }}>
-                <Front obj={obj}></Front>
+                <Front obj={obj}/>
             </Box>
             <Box sx={{ padding: 2 }}>
-                <Data source_id={source_id} count={count}></Data>
+                <Data source_id={source_id} count={count}/>
             </Box>
         </>
         </DashboardLayout>

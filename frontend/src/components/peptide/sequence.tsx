@@ -3,8 +3,7 @@ import {
     FilledInput,
     InputAdornment,
     Tooltip,
-    IconButton,
-    Typography
+    IconButton
   } from "@mui/material";
   import { CopyToClipboard } from "react-copy-to-clipboard";
   import ContentCopyIcon from "@mui/icons-material/ContentCopy";

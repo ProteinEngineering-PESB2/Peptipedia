@@ -1,21 +1,25 @@
-import { Grid, Paper, Box, Button } from "@mui/material";
+import { Grid, Paper, Box, Button, Divider } from "@mui/material";
 import SliderForm from "./slider_form";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import SelectOptions from "./select_options";
 import TextInput from "./text_input"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import SequencesDataTable from "./sequences_datatable";
-
+import config from "../../config.json"
 export default function Form(){
   const [query, setQuery] = useState({})
-  const [results_display, setResultsDisplay] = useState(<></>)
   const [activities, setActivities] = useState({"name": []})
   const [physicochemical, setPhysicochemical] = useState({})
   const [count, setCount] = useState(undefined)
   const [showResults, setShowResults] = useState(false)
+  const [show_physicochemical_params, setShowPhysicochemicalParams] = useState(false)
+
+
   const getParams = async () => {
     try {
-      const response = await axios.get("/api/get_peptide_params/");
+      const response = await axios.get(config.search.params_api);
       setActivities(response.data.results.activities)
       setPhysicochemical(response.data.results.physicochemical_properties)
     } catch (error) {
@@ -25,7 +29,7 @@ export default function Form(){
 
   const search = async () =>{
     try{
-      const response = await axios.post("/api/get_count_search/", query)
+      const response = await axios.post(config.search.count_api, query)
       setShowResults(true)
       setCount(response.data.results.count)
       
@@ -36,9 +40,6 @@ export default function Form(){
   useEffect(() => {
     getParams();
   }, []);
-  
-  useEffect(()=>{
-  }, [count])
 
   return (
     <>
@@ -52,14 +53,23 @@ export default function Form(){
               options = {activities}
               setQuery = {setQuery}
               query = {query}/>
-              {Object.keys(physicochemical).map((x)=>(
+            <Divider sx={{m:3}}>
+              <Button onClick={()=>setShowPhysicochemicalParams(!show_physicochemical_params)}>
+                {show_physicochemical_params
+                ? <RemoveCircleOutlineIcon/>
+                : <AddCircleOutlineIcon/> }
+              </Button>
+            </Divider>
+            {(show_physicochemical_params) && (
+              Object.keys(physicochemical).map((x)=>(
                 <SliderForm label = {x}
                 param_name = {x}
                 params = {physicochemical[x]}
                 query = {query}
                 setQuery = {setQuery} />
                 )
-              )}
+              )
+            )}
           </Paper>
         </Box>
       </Grid>
@@ -68,8 +78,8 @@ export default function Form(){
       <SequencesDataTable title ="Results"
         count = {count}
         query = {query}
-        table_api="/api/get_sequences_by_search/"
-        redirect_api="/peptide/"/>)
+        table_api={config.search.search_api}
+        redirect_api={config.search.redirect}/>)
       }
     </>
   )

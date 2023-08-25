@@ -19,10 +19,10 @@ export default function Peptide() {
     <DashboardLayout>
     <>
       <Box sx={{ padding: 2 }}>
-        <Front obj={obj}></Front>
+        <Front obj={obj}/>
       </Box>
       <Box sx={{ padding: 2 }}>
-        <Data peptide_id = {peptide_id}></Data>
+        <Data peptide_id = {peptide_id}/>
       </Box>
     </>
     </DashboardLayout>

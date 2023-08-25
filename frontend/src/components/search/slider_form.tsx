@@ -13,6 +13,7 @@ interface Props{
   param_name: string;
   params: Params;
   setQuery: React.Dispatch<React.SetStateAction<{}>>;
+  query: {}
 }
 
 export default function SliderForm({label, params, param_name, setQuery, query}: Props){

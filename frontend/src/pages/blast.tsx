@@ -4,18 +4,18 @@ import { useHandleSection } from "../hooks/useHandleSection";
 import useLoadingComponent from "../hooks/useLoadingComponent";
 import Box from "@mui/material/Box";
 import Front from "../components/layout/front"
-
+import config from "../config.json"
 export default function Blast() {
-    const obj = {"title": "Blastp", "description": "Execute blastp against peptipedia database"};
+    const obj = config.blast
     useHandleSection({ section: "blast" });
     useLoadingComponent();
     return (
         <DashboardLayout>
         <>
             <Box sx={{ padding: 2 }}>
-                <Front obj={obj}></Front>
+                <Front obj={obj}/>
             </Box>
-            <Form></Form>
+            <Form/>
         </>
         </DashboardLayout>
     )

@@ -153,6 +153,22 @@
     "redirect": "/source/"
   },
 
+  "search": {
+    "title": "Search",
+    "description": "Adjust the params to filter and search against Peptipedia Database",
+    "route": "/search",
+    "params_api": "/api/get_peptide_params/",
+    "count_api": "/api/get_count_search/",
+    "search_api": "/api/get_sequences_by_search/",
+    "redirect": "/peptide/"
+  },
+
+  "blast": {
+    "title": "Alignment",
+    "description": "Execute Blastp against canonical peptides from Peptipedia database",
+    "route": "/blastp"
+  },
+
   "activity": {
     "route": "/activity/:activity_id",
     "api": "/api/get_activity/",
@@ -171,18 +187,5 @@
     "api": "/api/get_source/",
     "sequences_api": "/api/get_sequences_by_source/",
     "redirect": "/peptide/"
-  },
-
-  "search": {
-    "title": "Search",
-    "description": "Convert your input to fasta format.",
-    "route": "/search"
-  },
-
-  "blast": {
-    "title": "Blastp",
-    "description": "Convert your input to fasta format.",
-    "route": "/blastp",
-    "api": "/api/activities/"
   }
 }

@@ -15,13 +15,13 @@ export default function Activities() {
     <DashboardLayout>
       <>
         <Box sx={{ padding: 2 }}>
-          <Front obj={obj}></Front>
+          <Front obj={obj}/>
         </Box>
         <Box sx={{ padding: 2}}>
-          <CustomizedTreeView></CustomizedTreeView>
+          <CustomizedTreeView/>
         </Box>
         <Box sx={{ padding: 2 }}>
-          <Data></Data>
+          <Data/>
         </Box>
       </>
     </DashboardLayout>

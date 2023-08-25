@@ -37,10 +37,10 @@ export default function Activity() {
     <DashboardLayout>
       <>
         <Box sx={{ padding: 2 }}>
-          <Front obj={obj}></Front>
+          <Front obj={obj}/>
         </Box>
         <Box sx={{ padding: 2 }}>
-          <Data activity_id={activity_id} count = {count}></Data>
+          <Data activity_id={activity_id} count = {count}/>
         </Box>
       </>
     </DashboardLayout>

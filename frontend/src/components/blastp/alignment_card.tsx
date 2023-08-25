@@ -28,10 +28,13 @@ function AlignmentSequenceCard({
     divId: `psv-${index}`,
     sequenceColor: "blosum62",
   });
+  const clickFunction = () =>{
+    window.open("/peptide/" + id)
+  }
   return (
     <>
     <Card variant="outlined" sx={{margin:2}}>
-      <Box m={1} sx={{p:2}}>
+      <Box m={1} sx={{p:2, cursor: "pointer"}} onClick={clickFunction} >
         <Grid container>
           <Grid xs={12} sm={12} md = {12}>
             <strong>Id: </strong> {id}

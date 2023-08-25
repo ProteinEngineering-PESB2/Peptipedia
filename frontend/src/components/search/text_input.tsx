@@ -2,6 +2,7 @@ import { FormControl, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 interface Props{
   setQuery: React.Dispatch<React.SetStateAction<{}>>;
+  query: {};
 }
 export default function TextInput({setQuery, query}:Props){
     const [value, setValue] = useState("")

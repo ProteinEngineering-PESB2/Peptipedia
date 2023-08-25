@@ -12,7 +12,8 @@ export default function Data({source_id, count}:Props) {
   return (
       <>
         <Box sx={{ padding: 2 , cursor: "pointer"}}>
-          <SequencesDataTable title={"Sequences"} count={count} table_api = {table_api} redirect_api={config.source.redirect} ></SequencesDataTable>
+          <SequencesDataTable title={"Sequences"} count={count}
+          table_api = {table_api} redirect_api={config.source.redirect}/>
         </Box>
       </>
   );

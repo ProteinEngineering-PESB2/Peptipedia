@@ -7,6 +7,7 @@ interface Props {
   count?: number;
   redirect_api?: string;
   table_api: string;
+  query: {}
 }
 
 export default function SequencesDataTable({ title, table_api, query,

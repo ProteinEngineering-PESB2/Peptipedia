@@ -9,10 +9,11 @@ export default function Data() {
   return (
     <>
       <Box sx={{ padding: 2 }}>
-        <BarChart plot={plot} title={"Sources"} ></BarChart>
+        <BarChart plot={plot} title={"Sources"}/>
       </Box>
       <Box sx={{ padding: 2 , cursor: "pointer"}}>
-        <DataTable table={table} title={"Sources"} redirect_api = {config.sources.redirect} ></DataTable>
+        <DataTable table={table} title={"Sources"}
+        redirect_api = {config.sources.redirect}/>
       </Box>
     </>
   )

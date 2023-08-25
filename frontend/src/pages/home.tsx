@@ -18,23 +18,21 @@ export default function Home() {
     <DashboardLayout>
       <>
         <Box sx={{ padding: 2 }}>
-          <Front obj = {obj}></Front>
+          <Front obj = {obj}/>
         </Box>
-        
         <Box sx={{ padding: 2 }}>
-          <Data></Data>
+          <Data/>
         </Box>
-
         <Box sx={{ padding: 3, background: "#f5f5f5"}}>
-          <Links></Links>
+          <Links/>
         </Box>
 
         <Box sx={{ padding: 3 }}>
-          <Cite></Cite>
+          <Cite/>
         </Box>
 
         <Box sx={{ padding: 3, background: "#f5f5f5"}}>
-          <Team></Team>
+          <Team/>
         </Box>
       </>
     </DashboardLayout>

@@ -8,12 +8,13 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Data from "../components/activity/data"
+import Download from "../components/common/download";
 
 export default function Activity() {
   const [obj, setObj] = useState({});
   const [count, setCount] = useState(0)
   const { activity_id } = useParams();
-
+  const [name, setName] = useState("")
   useHandleSection({ section: "activity" });
   useLoadingComponent();
 
@@ -25,6 +26,7 @@ export default function Activity() {
         "description": response.data.results.description
       })
       setCount(response.data.results.count)
+      setName(response.data.results.name)
     } catch (error) {
       console.log(error);
     }
@@ -41,6 +43,9 @@ export default function Activity() {
         </Box>
         <Box sx={{ padding: 2 }}>
           <Data activity_id={activity_id} count = {count}/>
+        </Box>
+        <Box sx={{ paddingRight: 4 }}>
+          <Download name={name}/>
         </Box>
       </>
     </DashboardLayout>

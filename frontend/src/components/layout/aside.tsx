@@ -3,7 +3,7 @@ import { drawerWidth } from "./drawerWith";
 import List from "@mui/material/List";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import config from "../../config.json";
@@ -38,17 +38,15 @@ function Aside({ open }: Props) {
       </List>
       <List component="div" disablePadding>
         {
-          config.sidebar.navigate.map((a)=>{
-            return (
-              <ListItemButton sx={{ pl: 4 }} onClick={() => navigate(config[a].route)}>
-                <ListItemIcon>
-                  <KeyboardDoubleArrowRightIcon sx={{ color: "#000" }} />
-                </ListItemIcon>
-                <ListItemText primary={config[a].title} />
-              </ListItemButton>
-            )
-            }
+        config.sidebar.navigate.map((a)=>(
+          <ListItemButton onClick={() => navigate(config[a].route)}>
+            <ListItemIcon>
+              <ArrowRightIcon sx={{ color: "#000" }} />
+            </ListItemIcon>
+            <ListItemText primary={config[a].title} />
+          </ListItemButton>
           )
+        )
         }
       </List>
     </Drawer>

@@ -5,16 +5,12 @@ import { useParams } from "react-router-dom";
 import DashboardLayout from "../components/common/dashboard_layout";
 import Front from "../components/peptide/front";
 import Data from "../components/peptide/data";
-
 export default function Peptide() {
   const { peptide_id } = useParams();
   const obj = {"title": "Peptide: " + peptide_id};
-  
-
   useHandleSection({ section: "peptide" });
   useLoadingComponent();
-
-
+  
   return (
     <DashboardLayout>
     <>

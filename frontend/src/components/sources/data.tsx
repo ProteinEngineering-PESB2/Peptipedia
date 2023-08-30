@@ -1,16 +1,12 @@
 import config from "../../config.json";
 import DataTable from "../common/datatable";
 import Box from "@mui/material/Box";
-import BarChart from "../plots/bar";
-import useGetTableAndBarchart from "../../hooks/useGetTableAndBarchart";
+import useGetTable from "../../hooks/useGetTable";
 
 export default function Data() {
-  const {table, plot } = useGetTableAndBarchart(config.sources.api)
+  const {table } = useGetTable(config.sources.api)
   return (
     <>
-      <Box sx={{ padding: 2 }}>
-        <BarChart plot={plot} title={"Sources"}/>
-      </Box>
       <Box sx={{ padding: 2 , cursor: "pointer"}}>
         <DataTable table={table} title={"Sources"}
         redirect_api = {config.sources.redirect}/>

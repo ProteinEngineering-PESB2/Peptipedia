@@ -6,8 +6,9 @@ import Team from "../components/home/team";
 import Links from "../components/home/links"
 import Cite from "../components/home/cite"
 import Data from "../components/home/data"
-import Front from "../components/layout/front"
+import Front from "../components/home/front"
 import config from "../config.json"
+import Diagram from "../components/home/diagram";
 
 export default function Home() {
   const obj = config.home
@@ -18,12 +19,15 @@ export default function Home() {
     <DashboardLayout>
       <>
         <Box sx={{ padding: 2 }}>
-          <Front obj = {obj}/>
+          <Front title = {obj.title} description = {obj.description}/>
+        </Box>
+        <Box sx={{ padding: 3}}>
+          <Diagram/>
         </Box>
         <Box sx={{ padding: 2 }}>
           <Data/>
         </Box>
-        <Box sx={{ padding: 3, background: "#f5f5f5"}}>
+        <Box sx={{ padding: 3}}>
           <Links/>
         </Box>
 
@@ -31,7 +35,7 @@ export default function Home() {
           <Cite/>
         </Box>
 
-        <Box sx={{ padding: 3, background: "#f5f5f5"}}>
+        <Box sx={{ padding: 3}}>
           <Team/>
         </Box>
       </>

@@ -6,6 +6,7 @@ import { DrawerHeader } from "../layout/drawer_header";
 import Entities from "../layout/entities"
 import Aside from "../layout/aside";
 
+import Background from "../../assets/layout/fondo.jpg";
 interface Props {
   children: ReactElement;
 }
@@ -27,6 +28,7 @@ function DashboardLayout({ children }: Props) {
         backgroundPosition: "center",
         backgroundSize: "cover",
       }}
+      style={{ backgroundImage: `url(${Background})` }}
     >
       <CssBaseline />
 

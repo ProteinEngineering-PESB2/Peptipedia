@@ -1,4 +1,4 @@
-import Plot from "react-plotly.js"
+import Plot from "react-plotly.js";
 
 interface IData {
   x: Array<any>;
@@ -9,26 +9,26 @@ interface Props {
   title: string;
 }
 
-export default function BarChart({ plot, title }: Props) {
+export default function PieChart({ plot, title }: Props) {
   return (
     <Plot
       data={[
         {
-          x: plot.x,
-          y: plot.y,
-          type: "bar",
+          labels: plot.x,
+          values: plot.y,
+          type: "pie",
           marker: {
             color: "#2962ff",
           },
         },
       ]}
       layout={{
-        height: 700,
+        height: 450,
         title: title,
         font: {
           size: 15,
         },
-        width: 1000
+        width: 500
       }}
       config={{
         displayModeBar: true,

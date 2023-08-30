@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { SiResearchgate, SiLinkedin } from 'react-icons/si';
 
 interface Props {
   name: string;
@@ -52,12 +53,12 @@ export default function CardProfile({
           >
             {linkedin && (
               <a href={linkedin} target="_blank" rel="noreferrer">
-                <LinkedInIcon sx={{ color: "#000" }} />
+                <SiLinkedin />
               </a>
             )}
             {github && (
               <a href={github} target="_blank" rel="noreferrer">
-                <GitHubIcon sx={{ color: "#000" }} />
+                <SiResearchgate/>
               </a>
             )}
           </Box>

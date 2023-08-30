@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 export default function SummaryCard({info}) {
     return (
       <>
-      <Card variant="outlined" sx={{ boxShadow: 3, p: 1 }}>
+      <Card variant="outlined" sx={{ boxShadow: 3, p: 1, m: 1}}>
         <CardContent>
             <Box
                 height="100%"

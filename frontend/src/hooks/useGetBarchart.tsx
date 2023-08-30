@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-const useGetTableAndBarchart = (api:string) =>{
-  const [table, setTable] = useState({"data": [], "columns": []})
+const useGetBarchart = (api:string) =>{
   const [plot, setPlot] = useState({ "x": [], "y": [] })
   const getData = async () => {
     try {
       const response = await axios.get(api);
-      setTable(response.data.results.table);
       setPlot(response.data.results.plot);
     } catch (error) {
       console.log(error);
@@ -17,8 +15,8 @@ const useGetTableAndBarchart = (api:string) =>{
     getData();
   }, []);
   return {
-    table, plot
+    plot
   }
 }
 
-export default useGetTableAndBarchart;
+export default useGetBarchart;

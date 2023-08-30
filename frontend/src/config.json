@@ -13,57 +13,64 @@
 
   "home": {
     "title": "Peptipedia",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium ornare tellus eu aliquam. Curabitur semper, ligula vel elementum elementum, purus felis sodales nisi, eu rutrum quam nisl scelerisque enim. Quisque iaculis, risus non volutpat dictum, arcu nunc viverra lorem, at elementum turpis metus id erat. Aenean in sem eu quam mollis aliquam. Vestibulum eu rhoncus massa, at imperdiet nisi. Proin varius elit sed malesuada feugiat. Duis sed ullamcorper mauris. Sed faucibus dui ac aliquet ultricies. Quisque in justo a ex faucibus mollis eu vel nulla. Curabitur a pulvinar turpis. Nulla facilisi. Maecenas volutpat blandit lorem a auctor. Duis ut feugiat mi, eu convallis urna. Sed tincidunt nulla nec vulputate condimentum. Cras ligula urna, mattis eu blandit quis, convallis et velit. Aenean et porta purus, non tincidunt leo. ",
+    "description": "Peptipedia, a user-friendly web database to support peptide research using bioinformatics and machine learning strategies.",
     "route": "/",
     "team": [
-      {
-        "name": "David Medina",
-        "image": "/src/assets/team/david.jpeg",
-        "rol": "Researcher",
-        "github": "https://github.com/GabrielCabas",
-        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4"
-      },
       {
         "name": "Gabriel Cabas",
         "image": "/src/assets/team/gabriel.jpeg",
         "rol": "Software developer",
-        "github": "https://github.com/GabrielCabas",
-        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
-      },
-      {
-        "name": "Alvaro Olivera",
-        "image": "/src/assets/team/aolivera.jpg",
-        "rol": "Researcher",
-        "github": "https://github.com/GabrielCabas",
-        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
-      },
-      {
-        "name": "Roberto Uribe",
-        "image": "/src/assets/team/roberto.jpg",
-        "rol": "Researcher",
-        "github": "https://github.com/GabrielCabas",
-        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
-      },
-      {
-        "name": "Marcelo Navarrete",
-        "image": "/src/assets/team/marcelo.jpg",
-        "rol": "Researcher",
-        "github": "https://github.com/GabrielCabas",
+        "github": "https://www.researchgate.net/profile/Gabriel-Cabas",
         "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
       },
       {
         "name": "Anamaria Sanchez",
         "image": "/src/assets/team/anita.jpg",
         "rol": "Researcher",
-        "github": "https://github.com/GabrielCabas",
-        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4"
+        "github": "https://www.researchgate.net/profile/Anamaria-Daza-Sanchez",
+        "linkedin": "https://www.linkedin.com/in/anamaria-daza-sanchez-597b3246/"
       },
       {
-        "name": "Lindybeth Gonzalez",
+        "name": "Lindybeth Sarmiento",
         "image": "/src/assets/team/lindybeth.jpg",
         "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/Lindybeth-Sarmiento-2",
+        "linkedin": "https://www.linkedin.com/in/lindybethsarmiento/"
+      },
+      {
+        "name": "Diego Alvarez",
+        "image": "/src/assets/team/diego.jpg",
+        "rol": "Researcher",
         "github": "https://github.com/GabrielCabas",
-        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4"
+        "linkedin": "https://www.linkedin.com/in/dialvarezs0/"
+      },
+      {
+        "name": "Roberto Uribe",
+        "image": "/src/assets/team/roberto_uribe.jpg",
+        "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/Roberto-Uribe-Paredes",
+        "linkedin": "https://www.linkedin.com/in/roberto-uribe-paredes-5868b84/" 
+      },
+      {
+        "name": "Alvaro Olivera",
+        "image": "/src/assets/team/alvaro.jpg",
+        "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/Alvaro-Olivera-Nappa",
+        "linkedin": "https://www.linkedin.com/in/alvaro-olivera-nappa-5bb5212/" 
+      },
+      {
+        "name": "Marcelo Navarrete",
+        "image": "/src/assets/team/marcelo.jpeg",
+        "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/Marcelo-Navarrete",
+        "linkedin": "https://www.linkedin.com/in/marcelo-navarrete-signorile-30179576/" 
+      },
+      {
+        "name": "David Medina",
+        "image": "/src/assets/team/david.jpeg",
+        "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/David-Medina-Ortiz",
+        "linkedin": "https://www.linkedin.com/in/david-medina-924308224/"
       }
     ],
     "links": {
@@ -71,24 +78,24 @@
       "data": [
         {
           "title": "Repository",
-          "description": "Check out the source code of Pepti Tools, as well as how its services are developed.",
+          "description": "Check out the source code of our research and applications.",
           "icon": "https://www.svgrepo.com/show/507321/github.svg",
           "button": "Visit Github",
-          "redirect": "https://github.com/ProteinEngineering-PESB2/pepti-tools"
+          "redirect": "https://github.com/ProteinEngineering-PESB2/"
         },
         {
           "title": "Organization",
-          "description": "Check out the PESB2 organization's github, as well as this and many more of their projects.",
+          "description": "Check out the CATG organization's webpage.",
           "icon": "https://cdn-icons-png.flaticon.com/512/993/993854.png",
-          "button": "Visit PESB2",
-          "redirect": "https://github.com/ProteinEngineering-PESB2"
+          "button": "Visit CATG.cl",
+          "redirect": "https://www.catg.cl"
         },
         {
-          "title": "Peptipedia",
-          "description": "Peptipedia is a peptide database developed by PESB2 and is the basis of our services.",
+          "title": "Peptitools",
+          "description": "Peptitools, a user-friendly web platform for peptide analysis.",
           "icon": "https://www.svgrepo.com/show/509077/database.svg",
-          "button": "Visit Peptipedia",
-          "redirect": "https://peptipedia.cl/"
+          "button": "Visit Peptitools",
+          "redirect": "https://peptipedia.cl/peptitools/"
         }
       ]
     },
@@ -96,14 +103,14 @@
       "title": "How to Cite",
       "data": [
         {
-          "cite": "Quiroz C, Saavedra YB, Armijo-Galdames B, Amado-Hinojosa J, Olivera-Nappa Á, Sanchez-Daza A, Medina-Ortiz D. Peptipedia: a user-friendly web application and a comprehensive database for peptide research supported by Machine Learning approach. Database (Oxford). 2021 Sep 3;2021:baab055. doi: 10.1093/database/baab055. PMID: 34478499; PMCID: PMC8415426.",
-          "link": "https://www.nature.com/subjects/bioinformatics"
+          "cite": "Quiroz C, Saavedra YB, Armijo-Galdames B, Amado-Hinojosa J, Olivera-Nappa Á, Sanchez-Daza A, Medina-Ortiz D. Peptipedia: a user-friendly web application and a comprehensive database for peptide research supported by Machine Learning approach. Database (Oxford). 2021 Sep 3;2021:baab055. doi: 10.1093/database/baab055. PMID: 34478499; PMCID: PMC8415426.\nCabas Mora G, Olivera-Nappa Á and Medina Ortiz D. Facilitating the study of peptides sequences using machine learning strategies and bioinformatics tools. [version 1; not peer reviewed]. F1000Research 2023, 12:967 (poster) (https://doi.org/10.7490/f1000research.1119568.1)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/34478499/"
         }
       ]
     },
     "entities": [
       {
-        "url": "/src/assets/entities/umag.jpeg",
+        "url": "/src/assets/entities/umag.png",
         "alt": "Universidad de Magallanes",
         "width": "100rem",
         "height": "100rem"
@@ -127,7 +134,7 @@
         "height": "100rem"
       },
       {
-        "url": "/src/assets/entities/cadi.jpeg",
+        "url": "/src/assets/entities/cadi.png",
         "alt": "Centro Asistencial Docente e Investigación",
         "width": "230rem",
         "height": "100rem"
@@ -138,16 +145,17 @@
   
   "activities": {
     "title": "Activities",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium ornare tellus eu aliquam. Curabitur semper, ligula vel elementum elementum, purus felis sodales nisi, eu rutrum quam nisl scelerisque enim. Quisque iaculis, risus non volutpat dictum, arcu nunc viverra lorem, at elementum turpis metus id erat. Aenean in sem eu quam mollis aliquam. Vestibulum eu rhoncus massa, at imperdiet nisi. Proin varius elit sed malesuada feugiat. Duis sed ullamcorper mauris. Sed faucibus dui ac aliquet ultricies. Quisque in justo a ex faucibus mollis eu vel nulla. Curabitur a pulvinar turpis. Nulla facilisi. Maecenas volutpat blandit lorem a auctor. Duis ut feugiat mi, eu convallis urna. Sed tincidunt nulla nec vulputate condimentum. Cras ligula urna, mattis eu blandit quis, convallis et velit. Aenean et porta purus, non tincidunt leo. ",
+    "description": "The database has a large number of peptides with reported biological activity. We have ordered the activities in a hierarchical way, arranging from general activities (such as therapeutic, immunological or signal peptides) to more specific ones (such as anti-coronavirus or anti-HIV). In addition, we have analyzed the promiscuity of peptides to belong between groups.",
     "route": "/activities",
-    "api": "/api/get_count_activities/",
+    "table_api": "/api/get_count_activities_table/",
+    "plot_api": "/api/get_count_activities_plot/",
     "redirect": "/activity/",
     "tree_api": "/api/get_tree/"
   },
 
   "sources": {
     "title": "Sources",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium ornare tellus eu aliquam. Curabitur semper, ligula vel elementum elementum, purus felis sodales nisi, eu rutrum quam nisl scelerisque enim. Quisque iaculis, risus non volutpat dictum, arcu nunc viverra lorem, at elementum turpis metus id erat. Aenean in sem eu quam mollis aliquam. Vestibulum eu rhoncus massa, at imperdiet nisi. Proin varius elit sed malesuada feugiat. Duis sed ullamcorper mauris. Sed faucibus dui ac aliquet ultricies. Quisque in justo a ex faucibus mollis eu vel nulla. Curabitur a pulvinar turpis. Nulla facilisi. Maecenas volutpat blandit lorem a auctor. Duis ut feugiat mi, eu convallis urna. Sed tincidunt nulla nec vulputate condimentum. Cras ligula urna, mattis eu blandit quis, convallis et velit. Aenean et porta purus, non tincidunt leo. ",
+    "description": "To populate the database, various sources of information about peptides were collected, such as repositories, smaller databases, as well as machine learning projects with known sequences. This large number of sources allows having a huge number of peptides reported in this application.",
     "route": "/sources",
     "api": "/api/get_count_sources/",
     "redirect": "/source/"

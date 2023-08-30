@@ -1,11 +1,22 @@
 
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Box, Typography, Container, Link, FilledInput} from "@mui/material";
-import LaunchIcon from "@mui/icons-material/Launch";
+import { Box, Typography, Container, Link, IconButton, FilledInput, InputAdornment, Tooltip} from "@mui/material";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import config from "../../config.json";
+import {useState} from "react";
 
 export default function Cite() {
+    const [copied, setCopied] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
+  
+    const handleCopied = () => {
+      setCopied(true);
+      setShowTooltip(true);
+      setTimeout(() => {
+        setShowTooltip(false);
+      }, 2000);
+    };
   return (
     <>
         <Container
@@ -22,20 +33,27 @@ export default function Cite() {
                 <FilledInput
                 id="filled-multiline-static-cite"
                 multiline
-                rows={3}
+                rows={7}
                 defaultValue={cite.cite}
                 fullWidth
                 endAdornment={
                     <CopyToClipboard text={cite.cite}>
-                    <Link href={cite.link} target="_blank">
-                        <LaunchIcon
-                        sx={{
-                            display: "flex",
-                            alignItems: "end",
-                            marginBottom: 6,
-                        }}
-                        />
-                    </Link>
+                    <InputAdornment
+                      position="end"
+                      sx={{ display: "flex", alignItems: "end", marginBottom: 8 }}
+                    >
+                      <Tooltip
+                        title={showTooltip ? "Copied" : ""}
+                        onClick={handleCopied}
+                        open={showTooltip}
+                      >
+                        <IconButton edge="end">
+                          <ContentCopyIcon
+                            color={copied ? "primary" : "inherit"}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </InputAdornment>
                     </CopyToClipboard>
                 }
                 />

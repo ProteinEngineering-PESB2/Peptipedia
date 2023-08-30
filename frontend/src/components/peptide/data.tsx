@@ -14,12 +14,14 @@ export default function Data({peptide_id}: Props) {
     const [sequence, setSequence] = useState("")
     const [table, setTable] = useState({"data": [], "columns": []})
     const [activities, setActivities] = useState([])
+    const [swissprot_id, setSwissprotId] = useState("")
     const getSpecificPeptideData = async () => {
       try {
         const response = await axios.get(config.peptide.api + peptide_id);
         setSequence(response.data.results.peptide.sequence)
         setTable(response.data.results.peptide.physicochemical_properties.table)
         setActivities(response.data.results.peptide.activities)
+        setSwissprotId(response.data.results.peptide.swissprot_id)
       } catch (error) {
         console.log(error);
       }
@@ -33,6 +35,9 @@ export default function Data({peptide_id}: Props) {
       <>
         <Box sx={{ padding: 2 }}>
           <PeptideSequence sequence = {sequence}/>
+        </Box>
+        <Box sx={{ padding: 2 }}>
+          <Structure pdb_id={swissprot_id} ></Structure>
         </Box>
         <Box sx={{ padding: 2 }}>
           <Activities activities={ activities }/>

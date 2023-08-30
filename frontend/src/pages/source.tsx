@@ -5,27 +5,30 @@ import config from "../config.json"
 import Box from "@mui/material/Box";
 import { useParams } from "react-router-dom";
 import DashboardLayout from "../components/common/dashboard_layout";
-import Front from "../components/layout/front";
+import Front from "../components/source/front";
 import { useState, useEffect } from "react";
 import Data from "../components/source/data";
+import Download from "../components/common/download";
+import RedirectButton from "../components/source/button";
 
 export default function Source() {
     const [obj, setObj] = useState({});
     const { source_id } = useParams();
     const [count, setCount] = useState(0);
+    const [name, setName] = useState("");
+    const [url, setURL] = useState("");
     useHandleSection({ section: "source" });
     useLoadingComponent();
-
 
     const getSpecificSourceData = async () => {
         try {
           const response = await axios.get(config.source.api + source_id);
-          console.log(response.data)
           setObj({
             "title": "Source: " + response.data.results.name,
-            "description": response.data.results.description
           })
           setCount(response.data.results.count);
+          setName(response.data.results.name)
+          setURL(response.data.results.url)
         } catch (error) {
           console.log(error);
         }
@@ -40,8 +43,14 @@ export default function Source() {
             <Box sx={{ padding: 2 }}>
                 <Front obj={obj}/>
             </Box>
+            <Box sx={{ paddingRight: 4 }}>
+                <RedirectButton url={url}/>
+            </Box>
             <Box sx={{ padding: 2 }}>
                 <Data source_id={source_id} count={count}/>
+            </Box>
+            <Box sx={{ paddingRight: 4 }}>
+                <Download name={name}/>
             </Box>
         </>
         </DashboardLayout>

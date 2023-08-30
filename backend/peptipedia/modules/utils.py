@@ -13,6 +13,7 @@ class Folders:
         os.makedirs(config.alignments_folder, exist_ok=True)
         
         db = Database()
+        db.create_downloads()
         db.create_fasta_from_peptides()
         self.makeblastdb()
 

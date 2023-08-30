@@ -7,11 +7,31 @@ db = Database()
 session = Session()
 activities_blueprint = Blueprint("activities_blueprint", __name__)
 
-@activities_blueprint.route("/get_count_activities/", methods=["GET"])
-def get_count_activities():
+@activities_blueprint.route("/get_count_activities_table/", methods=["GET"])
+def get_count_activities_table():
     """Gets count of peptides by activity"""
     try:
-        res = db.get_count_activities()
+        res = db.get_count_activities_table()
+        return parse_response(res)
+    except Exception as e:
+        print(e)
+        session.rollback()
+
+@activities_blueprint.route("/get_count_activities_plot/", methods=["GET"])
+def get_count_activities_plot():
+    """Gets count of peptides by activity"""
+    try:
+        res = db.get_count_activities_plot()
+        return parse_response(res)
+    except Exception as e:
+        print(e)
+        session.rollback()
+
+@activities_blueprint.route("/get_chord/", methods=["GET"])
+def get_chord():
+    """Gets count of peptides by activity"""
+    try:
+        res = db.get_chord()
         return parse_response(res)
     except Exception as e:
         print(e)

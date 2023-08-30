@@ -9,7 +9,7 @@ import peptipedia.config as config
 from peptipedia.modules.database_models.table_models import Base as BaseTables
 import networkx as nx
 from networkx.readwrite import json_graph
-
+from itertools import combinations
 
 class Database:
     """Database class"""
@@ -59,6 +59,37 @@ class Database:
         self.session.execute(refresh)
         self.session.commit()
 
+    def create_downloads(self):
+        stmt = select(Activity)
+        
+        act = self.get_table_query(stmt)
+        for _, row in act.iterrows():
+            print(row["name"])
+            stmt = (
+                select(MVSequencesByActivity)
+                .where(MVSequencesByActivity.id_activity == row.id_activity)
+                .limit(5))
+            df = self.get_table_query(stmt)
+            fasta_text = ""
+            for _,row_df in df.iterrows():
+                fasta_text += f">{row_df.id_peptide}\n{row_df.sequence}\n"
+            with open(config.downloads_folder + "/"+ row["name"] +".fasta", mode="w", encoding="utf-8") as file:
+                file.write(fasta_text)
+
+        stmt = select(Source)
+        act = self.get_table_query(stmt)
+        for _, row in act.iterrows():
+            print(row["name"])
+            stmt = (
+                select(MVSequencesBySource)
+                .where(MVSequencesBySource.id_source == row.id_source)
+                .limit(5))
+            df = self.get_table_query(stmt)
+            fasta_text = ""
+            for _,row_df in df.iterrows():
+                fasta_text += f">{row_df.id_peptide}\n{row_df.sequence}\n"
+            with open(config.downloads_folder + "/"+ row["name"] +".fasta", mode="w", encoding="utf-8") as file:
+                file.write(fasta_text)
 
     def create_fasta_from_peptides(self):
         """Create fasta in files folder"""
@@ -106,7 +137,7 @@ class Database:
             }
         }
 
-    def get_count_activities(self):
+    def get_count_activities_table(self):
         stmt_count_activities = select(MVPeptidesByActivity)
         df_count_activities = self.get_table_query(stmt_count_activities)
         df_count_activities = df_count_activities.rename(columns={"id_activity": "_id"})
@@ -122,20 +153,28 @@ class Database:
             }
         }
     
+    def get_count_activities_plot(self):
+        stmt_count_activities = select(MVPeptidesByActivity).where(MVPeptidesByActivity.id_parent==None)
+        df_count_activities = self.get_table_query(stmt_count_activities)
+        df_count_activities = df_count_activities.rename(columns={"id_activity": "_id"})
+        df_count_activities = df_count_activities.drop(columns=["description", "id_parent"])
+        return {
+            "plot":{
+                "x": df_count_activities["name"].to_list(),
+                "y": df_count_activities["count_peptide"].to_list(),
+            }
+        }
+
     def get_count_sources(self):
         stmt_count_sources = select(MVPeptidesByDatabase)
         df_count_sources = self.get_table_query(stmt_count_sources)
         df_count_sources = df_count_sources.rename(columns={"id_source": "_id"})
-        df_count_sources = df_count_sources.drop(columns=["description", "url"])
+        df_count_sources = df_count_sources.drop(columns=["url"])
         df_count_sources["name"] = df_count_sources["name"].map(capitalize_phrase)
         return {
             "table":{
                 "data": df_count_sources.values.tolist(),
                 "columns": [capitalize_phrase(phrase) for phrase in df_count_sources.columns.to_list()]
-            },
-            "plot":{
-                "x": df_count_sources["name"].to_list(),
-                "y": df_count_sources["count_peptide"].to_list()
             }
         }
 
@@ -157,7 +196,7 @@ class Database:
         df = df.astype(str)
         return {
             "name": df["name"][0],
-            "description": df["description"][0],
+            "url": df["url"][0],
             "count": int(df["count_peptide"][0])
         }
     
@@ -236,6 +275,7 @@ class Database:
         df = df.astype(str)
         
         sequence = dict(df.iloc[0])["sequence"]
+        swissprot_id = dict(df.iloc[0])["swissprot_id"]
 
         phy_prop = df[["length", "molecular_weight", "charge",
                        "charge_density", "instability_index",
@@ -263,6 +303,7 @@ class Database:
         return {
             "peptide": {
                 "sequence": sequence,
+                "swissprot_id": swissprot_id,
                 "physicochemical_properties": {"table": phy_prop_table},
                 "activities": acts
             }
@@ -287,7 +328,6 @@ class Database:
     
 
     def get_sequences_by_search(self, data):
-        print(data)
         limit = data["rowsPerPage"]
         page = data["page"]
         stmt = select(MVSearchPeptide.id_peptide, MVSearchPeptide.sequence)
@@ -303,6 +343,19 @@ class Database:
                 "data": df_canon.values.tolist(),
                 "columns": [capitalize_phrase(phrase) for phrase in df_canon.columns.to_list()],
             }
+        }
+
+    def get_chord(self):
+        stmt = select(MVFirstLevel)
+        df = self.get_table_query(stmt)
+        acts = df.name.unique()
+        data = []
+        for i, j in combinations(acts, 2):
+            merged_len = len(pd.merge(df[df.name == i][["id_peptide"]], df[df.name == j][["id_peptide"]], on="id_peptide"))
+            if merged_len != 0:
+                data.append([i, j, merged_len])
+        return {
+            "data": data
         }
 
 def capitalize_phrase(phrase):
@@ -340,8 +393,8 @@ def parse_data_query(query, Model, stmt):
 
 if __name__ == "__main__":
     db = Database()
-    """
     db.create_tables()
+    """
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide.csv", Peptide, chunk=5000)
     print("peptide")
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/source.csv", Source, chunk=100)
@@ -352,6 +405,7 @@ if __name__ == "__main__":
     print("activity")
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_activity.csv", PeptideHasActivity, chunk=100)
     print("peptide_has_activity")
+    """
     db.create_mv(MVPeptidesByDatabase)
     db.create_mv(MVPeptidesByActivity)
     db.create_mv(MVGeneralInformation)
@@ -362,4 +416,5 @@ if __name__ == "__main__":
     db.create_mv(MVSequencesBySource)
     db.create_mv(MVPeptideProfile)
     db.create_mv(MVPeptideParams)
-    """
+    db.create_mv(MVSearchPeptide)
+    db.create_mv(MVFirstLevel)

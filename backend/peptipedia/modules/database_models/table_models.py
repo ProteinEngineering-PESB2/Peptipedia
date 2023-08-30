@@ -14,6 +14,7 @@ class Peptide(Base):
     id_peptide = Column(Integer, primary_key = True)
     sequence = Column(String, nullable = False)
     is_canon = Column(Boolean, nullable = False)
+    swissprot_id = Column(String, nullable=True)
     ss3 = Column(String, nullable=True)
     ss8 = Column(String, nullable=True)
     acc = Column(String, nullable=True)
@@ -44,7 +45,6 @@ class Source(Base):
     __tablename__ = "source"
     id_source = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    description = Column(String, nullable=False)
     url = Column(String, nullable=False)
     peptide_has_source_r = relationship("PeptideHasSource")
     def __repr__(self):

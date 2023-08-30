@@ -1,0 +1,10 @@
+pandas
+matplotlib
+networkx
+sqlalchemy
+psycopg2-binary
+flask
+flask_cors
+sqlalchemy
+biopython
+python-dotenv

@@ -1,6 +1,6 @@
 downloads_folder = "./files/downloads"
 blastdb_folder = "./files/blastdb"
-static_folder = "./files/static_folder"
+static_folder = "./files/"
 alignments_folder = "./files/alignments"
 
 min_sequences = 1

@@ -10,15 +10,13 @@ class MVPeptidesByDatabase(Base):
     __tablename__ = "peptides_by_database"
     id_source = Column(Integer, primary_key=True)
     name = Column(String)
-    description = Column(String)
     url = Column(String)
     count_peptide = Column(Integer)
     def __repr__(self):
         return f"MV_peptides_by_database(name={self.name}, count={self.count_peptide})"
     def definition(self):
         return f"""create materialized view {self.__tablename__} as
-            SELECT s.id_source, s.name,
-            s.description, s.url,
+            SELECT s.id_source, s.name, s.url,
             t.count AS count_peptide
             FROM source s
                 JOIN ( SELECT phs.id_source,
@@ -80,8 +78,7 @@ class MVGeneralInformation(Base):
                 FROM peptide p) cp;"""
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-
-    
+ 
 class MVPeptideWithActivity(Base):
     __tablename__ = "peptide_with_activity"
     id_peptide = Column(Integer, primary_key=True)
@@ -170,6 +167,7 @@ class MVPeptideProfile(Base):
     __tablename__ = "peptide_profile"
     id_peptide = Column(Integer, primary_key=True)
     sequence = Column(String)
+    swissprot_id = Column(String)
     is_canon = Column(Boolean)
     length = Column(Float)
     molecular_weight = Column(Float)
@@ -186,7 +184,7 @@ class MVPeptideProfile(Base):
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
-        SELECT p.id_peptide, p.sequence, p.is_canon,
+        SELECT p.id_peptide, p.sequence, p.swissprot_id, p.is_canon,
         p.length, p.molecular_weight, p.charge,
         p.charge_density, p.instability_index, p.aromaticity,
         p.aliphatic_index, p.boman_index, p.isoelectric_point,
@@ -208,7 +206,12 @@ class MVPeptideParams(Base):
     molecular_weight = Column(Float)
     charge = Column(Float)
     isoelectric_point = Column(Float)
-    
+    charge_density = Column(Float)
+    instability_index = Column(Float)
+    aromaticity = Column(Float)
+    aliphatic_index = Column(Float)
+    boman_index = Column(Float)
+    hydrophobic_ratio = Column(Float)
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -241,7 +244,6 @@ class MVPeptideParams(Base):
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
     
-
 class MVSearchPeptide(Base):
     __tablename__ = "search_peptide"
     id_peptide = Column(Integer, primary_key=True)
@@ -263,6 +265,23 @@ class MVSearchPeptide(Base):
         LEFT JOIN peptide_has_activity pha ON pha.id_peptide = p.id_peptide
         LEFT JOIN activity a ON a.id_activity = pha.id_activity
     GROUP BY p.id_peptide, p.sequence, p.length, p.molecular_weight, p.charge;
+        """
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"
+    
+class MVFirstLevel(Base):
+    __tablename__ = "first_level"
+    id_peptide = Column(Integer, primary_key=True)
+    name = Column(String)
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        SELECT p.id_peptide,
+            a.name
+        FROM peptide p
+            JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
+            JOIN activity a ON a.id_activity = pha.id_activity
+        WHERE a.id_parent IS NULL;
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"

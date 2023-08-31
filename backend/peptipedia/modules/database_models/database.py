@@ -276,6 +276,8 @@ class Database:
         
         sequence = dict(df.iloc[0])["sequence"]
         swissprot_id = dict(df.iloc[0])["swissprot_id"]
+        if swissprot_id == "None":
+            swissprot_id = None
 
         phy_prop = df[["length", "molecular_weight", "charge",
                        "charge_density", "instability_index",
@@ -300,6 +302,7 @@ class Database:
         acts = []
         for i, j in zip(activities, id_activities):
             acts.append({"name": i, "id": j})
+            
         return {
             "peptide": {
                 "sequence": sequence,
@@ -373,6 +376,9 @@ def split_sequence(sequence):
 def parse_data_query(query, Model, stmt):
     if "sequence" in query.keys():
         stmt = stmt.where(Model.sequence.like(f'%{query["sequence"]}%'))
+
+    if "swissprot_id" in query.keys():
+        stmt = stmt.where(Model.swissprot_id == query["swissprot_id"])
 
     if "length" in query.keys():
         stmt = stmt.where(Model.length >= query["length"][0])

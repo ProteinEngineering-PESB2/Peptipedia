@@ -250,7 +250,8 @@ class MVSearchPeptide(Base):
     sequence = Column(String)
     length = Column(Integer)
     molecular_weight = Column(Integer)
-    charge = Column(Integer)
+    charge = Column(Float)
+    swissprot_id = Column(String)
     activities = Column(ARRAY(String))
     def definition(self):
         return f"""
@@ -260,6 +261,7 @@ class MVSearchPeptide(Base):
         p.length,
         p.molecular_weight,
         p.charge,
+        p.swissprot_id,
         array_agg(a.name) AS activities
     FROM peptide p
         LEFT JOIN peptide_has_activity pha ON pha.id_peptide = p.id_peptide

@@ -40,6 +40,9 @@ export default function Form(){
   useEffect(() => {
     getParams();
   }, []);
+  useEffect(()=>{
+    console.log(query)
+  }, [query])
 
   return (
     <>
@@ -47,8 +50,17 @@ export default function Form(){
         <Box margin={1} boxShadow={3}>
           <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
             <TextInput
+              label = "sequence"
+              form_label = "Sequence"
               setQuery = {setQuery}
-              query = {query}/>
+              query = {query}
+              rows = {4}/>
+            <TextInput
+              label = "swissprot_id"
+              form_label = "Swissprot ID"
+              setQuery = {setQuery}
+              query = {query}
+              rows = {1}/>
             <SelectOptions
               options = {activities}
               setQuery = {setQuery}

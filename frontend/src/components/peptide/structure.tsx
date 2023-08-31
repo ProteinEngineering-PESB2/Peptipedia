@@ -3,7 +3,7 @@ import {Box, Button, Grid} from "@mui/material"
 import $ from "jquery";
 window.jQuery = window.$ = $;
 interface Props{
-  pdb_id:string;
+  pdb_id?: string;
 }
 export default function Structure({pdb_id}:Props){
   useEffect(() => {
@@ -37,11 +37,11 @@ export default function Structure({pdb_id}:Props){
       }
     </Box>
     {(pdb_id)&&(
-    <Grid container justifyContent="flex-end">
-      <Button variant="contained" onClick={()=>{
-        window.open(`https://alphafold.ebi.ac.uk/entry/${pdb_id}`)
-      }}>Go to Alphafold 2</Button>
-    </Grid>
+      <Grid container justifyContent="flex-end">
+        <Button variant="contained" onClick={()=>{
+          window.open(`https://alphafold.ebi.ac.uk/entry/${pdb_id}`)
+        }}>Go to Alphafold 2</Button>
+      </Grid>
     )}
     </>
   )

@@ -1,21 +1,24 @@
 import { FormControl, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 interface Props{
+  label: string;
+  form_label: string;
+  rows: number;
   setQuery: React.Dispatch<React.SetStateAction<{}>>;
   query: {};
 }
-export default function TextInput({setQuery, query}:Props){
-    const [value, setValue] = useState("")
+export default function TextInput({label, form_label, rows, setQuery, query}:Props){
+    const [value, setValue] = useState("");
     useEffect(()=>{
-        setQuery({...query, sequence: value})
+        setQuery({...query, [label]: value})
     }, [value])
     return (
         <FormControl sx = {{ m: 1 }} fullWidth>
             <TextField
                 id="filled-multiline-static"
-                label="Sequence"
+                label={form_label}
                 multiline
-                rows={4}
+                rows={rows}
                 fullWidth
                 variant="filled"
                 value={value}

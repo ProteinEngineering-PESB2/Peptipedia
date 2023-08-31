@@ -14,7 +14,7 @@ export default function Data({peptide_id}: Props) {
     const [sequence, setSequence] = useState("")
     const [table, setTable] = useState({"data": [], "columns": []})
     const [activities, setActivities] = useState([])
-    const [swissprot_id, setSwissprotId] = useState("")
+    const [swissprot_id, setSwissprotId] = useState(undefined)
     const getSpecificPeptideData = async () => {
       try {
         const response = await axios.get(config.peptide.api + peptide_id);
@@ -30,6 +30,9 @@ export default function Data({peptide_id}: Props) {
     useEffect(() => {
       getSpecificPeptideData();
     }, []);
+    useEffect(()=>{
+      console.log(swissprot_id, typeof swissprot_id)
+    }, [swissprot_id])
   
     return (
       <>

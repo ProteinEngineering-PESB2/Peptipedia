@@ -385,6 +385,9 @@ def split_sequence(sequence):
     return sequence
 
 def parse_data_query(query, Model, stmt):
+    if "is_canon" in query.keys():
+        stmt = stmt.where(Model.is_canon == query["is_canon"])
+
     if "sequence" in query.keys():
         stmt = stmt.where(Model.sequence.like(f'%{query["sequence"]}%'))
 

@@ -14,6 +14,7 @@ interface Props{
     id_activity: Array<number>;
   }
   setQuery: React.Dispatch<React.SetStateAction<{}>>;
+  query: {}
 }
 
 export default function SelectOptions({options, setQuery, query}: Props) {

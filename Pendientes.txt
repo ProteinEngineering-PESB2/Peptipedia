@@ -1,6 +1,3 @@
-Layout:
-Marcar las pestañas en el sidebar.
-
 Activities:
 Primer nivel no se minimice.
 

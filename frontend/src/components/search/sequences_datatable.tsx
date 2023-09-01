@@ -10,7 +10,7 @@ interface Props {
   query: {}
 }
 
-export default function SequencesDataTable({ title, table_api, query,
+export default function SequencesDataTable({ page, setPage, title, table_api, query,
   count, redirect_api = undefined}: Props) {
   const [table, setTable] = useState({"data": [], "columns": []})
 
@@ -31,6 +31,9 @@ export default function SequencesDataTable({ title, table_api, query,
   useEffect(()=>{
     getData({rowsPerPage:10, page:0});
   }, [count])
+  useEffect(()=>{
+    console.log(page)
+  }, [page])
 
   return (
     <MUIDataTable
@@ -38,6 +41,7 @@ export default function SequencesDataTable({ title, table_api, query,
       columns = {table.columns}
       title={title}
       options={{
+        page: page,
         count: count,
         selectableRowsHideCheckboxes: true,
         rowsPerPageOptions: [5, 10, 100],
@@ -50,6 +54,7 @@ export default function SequencesDataTable({ title, table_api, query,
           switch(action){
             case "changePage":
               getData(tableState)
+              setPage(tableState.page)
             case "changeRowsPerPage":
               getData(tableState)
           }

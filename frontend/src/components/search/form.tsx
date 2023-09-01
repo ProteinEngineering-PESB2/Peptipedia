@@ -7,15 +7,17 @@ import TextInput from "./text_input"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import SequencesDataTable from "./sequences_datatable";
-import config from "../../config.json"
+import config from "../../config.json";
+import Check from "./canon";
+
 export default function Form(){
+  const [page, setPage] = useState(1)
   const [query, setQuery] = useState({})
   const [activities, setActivities] = useState({"name": []})
   const [physicochemical, setPhysicochemical] = useState({})
   const [count, setCount] = useState(undefined)
   const [showResults, setShowResults] = useState(false)
   const [show_physicochemical_params, setShowPhysicochemicalParams] = useState(false)
-
 
   const getParams = async () => {
     try {
@@ -32,7 +34,7 @@ export default function Form(){
       const response = await axios.post(config.search.count_api, query)
       setShowResults(true)
       setCount(response.data.results.count)
-      
+      setPage(0)
     } catch (error){
       console.log(error)
     }
@@ -60,6 +62,9 @@ export default function Form(){
             options = {activities}
             setQuery = {setQuery}
             query = {query}/>
+
+          <Check setQuery = {setQuery} query = {query}/>
+
           <Divider sx={{m:3}}>
             <Button onClick={()=>setShowPhysicochemicalParams(!show_physicochemical_params)}>
               {show_physicochemical_params
@@ -80,9 +85,11 @@ export default function Form(){
         </Paper>
       </Box>
       <Button variant="contained" sx={{m:1}} onClick = {() => search()} >Search</Button>
-      {(showResults===true)&& (
+      {(showResults === true)&& (
         <Box margin={1} boxShadow={3}>
           <SequencesDataTable title ="Results"
+            page = {page}
+            setPage = {setPage}
             count = {count}
             query = {query}
             table_api={config.search.search_api}

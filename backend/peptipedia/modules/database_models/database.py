@@ -273,7 +273,7 @@ class Database:
         stmt = select(MVPeptideProfile).where(MVPeptideProfile.id_peptide == id_peptide)
         df = self.get_table_query(stmt)
         df = df.astype(str)
-        
+        is_canon = df["is_canon"].values[0]
         sequence = dict(df.iloc[0])["sequence"]
         swissprot_id = dict(df.iloc[0])["swissprot_id"]
         if swissprot_id == "None":
@@ -294,21 +294,29 @@ class Database:
             "columns": [capitalize_phrase(phrase)
                         for phrase in phy_prop.columns.to_list()]
         }
+
         activities = eval(df["activities"][0])
         id_activities = eval(df["id_activities"][0])
-        if activities[0] == None:
-            activities.pop(0)
-            id_activities.pop(0)
-        acts = []
-        for i, j in zip(activities, id_activities):
-            acts.append({"name": i, "id": j})
+        if activities == []:
+            activities = None
+
+        sources = eval(df["sources"][0])
+        id_sources = eval(df["id_sources"][0])
+        if sources == []:
+            sources = None
             
         return {
             "peptide": {
                 "sequence": sequence,
+                "is_canon": is_canon,
                 "swissprot_id": swissprot_id,
-                "physicochemical_properties": {"table": phy_prop_table},
-                "activities": acts
+                "physicochemical_properties": {
+                    "table": phy_prop_table
+                },
+                "activities": activities,
+                "id_activities": id_activities,
+                "sources": sources,
+                "id_sources": id_sources
             }
         }
     def get_peptide_params(self):
@@ -333,14 +341,17 @@ class Database:
     def get_sequences_by_search(self, data):
         limit = data["rowsPerPage"]
         page = data["page"]
-        stmt = select(MVSearchPeptide.id_peptide, MVSearchPeptide.sequence)
+        stmt = select(MVSearchPeptide.id_peptide, MVSearchPeptide.sequence,
+                      MVSearchPeptide.is_canon)
         stmt = parse_data_query(data, MVSearchPeptide, stmt)
         stmt_sequences = stmt.offset(limit*page).limit(limit)
         df_canon = self.get_table_query(stmt_sequences)
-        df_canon = df_canon.drop(columns = ["id_source", "is_canon"], errors='ignore')
+        df_canon = df_canon.drop(columns = ["id_source"], errors='ignore')
         df_canon = df_canon.astype(str)
         df_canon["sequence"] = df_canon["sequence"].map(split_sequence)
-
+        df_canon = df_canon.replace(to_replace="True", value="Canon")
+        df_canon = df_canon.replace(to_replace="False", value="Non canon")
+        df_canon = df_canon.rename(columns={"is_canon": "Type"})
         return {
             "table":{
                 "data": df_canon.values.tolist(),

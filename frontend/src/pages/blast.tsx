@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Front from "../components/layout/front"
 import config from "../config.json"
 export default function Blast() {
-    const obj = config.blast
+    const obj = config.alignment
     useHandleSection({ section: "blast" });
     useLoadingComponent();
     return (

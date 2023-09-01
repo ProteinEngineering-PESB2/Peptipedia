@@ -40,58 +40,55 @@ export default function Form(){
   useEffect(() => {
     getParams();
   }, []);
-  useEffect(()=>{
-    console.log(query)
-  }, [query])
-
   return (
     <>
-      <Grid item xs={12} sm={12} md={9} lg={12} xl={4}>
-        <Box margin={1} boxShadow={3}>
-          <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
-            <TextInput
-              label = "sequence"
-              form_label = "Sequence"
-              setQuery = {setQuery}
+      <Box margin={1} boxShadow={3}>
+        <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
+          <TextInput
+            label = "sequence"
+            form_label = "Sequence"
+            setQuery = {setQuery}
+            query = {query}
+            rows = {4}/>
+          <TextInput
+            label = "swissprot_id"
+            form_label = "Swissprot ID"
+            setQuery = {setQuery}
+            query = {query}
+            rows = {1}/>
+          <SelectOptions
+            options = {activities}
+            setQuery = {setQuery}
+            query = {query}/>
+          <Divider sx={{m:3}}>
+            <Button onClick={()=>setShowPhysicochemicalParams(!show_physicochemical_params)}>
+              {show_physicochemical_params
+              ? <RemoveCircleOutlineIcon/>
+              : <AddCircleOutlineIcon/> }
+            </Button>
+          </Divider>
+          {(show_physicochemical_params) && (
+            Object.keys(physicochemical).map((x)=>(
+              <SliderForm label = {x}
+              param_name = {x}
+              params = {physicochemical[x]}
               query = {query}
-              rows = {4}/>
-            <TextInput
-              label = "swissprot_id"
-              form_label = "Swissprot ID"
-              setQuery = {setQuery}
-              query = {query}
-              rows = {1}/>
-            <SelectOptions
-              options = {activities}
-              setQuery = {setQuery}
-              query = {query}/>
-            <Divider sx={{m:3}}>
-              <Button onClick={()=>setShowPhysicochemicalParams(!show_physicochemical_params)}>
-                {show_physicochemical_params
-                ? <RemoveCircleOutlineIcon/>
-                : <AddCircleOutlineIcon/> }
-              </Button>
-            </Divider>
-            {(show_physicochemical_params) && (
-              Object.keys(physicochemical).map((x)=>(
-                <SliderForm label = {x}
-                param_name = {x}
-                params = {physicochemical[x]}
-                query = {query}
-                setQuery = {setQuery} />
-                )
+              setQuery = {setQuery} />
               )
-            )}
-          </Paper>
-        </Box>
-      </Grid>
+            )
+          )}
+        </Paper>
+      </Box>
       <Button variant="contained" sx={{m:1}} onClick = {() => search()} >Search</Button>
       {(showResults===true)&& (
-      <SequencesDataTable title ="Results"
-        count = {count}
-        query = {query}
-        table_api={config.search.search_api}
-        redirect_api={config.search.redirect}/>)
+        <Box margin={1} boxShadow={3}>
+          <SequencesDataTable title ="Results"
+            count = {count}
+            query = {query}
+            table_api={config.search.search_api}
+            redirect_api={config.search.redirect}/>
+        </Box>
+      )
       }
     </>
   )

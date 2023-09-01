@@ -4,34 +4,35 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import config from "../../config.json"
 
-interface ActProp{
-  id: number;
-  name: string;
-}
+
 interface Props{
-  activities: Array<ActProp>;
+  activities: Array<string>;
+  id_activities: Array<number>;
+  redirect: string;
+  title: string;
 }
-const activity_clicked = (index: number) => {
-  window.open(config.peptide.redirect + index)
-}
-export default function Activities({activities}: Props) {
+
+export default function ListItems({activities, id_activities, redirect, title}: Props) {
+  const row_clicked = (index: number) => {
+    console.log(redirect + index)
+    window.open(redirect + index)
+  }
   return (
     <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <Typography variant="h5">
-        Activities
+        {title}
       </Typography>
       <List component="nav" aria-label="main folders">
         {
-          activities.map((x)=>(
+          activities.map((x, index)=>(
             <ListItemButton
-              onClick={() => activity_clicked(x.id)}
+              onClick={() => row_clicked(id_activities[index])}
             >
               <ListItemIcon>
                 <FolderOpenIcon />
               </ListItemIcon>
-              <ListItemText primary={x.name} />
+              <ListItemText primary={x} />
             </ListItemButton>
           ))
         }

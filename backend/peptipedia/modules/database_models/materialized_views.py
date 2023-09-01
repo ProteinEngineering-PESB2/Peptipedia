@@ -181,21 +181,35 @@ class MVPeptideProfile(Base):
     hydrophobic_ratio = Column(Float)
     id_activities = Column(String)
     activities = Column(String)
+    id_sources = Column(String)
+    sources = Column(String)
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
-        SELECT p.id_peptide, p.sequence, p.swissprot_id, p.is_canon,
-        p.length, p.molecular_weight, p.charge,
-        p.charge_density, p.instability_index, p.aromaticity,
-        p.aliphatic_index, p.boman_index, p.isoelectric_point,
+        SELECT p.id_peptide,
+        p.sequence,
+        p.swissprot_id,
+        p.is_canon,
+        p.length,
+        p.molecular_weight,
+        p.charge,
+        p.charge_density,
+        p.instability_index,
+        p.aromaticity,
+        p.aliphatic_index,
+        p.boman_index,
+        p.isoelectric_point,
         p.hydrophobic_ratio,
         array_agg(act.id_activity) AS id_activities,
-        array_agg(act.name) AS activities
-
-        FROM peptide p
-            LEFT JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
-            LEFT JOIN activity act ON pha.id_activity = act.id_activity
-        GROUP BY p.id_peptide, p.sequence;
+        array_agg(act.name) AS activities,
+        array_agg(s.id_source) AS id_sources,
+        array_agg(s.name) AS sources
+    FROM peptide p
+        LEFT JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
+        LEFT JOIN activity act ON pha.id_activity = act.id_activity
+        LEFT JOIN peptide_has_source phs ON p.id_peptide = phs.id_peptide
+        LEFT JOIN source s ON phs.id_source = s.id_source
+    GROUP BY p.id_peptide;
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
@@ -226,7 +240,7 @@ class MVPeptideParams(Base):
         min(p.boman_index) as boman_index,
         min(p.isoelectric_point) as isoelectric_point,
         min(p.hydrophobic_ratio) as hydrophobic_ratio
-        from peptide_profile p)
+        from peptide p)
         union all
         (select
         max(p.length) as length,
@@ -239,7 +253,7 @@ class MVPeptideParams(Base):
         max(p.boman_index) as boman_index,
         max(p.isoelectric_point) as isoelectric_point,
         max(p.hydrophobic_ratio) as hydrophobic_ratio
-        from peptide_profile p);
+        from peptide p);
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
@@ -248,6 +262,7 @@ class MVSearchPeptide(Base):
     __tablename__ = "search_peptide"
     id_peptide = Column(Integer, primary_key=True)
     sequence = Column(String)
+    is_canon = Column(Boolean)
     length = Column(Integer)
     molecular_weight = Column(Integer)
     charge = Column(Float)
@@ -258,6 +273,7 @@ class MVSearchPeptide(Base):
         create materialized view {self.__tablename__} as
         SELECT p.id_peptide,
         p.sequence,
+        p.is_canon,
         p.length,
         p.molecular_weight,
         p.charge,
@@ -284,6 +300,42 @@ class MVFirstLevel(Base):
             JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
             JOIN activity a ON a.id_activity = pha.id_activity
         WHERE a.id_parent IS NULL;
+        """
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"
+
+class MVActivitiesListed(Base):
+    __tablename__ = "activities_listed"
+    id_peptide = Column(Integer, primary_key=True)
+    id_activities = Column(String)
+    activities = Column(String)
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        SELECT pha.id_peptide,
+            array_agg(act.id_activity) AS id_activities,
+            array_agg(act.name) AS activities
+        FROM peptide_has_activity pha
+            LEFT JOIN activity act ON act.id_activity = pha.id_activity
+        GROUP BY pha.id_peptide;
+        """
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"
+
+class MVSourcesListed(Base):
+    __tablename__ = "sources_listed"
+    id_peptide = Column(Integer, primary_key=True)
+    id_sources = Column(String)
+    sources = Column(String)
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        SELECT phs.id_peptide,
+            array_agg(s.id_source) AS id_sources,
+            array_agg(s.name) AS sources
+        FROM peptide_has_source phs
+            LEFT JOIN source s ON s.id_source = phs.id_source
+        GROUP BY phs.id_peptide;
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"

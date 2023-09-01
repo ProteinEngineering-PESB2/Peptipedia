@@ -7,13 +7,17 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import config from "../../config.json";
-interface Props {
-  open: boolean;
-}
+import {useEffect, useState} from "react";
 
-function Aside({ open }: Props) {
+export default function Aside() {
+  const [actual_location, setActualLocation] = useState("")
   const navigate = useNavigate();
-
+  const url = window.location.href;
+  useEffect(()=>{
+    let splitted_url = url.split("/")
+    setActualLocation(splitted_url[splitted_url.length - 1])
+  }, [url])
+  
   return (
     <Drawer
       sx={{
@@ -26,11 +30,11 @@ function Aside({ open }: Props) {
       }}
       variant="persistent"
       anchor="left"
-      open={open}
+      open={true}
     >
       <List>
         <ListItemButton onClick={() => navigate(config.home.route)}>
-          <ListItemIcon>
+          <ListItemIcon >
             <HomeIcon sx={{ color: "#000" }} />
           </ListItemIcon>
           <ListItemText primary="Home" />
@@ -39,9 +43,11 @@ function Aside({ open }: Props) {
       <List component="div" disablePadding>
         {
         config.sidebar.navigate.map((a)=>(
-          <ListItemButton onClick={() => navigate(config[a].route)}>
+          <ListItemButton onClick={() => navigate(config[a].route)}
+          selected={actual_location == a ? true : false}
+          /* sx={{backgroundColor: actual_location == a ? "#2962ff": "#fff"}} */>
             <ListItemIcon>
-              <ArrowRightIcon sx={{ color: "#000" }} />
+              <ArrowRightIcon sx={{ color:"#000" }} />
             </ListItemIcon>
             <ListItemText primary={config[a].title} />
           </ListItemButton>
@@ -51,6 +57,4 @@ function Aside({ open }: Props) {
       </List>
     </Drawer>
   );
-}
-
-export default Aside;
+};

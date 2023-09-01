@@ -12,11 +12,6 @@ interface Props {
 }
 
 function DashboardLayout({ children }: Props) {
-  const [open, setOpen] = useState(true);
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   return (
     <Box
@@ -32,7 +27,7 @@ function DashboardLayout({ children }: Props) {
     >
       <CssBaseline />
 
-      <Aside handleDrawerClose={handleDrawerClose} open={open} />
+      <Aside />
 
       <Main open={open}>
         <DrawerHeader />

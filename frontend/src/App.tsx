@@ -36,7 +36,7 @@ export default function App() {
               <Route path={config.peptide.route} element={<Peptide />} loading />
               <Route path={config.source.route} element={<Source />} loading />
               <Route path={config.search.route} element={<AdvancedSearch />} loading />
-              <Route path={config.blast.route} element={<Blast />} loading />
+              <Route path={config.alignment.route} element={<Blast />} loading />
             </Routes>
           </BrowserRouter>
           <Toaster />

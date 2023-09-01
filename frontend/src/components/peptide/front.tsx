@@ -2,7 +2,6 @@ import { Container, Typography } from "@mui/material";
 interface Props{
   obj: {
     title: string;
-    description: string;
   }
 }
 export default function Front({obj}: Props) {

@@ -7,7 +7,7 @@
       "activities",
       "sources",
       "search",
-      "blast"
+      "alignment"
     ]
   },
 
@@ -171,10 +171,10 @@
     "redirect": "/peptide/"
   },
 
-  "blast": {
+  "alignment": {
     "title": "Alignment",
     "description": "Execute Blastp against canonical peptides from Peptipedia database",
-    "route": "/blastp"
+    "route": "/alignment"
   },
 
   "activity": {

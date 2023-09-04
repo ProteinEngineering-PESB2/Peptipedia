@@ -50,7 +50,7 @@ export default function Data({peptide_id}: Props) {
     
     const getEnrichment = async () =>{
       try {
-        const response = await axios.get("/api/get_enrichment/" + peptide_id);
+        const response = await axios.get(config.peptide.enrichment_api + peptide_id);
         setPfamTable(response.data.results.pfam)
         setGOTable(response.data.results.go)
       } catch (error) {
@@ -78,12 +78,14 @@ export default function Data({peptide_id}: Props) {
         {(activities) &&
           (<Box sx={{ padding: 2 }}>
             <ListItems activities={ activities } id_activities={id_activities}
-            title={"Reported activities"} redirect={"/activity/"}/>
-          </Box>)}        
+            title={"Reported activities"}
+            redirect={config.peptide.redirect_activities}/>
+          </Box>)}
         {(sources) &&
           (<Box sx={{ padding: 2 }}>
             <ListItems activities={ sources } id_activities={id_sources}
-            title={"References"} redirect={"/source/"}/>
+            title={"References"}
+            redirect={config.peptide.redirect_sources}/>
           </Box>)}
         <Box sx={{padding: 2}}>
           <DataTable title={"Physicochemical Properties"} table={table}/>
@@ -91,14 +93,14 @@ export default function Data({peptide_id}: Props) {
         {(pfam_table) &&
           (<Box sx={{padding: 2}}>
             <DataTable title={"Pfam"} table={pfam_table}
-            redirect_api={"https://www.ebi.ac.uk/interpro/entry/pfam/"}
+            redirect_api={config.peptide.pfam_page}
             />
           </Box>)
         }
         {(go_table) &&
           (<Box sx={{padding: 2}}>
             <DataTable title={"Gene Ontology"} table={go_table}
-            redirect_api={"https://amigo.geneontology.org/amigo/term/"}
+            redirect_api={config.peptide.go_page}
             />
           </Box>)
         }

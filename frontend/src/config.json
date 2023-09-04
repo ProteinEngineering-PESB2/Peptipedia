@@ -187,7 +187,13 @@
   "peptide": {
     "route": "/peptide/:peptide_id",
     "api": "/api/get_peptide/",
-    "redirect": "/activity/"
+    "redirect": "/activity/",
+    "enrichment_api": "/api/enrichment/",
+    "pfam_page": "https://www.ebi.ac.uk/interpro/entry/pfam/",
+    "go_page": "https://amigo.geneontology.org/amigo/term/",
+    "redirect_activities": "/activity/",
+    "redirect_sources": "/sources/",
+    "alphafold_page": "https://alphafold.ebi.ac.uk/entry/"
   },
 
   "source": {

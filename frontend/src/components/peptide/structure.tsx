@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import {Box, Button, Grid} from "@mui/material"
 import $ from "jquery";
+import config from "../../config.json";
+
 window.jQuery = window.$ = $;
 interface Props{
   pdb_id?: string;
@@ -39,7 +41,7 @@ export default function Structure({pdb_id}:Props){
     {(pdb_id)&&(
       <Grid container justifyContent="flex-end">
         <Button variant="contained" onClick={()=>{
-          window.open(`https://alphafold.ebi.ac.uk/entry/${pdb_id}`)
+          window.open(config.peptide.alphafold_page + pdb_id)
         }}>Go to Alphafold 2</Button>
       </Grid>
     )}

@@ -100,6 +100,27 @@ class PeptideHasGO(Base):
     __tablename__ = "peptide_has_go"
     id_peptide = Column(Integer, ForeignKey("peptide.id_peptide"), nullable=False, primary_key=True,)
     id_go = Column(Integer, ForeignKey("gene_ontology.id_go"), nullable=False,  primary_key=True)
-
+    probability = Column(Float)
     def __repr__(self):
         return f"PeptideHasGO(id_peptide={self.id_peptide}, id_go={self.id_go})"
+    
+class Pfam(Base):
+    """Pfam table"""
+    __tablename__ = "pfam"
+    id_pfam = Column(Integer, nullable=False, primary_key=True)
+    hmm_acc = Column(String)
+    hmm_name = Column(String)
+    type = Column(String)
+    clan = Column(String)
+    def __repr__(self):
+        return f"Pfam(id_pfam={self.id_pfam}, hmm_acc={self.hmm_acc}, hmm_name={self.hmm_name})"
+    
+class PeptideHasPfam(Base):
+    __tablename__ = "peptide_has_pfam"
+    id_peptide = Column(Integer, ForeignKey("peptide.id_peptide"), nullable=False, primary_key=True,)
+    id_pfam = Column(Integer, ForeignKey("pfam.id_pfam"), nullable=False, primary_key=True)
+    e_value = Column(Float)
+    significance = Column(Float)
+    bit_score = Column(Float)
+    def __repr__(self):
+        return f"PeptideHasPfam(id_peptide={self.id_peptide}, id_pfam={self.id_pfam})"

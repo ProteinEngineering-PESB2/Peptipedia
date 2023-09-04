@@ -282,7 +282,9 @@ class MVSearchPeptide(Base):
     FROM peptide p
         LEFT JOIN peptide_has_activity pha ON pha.id_peptide = p.id_peptide
         LEFT JOIN activity a ON a.id_activity = pha.id_activity
-    GROUP BY p.id_peptide, p.sequence, p.length, p.molecular_weight, p.charge;
+    GROUP BY p.id_peptide, p.sequence, p.length, p.molecular_weight, p.charge
+    order by p.id_peptide
+    ;
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
@@ -340,3 +342,43 @@ class MVSourcesListed(Base):
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
     
+class MVPfamByPeptide(Base):
+    __tablename__ = "pfam_by_peptide"
+    id_peptide = Column(Integer, nullable=False, primary_key=True)
+    hmm_acc = Column(String)
+    hmm_name = Column(String)
+    type = Column(String)
+    clan = Column(String)
+    e_value = Column(Float)
+
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        select php.id_peptide,
+        php.e_value, p.hmm_acc, p.hmm_name,
+        p.type, p.clan
+        from peptide_has_pfam php
+        join pfam as p on p.id_pfam = php.id_pfam;
+        """
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"
+    
+class MVGoByPeptide(Base):
+    __tablename__ = "go_by_peptide"
+    id_peptide = Column(Integer, nullable=False, primary_key=True)
+    accession = Column(String)
+    probability = Column(Float)
+    term = Column(String)
+    description = Column(String)
+    source = Column(String)
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        select phgo.id_peptide,
+        phgo.probability, go.accession,
+        go.term, go.description, go.source
+        from peptide_has_go phgo
+        join gene_ontology go on phgo.id_go = go.id_go;
+        """
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"

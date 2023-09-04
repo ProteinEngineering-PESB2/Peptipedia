@@ -13,3 +13,10 @@ def get_peptide(idpeptide):
     """Gets all go terms from a peptide"""
     result = db.get_peptide(idpeptide)
     return parse_response(result)
+
+###Profile
+@profile_blueprint.route("/get_enrichment/<idpeptide>", methods=["GET"])
+def get_enrichment(idpeptide):
+    """Gets all go terms from a peptide"""
+    result = db.get_enrichment(idpeptide)
+    return parse_response(result)

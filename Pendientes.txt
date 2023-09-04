@@ -4,11 +4,5 @@ Primer nivel no se minimice.
 Peptido:
 Dejar en 3 decimales.
 
-Search:
-Arreglar paginador.
-
-Blast:
-Arreglar paginador.
-
 Activity:
 Definiciones.

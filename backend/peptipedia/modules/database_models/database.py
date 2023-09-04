@@ -269,6 +269,36 @@ class Database:
         self.iterate_over_tree(df, data["children"])
         return { "tree": data }
     
+    def get_enrichment(self, id_peptide):
+        stmt = select(MVPfamByPeptide).where(MVPfamByPeptide.id_peptide == id_peptide)
+        pfam = self.get_table_query(stmt)
+        pfam = pfam.drop(columns=["id_pfam", "id_peptide"], errors="ignore")
+        pfam = pfam.rename(columns = {"hmm_acc": "_id"})
+        pfam["_id"], _ = zip(*pfam["_id"].str.split("."))
+        if len(pfam) > 0:
+            pfam_dict = {
+                "data": pfam.values.tolist(),
+                "columns": [capitalize_phrase(phrase) for phrase in pfam.columns.to_list()]
+            }
+        else:
+            pfam_dict = None
+        stmt = select(MVGoByPeptide).where(MVGoByPeptide.id_peptide == id_peptide)
+        go = self.get_table_query(stmt)
+        go = go.drop(columns=["id_go", "id_peptide"], errors="ignore")
+        go = go.rename(columns = {"accession": "_id"})
+
+        if len(go) > 0:
+            go_dict = {
+                "data": go.values.tolist(),
+                "columns": [capitalize_phrase(phrase) for phrase in go.columns.to_list()]
+            }
+        else:
+            go_dict = None
+        return {
+            "pfam": pfam_dict,
+            "go": go_dict
+        }
+    
     def get_peptide(self, id_peptide):
         stmt = select(MVPeptideProfile).where(MVPeptideProfile.id_peptide == id_peptide)
         df = self.get_table_query(stmt)
@@ -304,7 +334,7 @@ class Database:
         id_sources = eval(df["id_sources"][0])
         if sources == []:
             sources = None
-            
+
         return {
             "peptide": {
                 "sequence": sequence,
@@ -337,7 +367,6 @@ class Database:
         count = int(df.values[0][0])
         return {"count": count}
     
-
     def get_sequences_by_search(self, data):
         limit = data["rowsPerPage"]
         page = data["page"]
@@ -425,6 +454,15 @@ if __name__ == "__main__":
     print("activity")
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_activity.csv", PeptideHasActivity, chunk=100)
     print("peptide_has_activity")
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/pfam.csv", Pfam, chunk=1000)
+    print("pfam")
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_pfam.csv", PeptideHasPfam, chunk=1000)
+    print("peptide_has_pfam")
+    """
+    #db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/gene_ontology.csv", GeneOntology, chunk=1000)
+    #print("go")
+    #db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_go.csv", PeptideHasGO, chunk=1000)
+    #print("peptide_has_go")
     """
     db.create_mv(MVPeptidesByDatabase)
     db.create_mv(MVPeptidesByActivity)
@@ -437,4 +475,7 @@ if __name__ == "__main__":
     db.create_mv(MVPeptideProfile)
     db.create_mv(MVPeptideParams)
     db.create_mv(MVSearchPeptide)
-    db.create_mv(MVFirstLevel)
+    db.create_mv(MVFirstLevel) """
+
+    db.create_mv(MVPfamByPeptide)
+    db.create_mv(MVGoByPeptide)

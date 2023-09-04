@@ -1,5 +1,5 @@
 import MUIDataTable from "mui-datatables";
-
+import {useEffect} from "react";
 interface ITable {
   columns: Array<string>;
   data: Array<Array<any>>;
@@ -39,6 +39,10 @@ export default function DataTable({ table, title, redirect_api = undefined}: Pro
 
   const {columns} = editDisplayColumns()
 
+  useEffect(()=>{
+    console.log(table)
+  }, [table])
+
   return (
     <>
         <MUIDataTable
@@ -52,7 +56,7 @@ export default function DataTable({ table, title, redirect_api = undefined}: Pro
               print: false,
               onRowClick: (rowData)=> clickFunction(rowData),
           }}
-        ></MUIDataTable>
+        />
     </>
   )
 }

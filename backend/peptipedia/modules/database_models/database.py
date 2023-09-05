@@ -274,8 +274,8 @@ class Database:
         pfam = self.get_table_query(stmt)
         pfam = pfam.drop(columns=["id_pfam", "id_peptide"], errors="ignore")
         pfam = pfam.rename(columns = {"hmm_acc": "_id"})
-        pfam["_id"], _ = zip(*pfam["_id"].str.split("."))
         if len(pfam) > 0:
+            pfam["_id"], _ = zip(*pfam["_id"].str.split("."))
             pfam_dict = {
                 "data": pfam.values.tolist(),
                 "columns": [capitalize_phrase(phrase) for phrase in pfam.columns.to_list()]
@@ -302,28 +302,31 @@ class Database:
     def get_peptide(self, id_peptide):
         stmt = select(MVPeptideProfile).where(MVPeptideProfile.id_peptide == id_peptide)
         df = self.get_table_query(stmt)
+        is_canon = bool(df["is_canon"].values[0])
         df = df.astype(str)
-        is_canon = df["is_canon"].values[0]
         sequence = dict(df.iloc[0])["sequence"]
         swissprot_id = dict(df.iloc[0])["swissprot_id"]
+
         if swissprot_id == "None":
             swissprot_id = None
 
-        phy_prop = df[["length", "molecular_weight", "charge",
-                       "charge_density", "instability_index",
-                       "aromaticity", "aliphatic_index", "boman_index",
-                       "isoelectric_point", "hydrophobic_ratio" ]].T
-        
-        phy_prop["property"] = phy_prop.index
-        phy_prop["value"] = phy_prop[0]
-        phy_prop = phy_prop[["property", "value"]]
-        phy_prop["property"] = phy_prop["property"].map(capitalize_phrase)
-
-        phy_prop_table = {
-            "data": phy_prop.values.tolist(),
-            "columns": [capitalize_phrase(phrase)
-                        for phrase in phy_prop.columns.to_list()]
-        }
+        if is_canon == True:
+            phy_prop = df[["length", "molecular_weight", "charge",
+                        "charge_density", "instability_index",
+                        "aromaticity", "aliphatic_index", "boman_index",
+                        "isoelectric_point", "hydrophobic_ratio" ]].T
+            
+            phy_prop["property"] = phy_prop.index
+            phy_prop["value"] = phy_prop[0]
+            phy_prop = phy_prop[["property", "value"]]
+            phy_prop["property"] = phy_prop["property"].map(capitalize_phrase)
+            phy_prop_table = {
+                "data": phy_prop.values.tolist(),
+                "columns": [capitalize_phrase(phrase)
+                            for phrase in phy_prop.columns.to_list()]
+            }
+        else:
+            phy_prop_table = None
 
         activities = eval(df["activities"][0])
         id_activities = eval(df["id_activities"][0])
@@ -334,21 +337,19 @@ class Database:
         id_sources = eval(df["id_sources"][0])
         if sources == []:
             sources = None
-
         return {
             "peptide": {
                 "sequence": sequence,
                 "is_canon": is_canon,
                 "swissprot_id": swissprot_id,
-                "physicochemical_properties": {
-                    "table": phy_prop_table
-                },
+                "physicochemical_properties": phy_prop_table,
                 "activities": activities,
                 "id_activities": id_activities,
                 "sources": sources,
                 "id_sources": id_sources
             }
         }
+    
     def get_peptide_params(self):
         stmt = select(MVPeptideParams)
         df = self.get_table_query(stmt)
@@ -443,7 +444,6 @@ def parse_data_query(query, Model, stmt):
 if __name__ == "__main__":
     db = Database()
     db.create_tables()
-    """
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide.csv", Peptide, chunk=5000)
     print("peptide")
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/source.csv", Source, chunk=100)
@@ -458,12 +458,10 @@ if __name__ == "__main__":
     print("pfam")
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_pfam.csv", PeptideHasPfam, chunk=1000)
     print("peptide_has_pfam")
-    """
-    #db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/gene_ontology.csv", GeneOntology, chunk=1000)
-    #print("go")
-    #db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_go.csv", PeptideHasGO, chunk=1000)
-    #print("peptide_has_go")
-    """
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/gene_ontology.csv", GeneOntology, chunk=1000)
+    print("go")
+    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_go.csv", PeptideHasGO, chunk=1000)
+    print("peptide_has_go")
     db.create_mv(MVPeptidesByDatabase)
     db.create_mv(MVPeptidesByActivity)
     db.create_mv(MVGeneralInformation)
@@ -475,7 +473,6 @@ if __name__ == "__main__":
     db.create_mv(MVPeptideProfile)
     db.create_mv(MVPeptideParams)
     db.create_mv(MVSearchPeptide)
-    db.create_mv(MVFirstLevel) """
-
+    db.create_mv(MVFirstLevel)
     db.create_mv(MVPfamByPeptide)
     db.create_mv(MVGoByPeptide)

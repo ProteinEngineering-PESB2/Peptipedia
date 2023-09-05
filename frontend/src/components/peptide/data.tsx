@@ -14,12 +14,14 @@ interface Props{
 export default function Data({peptide_id}: Props) {
     const [obj, setObj] = useState({})
     const [sequence, setSequence] = useState("")
-    const [table, setTable] = useState({"data": [], "columns": []})
+    const [is_canon, setIsCanon] = useState()
     const [activities, setActivities] = useState([])
     const [id_activities, setIdActivities] = useState([])
     const [sources, setSources] = useState([])
     const [id_sources, setIdSources] = useState([])
     const [swissprot_id, setSwissprotId] = useState(undefined)
+
+    const [phy_table, setPhyTable] = useState(undefined)
     const [pfam_table, setPfamTable] = useState(undefined)
     const [go_table, setGOTable] = useState(undefined)
 
@@ -27,7 +29,8 @@ export default function Data({peptide_id}: Props) {
       try {
         const response = await axios.get(config.peptide.api + peptide_id);
         setSequence(response.data.results.peptide.sequence)
-        setTable(response.data.results.peptide.physicochemical_properties.table)
+        setIsCanon(response.data.results.peptide.is_canon)
+        setPhyTable(response.data.results.peptide.physicochemical_properties)
         setActivities(response.data.results.peptide.activities)
         setIdActivities(response.data.results.peptide.id_activities)
         setSources(response.data.results.peptide.sources)
@@ -42,7 +45,6 @@ export default function Data({peptide_id}: Props) {
               "title": "Non-canon peptide: " + peptide_id
             })
         }
-        
       } catch (error) {
         console.log(error);
       }
@@ -61,8 +63,10 @@ export default function Data({peptide_id}: Props) {
       getSpecificPeptideData();
     }, []);
     useEffect(() => {
-      getEnrichment()
-    }, [sequence])
+      if (is_canon){
+        getEnrichment()
+      }
+    }, [is_canon])
 
     return (
       <>
@@ -87,9 +91,10 @@ export default function Data({peptide_id}: Props) {
             title={"References"}
             redirect={config.peptide.redirect_sources}/>
           </Box>)}
-        <Box sx={{padding: 2}}>
-          <DataTable title={"Physicochemical Properties"} table={table}/>
-        </Box>
+        {(phy_table) &&
+          (<Box sx={{padding: 2}}>
+            <DataTable title={"Physicochemical Properties"} table={phy_table}/>
+          </Box>)}
         {(pfam_table) &&
           (<Box sx={{padding: 2}}>
             <DataTable title={"Pfam"} table={pfam_table}

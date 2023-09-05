@@ -19,7 +19,7 @@ export default function ListItems({activities, id_activities, redirect, title}: 
     window.open(redirect + index)
   }
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box sx={{ width: '100%', maxWidth: 360,}}>
       <Typography variant="h5">
         {title}
       </Typography>

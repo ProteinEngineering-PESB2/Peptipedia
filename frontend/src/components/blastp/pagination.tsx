@@ -19,7 +19,7 @@ export default function PaginationComponent({
 }: PaginationComponentProps) {
   return (
   <>
-    <Button variant="outlined" disabled={pagination.from === 0} onClick={() =>
+    <Button variant="outlined" disabled={pagination.from === 1} onClick={() =>
         setPagination({
           from: pagination.from - step,
           limit: pagination.limit - step,

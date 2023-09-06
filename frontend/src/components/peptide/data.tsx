@@ -13,12 +13,12 @@ interface Props{
 }
 export default function Data({peptide_id}: Props) {
     const [obj, setObj] = useState({})
-    const [sequence, setSequence] = useState("")
+    const [sequence, setSequence] = useState(undefined)
     const [is_canon, setIsCanon] = useState()
-    const [activities, setActivities] = useState([])
-    const [id_activities, setIdActivities] = useState([])
-    const [sources, setSources] = useState([])
-    const [id_sources, setIdSources] = useState([])
+    const [activities, setActivities] = useState(undefined)
+    const [id_activities, setIdActivities] = useState(undefined)
+    const [sources, setSources] = useState(undefined)
+    const [id_sources, setIdSources] = useState(undefined)
     const [swissprot_id, setSwissprotId] = useState(undefined)
 
     const [phy_table, setPhyTable] = useState(undefined)
@@ -73,12 +73,16 @@ export default function Data({peptide_id}: Props) {
         <Box sx={{ padding: 2 }}>
           <Front obj={obj}/>
         </Box>
-        <Box sx={{ padding: 2 }}>
-          <PeptideSequence sequence = {sequence}/>
-        </Box>
-        <Box sx={{ padding: 2 }}>
-          <Structure pdb_id={swissprot_id} ></Structure>
-        </Box>
+        {(sequence) && (
+          <Box sx={{ padding: 2 }}>
+            <PeptideSequence sequence = {sequence}/>
+          </Box>
+        )}
+        {(swissprot_id) && (
+            <Box sx={{ padding: 2 }}>
+              <Structure pdb_id={swissprot_id} ></Structure>
+            </Box>
+          )}
         {(activities) &&
           (<Box sx={{ padding: 2 }}>
             <ListItems activities={ activities } id_activities={id_activities}
@@ -96,14 +100,14 @@ export default function Data({peptide_id}: Props) {
             <DataTable title={"Physicochemical Properties"} table={phy_table}/>
           </Box>)}
         {(pfam_table) &&
-          (<Box sx={{padding: 2}}>
+          (<Box sx={{padding: 2, cursor: "pointer"}}>
             <DataTable title={"Pfam"} table={pfam_table}
             redirect_api={config.peptide.pfam_page}
             />
           </Box>)
         }
         {(go_table) &&
-          (<Box sx={{padding: 2}}>
+          (<Box sx={{padding: 2, cursor: "pointer"}}>
             <DataTable title={"Gene Ontology"} table={go_table}
             redirect_api={config.peptide.go_page}
             />

@@ -21,20 +21,21 @@ export default function SliderForm({label, params, param_name, setQuery, query}:
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
   };
-  
+  const title = label.charAt(0).toUpperCase() + label.slice(1).replace("_", " ");
   useEffect(() => {
     setQuery({ ...query, [param_name]: value})
   }, [value]);
 
   return (
     <FormControl sx={{ m: 1 }} fullWidth>
-      <FormLabel>{label} [{value[0]} - {value[1]}]</FormLabel>
+      <FormLabel>{title} [{value[0]} - {value[1]}]</FormLabel>
       <Slider
         value={value}
         onChange={handleChange}
         valueLabelDisplay="auto"
         min={params.min}
         max={params.max}
+        step={0.2}
       />
     </FormControl>
   )

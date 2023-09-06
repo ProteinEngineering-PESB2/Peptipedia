@@ -86,7 +86,7 @@ export default function Form(){
       </Box>
       <Button variant="contained" sx={{m:1}} onClick = {() => search()} >Search</Button>
       {(showResults === true)&& (
-        <Box margin={1} boxShadow={3}>
+        <Box margin={1} boxShadow={3} sx= {{cursor: "pointer"}}>
           <SequencesDataTable title ="Results"
             page = {page}
             setPage = {setPage}

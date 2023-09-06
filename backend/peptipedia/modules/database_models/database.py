@@ -64,7 +64,6 @@ class Database:
         
         act = self.get_table_query(stmt)
         for _, row in act.iterrows():
-            print(row["name"])
             stmt = (
                 select(MVSequencesByActivity)
                 .where(MVSequencesByActivity.id_activity == row.id_activity)
@@ -79,7 +78,6 @@ class Database:
         stmt = select(Source)
         act = self.get_table_query(stmt)
         for _, row in act.iterrows():
-            print(row["name"])
             stmt = (
                 select(MVSequencesBySource)
                 .where(MVSequencesBySource.id_source == row.id_source)
@@ -444,7 +442,7 @@ def parse_data_query(query, Model, stmt):
 if __name__ == "__main__":
     db = Database()
     db.create_tables()
-    db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide.csv", Peptide, chunk=5000)
+    """db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide.csv", Peptide, chunk=5000)
     print("peptide")
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/source.csv", Source, chunk=100)
     print("source")
@@ -459,7 +457,7 @@ if __name__ == "__main__":
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_pfam.csv", PeptideHasPfam, chunk=1000)
     print("peptide_has_pfam")
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/gene_ontology.csv", GeneOntology, chunk=1000)
-    print("go")
+    print("go")"""
     db.insert_data("~/Documentos/peptipedia_parser_scripts/tables/peptide_has_go.csv", PeptideHasGO, chunk=1000)
     print("peptide_has_go")
     db.create_mv(MVPeptidesByDatabase)
@@ -474,5 +472,7 @@ if __name__ == "__main__":
     db.create_mv(MVPeptideParams)
     db.create_mv(MVSearchPeptide)
     db.create_mv(MVFirstLevel)
+    db.create_mv(MVActivitiesListed)
+    db.create_mv(MVSourcesListed)
     db.create_mv(MVPfamByPeptide)
     db.create_mv(MVGoByPeptide)

@@ -95,16 +95,17 @@
           "description": "Peptitools, a user-friendly web platform for peptide analysis.",
           "icon": "https://www.svgrepo.com/show/509077/database.svg",
           "button": "Visit Peptitools",
-          "redirect": "https://peptipedia.cl/peptitools/"
+          "redirect": "/peptitools/"
         }
       ]
     },
     "cites": {
-      "title": "How to Cite",
       "data": [
         {
-          "cite": "Quiroz C, Saavedra YB, Armijo-Galdames B, Amado-Hinojosa J, Olivera-Nappa Á, Sanchez-Daza A, Medina-Ortiz D. Peptipedia: a user-friendly web application and a comprehensive database for peptide research supported by Machine Learning approach. Database (Oxford). 2021 Sep 3;2021:baab055. doi: 10.1093/database/baab055. PMID: 34478499; PMCID: PMC8415426.\nCabas Mora G, Olivera-Nappa Á and Medina Ortiz D. Facilitating the study of peptides sequences using machine learning strategies and bioinformatics tools. [version 1; not peer reviewed]. F1000Research 2023, 12:967 (poster) (https://doi.org/10.7490/f1000research.1119568.1)",
-          "link": "https://pubmed.ncbi.nlm.nih.gov/34478499/"
+          "cite": "Quiroz C, Saavedra YB, Armijo-Galdames B, Amado-Hinojosa J, Olivera-Nappa Á, Sanchez-Daza A, Medina-Ortiz D. Peptipedia: a user-friendly web application and a comprehensive database for peptide research supported by Machine Learning approach. Database (Oxford). 2021 Sep 3;2021:baab055. doi: 10.1093/database/baab055. PMID: 34478499; PMCID: PMC8415426."
+        },
+        {
+          "cite": "Cabas Mora G, Olivera-Nappa Á and Medina Ortiz D. Facilitating the study of peptides sequences using machine learning strategies and bioinformatics tools. [version 1; not peer reviewed]. F1000Research 2023, 12:967 (poster) (https://doi.org/10.7490/f1000research.1119568.1)"
         }
       ]
     },
@@ -145,7 +146,7 @@
   
   "activities": {
     "title": "Activities",
-    "description": "The database has a large number of peptides with reported biological activity. We have ordered the activities in a hierarchical way, arranging from general activities (such as therapeutic, immunological or signal peptides) to more specific ones (such as anti-coronavirus or anti-HIV). In addition, we have analyzed the promiscuity of peptides to belong between groups.",
+    "description": "Peptipedia has the highest amount of peptides with reported biological activity. We have created a hierarchical way to sort the peptides by its biological activity, considering from general activities (such as therapeutic, immunological or signal peptides) to more specific ones (such as anti-coronavirus or anti-HIV). Furthermore, we have analyzed the promiscuity of peptides to belong between groups, studying the moonlight effects.",
     "route": "/activities",
     "table_api": "/api/get_count_activities_table/",
     "plot_api": "/api/get_count_activities_plot/",
@@ -155,7 +156,7 @@
 
   "sources": {
     "title": "Sources",
-    "description": "To populate the database, various sources of information about peptides were collected, such as repositories, smaller databases, as well as machine learning projects with known sequences. This large number of sources allows having a huge number of peptides reported in this application.",
+    "description": "We have collected information from different available sources to populate the Peptipedia database. We considered repositories, small datasets,  and previously reported databases in the literature. This large number of sources allows having a considerable number of peptides reported in this application.",
     "route": "/sources",
     "api": "/api/get_count_sources/",
     "redirect": "/source/"
@@ -163,7 +164,7 @@
 
   "search": {
     "title": "Search",
-    "description": "Adjust the params to filter and search against Peptipedia Database",
+    "description": "Adjust the params to filter and search against Peptipedia database.",
     "route": "/search",
     "params_api": "/api/get_peptide_params/",
     "count_api": "/api/get_count_search/",
@@ -173,7 +174,7 @@
 
   "alignment": {
     "title": "Alignment",
-    "description": "Execute Blastp against canonical peptides from Peptipedia database",
+    "description": "Execute Blastp against canonical peptides from Peptipedia database.",
     "route": "/alignment"
   },
 
@@ -201,5 +202,8 @@
     "api": "/api/get_source/",
     "sequences_api": "/api/get_sequences_by_source/",
     "redirect": "/peptide/"
+  },
+  "peptitools": {
+    "route": "/peptitools/"
   }
 }

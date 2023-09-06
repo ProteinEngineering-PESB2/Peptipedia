@@ -7,7 +7,9 @@ interface Props {
   count?: number;
   redirect_api?: string;
   table_api: string;
-  query: {}
+  query: {};
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function SequencesDataTable({ page, setPage, title, table_api, query,

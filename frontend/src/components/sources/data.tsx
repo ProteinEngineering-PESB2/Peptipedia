@@ -8,7 +8,7 @@ export default function Data() {
   return (
     <>
       <Box sx={{ padding: 2 , cursor: "pointer"}}>
-        <DataTable table={table} title={"Sources"}
+        <DataTable table={table} title={"List sources"}
         redirect_api = {config.sources.redirect}/>
       </Box>
     </>

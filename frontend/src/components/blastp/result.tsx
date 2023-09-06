@@ -37,7 +37,7 @@ interface ResultDownload {
 export default function AlignmentSequenceResult({ results }: AlignmentSequenceResultProps) {
   // States
   const [pagination, setPagination] = useState<IPagination>({
-    from: 0,
+    from: 1,
     limit: 20,
   });
   const [resultsDownload, setResultsDownload] = useState<ResultDownload>({
@@ -81,7 +81,7 @@ export default function AlignmentSequenceResult({ results }: AlignmentSequenceRe
       <Box m={2}>
         <h3>Found {results.length} hits.</h3>
         {
-          (pagination.limit < results.length) &&
+          (pagination.limit <= results.length) &&
           (<h4>Showing {pagination.from} to {pagination.limit}</h4>) ||
           (<h4>Showing {pagination.from} to {results.length}</h4>)
         }

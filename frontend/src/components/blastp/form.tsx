@@ -2,24 +2,30 @@ import { TextField, FormControl, Button, Paper, Box, Grid} from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 import AlignmentSequenceResult from "./result";
+import BackdropComponent from "../common/backdrop";
 
 export default function Form() {
+
+  const [is_waiting, setIsWaiting] = useState(false)
   const [fasta_text, setFastaText] = useState("")
   const [results, setResults] = useState([])
+  const [display_results, setDisplayResults] = useState(false)
   const run_blast = async ()=>{
     try {
+        setIsWaiting(true)
+        setDisplayResults(false)
         const response = await axios.post("/api/execute_blast/", {"fasta_text": fasta_text})
         setResults(response.data.results.data)
+        setDisplayResults(true)
+        setIsWaiting(false)
     } catch (error){
         console.log(error)
     }
   }
-  useEffect(()=>{
-    console.log(results.length)
-  }, [results])
   
   return (
   <>
+  <BackdropComponent open = {is_waiting}/>
   <Grid item xs={12} sm={12} md={9} lg={12} xl={4}>
     <Box margin={1} boxShadow={3}>
       <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
@@ -43,7 +49,7 @@ export default function Form() {
       </Paper>
     </Box>
   </Grid>
-  {(results.length > 0)&&(
+  {(display_results)&&(
     <AlignmentSequenceResult results = {results}></AlignmentSequenceResult>
   )}
   </>

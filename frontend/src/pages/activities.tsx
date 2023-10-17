@@ -9,13 +9,14 @@ import CustomizedTreeView from "../components/activities/tree"
 import Plot from "../components/activities/plot";
 import { Grid } from "@mui/material";
 import Chord from "../components/activities/chord";
+import {useState} from "react";
 
 export default function Activities() {
   const obj = config.activities;
   useHandleSection({ section: "activities" });
   useLoadingComponent();
   return (
-    <DashboardLayout>
+    <DashboardLayout >
       <>
         <Box sx={{ padding: 2 }}>
           <Front obj={obj}/>

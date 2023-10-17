@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 export interface IPagination {
   from: number;
   limit: number;
@@ -18,7 +18,7 @@ export default function PaginationComponent({
   step,
 }: PaginationComponentProps) {
   return (
-  <>
+  <Grid container justifyContent="flex-end">
     <Button variant="outlined" disabled={pagination.from === 1} onClick={() =>
         setPagination({
           from: pagination.from - step,
@@ -32,7 +32,7 @@ export default function PaginationComponent({
           limit: pagination.limit + step,
         })
       }
-      >Next</Button>
-    </> 
+    >Next</Button>
+  </Grid>
   );
 }

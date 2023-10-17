@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 import ListItems from "./list_items";
 import Structure from "./structure";
 import Front from "./front";
+import BackdropComponent from "../common/backdrop";
+
 interface Props{
     peptide_id: string;
 }
@@ -25,8 +27,11 @@ export default function Data({peptide_id}: Props) {
     const [pfam_table, setPfamTable] = useState(undefined)
     const [go_table, setGOTable] = useState(undefined)
 
+    const [is_waiting, setIsWaiting] = useState(false)
+
     const getSpecificPeptideData = async () => {
       try {
+        setIsWaiting(true)
         const response = await axios.get(config.peptide.api + peptide_id);
         setSequence(response.data.results.peptide.sequence)
         setIsCanon(response.data.results.peptide.is_canon)
@@ -45,6 +50,8 @@ export default function Data({peptide_id}: Props) {
               "title": "Non-canon peptide: " + peptide_id
             })
         }
+        setIsWaiting(false)
+
       } catch (error) {
         console.log(error);
       }
@@ -52,9 +59,11 @@ export default function Data({peptide_id}: Props) {
     
     const getEnrichment = async () =>{
       try {
+        setIsWaiting(true)
         const response = await axios.get(config.peptide.enrichment_api + peptide_id);
         setPfamTable(response.data.results.pfam)
         setGOTable(response.data.results.go)
+        setIsWaiting(false)
       } catch (error) {
         console.log(error);
       }
@@ -62,6 +71,7 @@ export default function Data({peptide_id}: Props) {
     useEffect(() => {
       getSpecificPeptideData();
     }, []);
+
     useEffect(() => {
       if (is_canon){
         getEnrichment()
@@ -70,6 +80,7 @@ export default function Data({peptide_id}: Props) {
 
     return (
       <>
+      <BackdropComponent open={is_waiting}></BackdropComponent>
         <Box sx={{ padding: 2 }}>
           <Front obj={obj}/>
         </Box>

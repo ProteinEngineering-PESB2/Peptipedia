@@ -5,15 +5,15 @@ import { Main } from "../layout/main";
 import { DrawerHeader } from "../layout/drawer_header";
 import Entities from "../layout/entities"
 import Aside from "../layout/aside";
-
+import BackdropComponent from "./backdrop";
 import Background from "../../assets/layout/fondo.jpg";
 interface Props {
   children: ReactElement;
+  is_waiting: boolean;
 }
 
-function DashboardLayout({ children }: Props) {
-
-  return (
+function DashboardLayout({ children}: Props) {
+  return (<>
     <Box
       sx={{
         display: "flex",
@@ -37,6 +37,7 @@ function DashboardLayout({ children }: Props) {
         </Box>
       </Main>
     </Box>
+    </>
   );
 }
 

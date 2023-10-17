@@ -422,21 +422,23 @@ def parse_data_query(query, Model, stmt):
     if "swissprot_id" in query.keys():
         stmt = stmt.where(Model.swissprot_id == query["swissprot_id"])
 
-    if "length" in query.keys():
-        stmt = stmt.where(Model.length >= query["length"][0])
-        stmt = stmt.where(Model.length <= query["length"][1])
-        
-    if "molecular_weight" in query.keys():
-        stmt = stmt.where(Model.molecular_weight >= query["molecular_weight"][0])
-        stmt = stmt.where(Model.molecular_weight <= query["molecular_weight"][1])
-        
-    if "charge" in query.keys():
-        stmt = stmt.where(Model.charge >= query["charge"][0])
-        stmt = stmt.where(Model.charge <= query["charge"][1])
-    
     if "activities" in query.keys():
         for act in query["activities"]:
             stmt = stmt.where(Model.activities.any(act))
+
+    if query["is_canon"] != False:
+        if "length" in query.keys():
+            stmt = stmt.where(Model.length >= query["length"][0])
+            stmt = stmt.where(Model.length <= query["length"][1])
+            
+        if "molecular_weight" in query.keys():
+            stmt = stmt.where(Model.molecular_weight >= query["molecular_weight"][0])
+            stmt = stmt.where(Model.molecular_weight <= query["molecular_weight"][1])
+            
+        if "charge" in query.keys():
+            stmt = stmt.where(Model.charge >= query["charge"][0])
+            stmt = stmt.where(Model.charge <= query["charge"][1])
+    
     return stmt
 
 if __name__ == "__main__":

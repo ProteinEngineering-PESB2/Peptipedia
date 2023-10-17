@@ -9,7 +9,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import SequencesDataTable from "./sequences_datatable";
 import config from "../../config.json";
 import Check from "./canon";
-
+import BackdropComponent from "../common/backdrop";
 export default function Form(){
   const [page, setPage] = useState(1)
   const [query, setQuery] = useState({})
@@ -18,7 +18,7 @@ export default function Form(){
   const [count, setCount] = useState(undefined)
   const [showResults, setShowResults] = useState(false)
   const [show_physicochemical_params, setShowPhysicochemicalParams] = useState(false)
-
+  const [is_waiting, setIsWaiting] = useState(false)
   const getParams = async () => {
     try {
       const response = await axios.get(config.search.params_api);
@@ -31,10 +31,12 @@ export default function Form(){
 
   const search = async () =>{
     try{
+      setIsWaiting(true)
       const response = await axios.post(config.search.count_api, query)
       setShowResults(true)
       setCount(response.data.results.count)
       setPage(0)
+      setIsWaiting(false)
     } catch (error){
       console.log(error)
     }
@@ -44,6 +46,7 @@ export default function Form(){
   }, []);
   return (
     <>
+      <BackdropComponent open={is_waiting}/>
       <Box margin={1} boxShadow={3}>
         <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
           <TextInput
@@ -68,8 +71,8 @@ export default function Form(){
           <Divider sx={{m:3}}>
             <Button onClick={()=>setShowPhysicochemicalParams(!show_physicochemical_params)}>
               {show_physicochemical_params
-              ? <RemoveCircleOutlineIcon/>
-              : <AddCircleOutlineIcon/> }
+              ? <RemoveCircleOutlineIcon color = "info"/>
+              : <AddCircleOutlineIcon  color = "info" /> }
             </Button>
           </Divider>
           {(show_physicochemical_params) && (
@@ -82,9 +85,11 @@ export default function Form(){
               )
             )
           )}
+          <Button variant="contained" sx={{m:1 ,width: { xl: "12rem", lg: "12rem", md: "12rem", sm: "12rem", xs: "100%" },}} onClick = {() => search()} >Search</Button>
         </Paper>
+        
       </Box>
-      <Button variant="contained" sx={{m:1}} onClick = {() => search()} >Search</Button>
+      
       {(showResults === true)&& (
         <Box margin={1} boxShadow={3} sx= {{cursor: "pointer"}}>
           <SequencesDataTable title ="Results"

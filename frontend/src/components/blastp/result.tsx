@@ -85,7 +85,6 @@ export default function AlignmentSequenceResult({ results }: AlignmentSequenceRe
           (<h4>Showing {pagination.from} to {pagination.limit}</h4>) ||
           (<h4>Showing {pagination.from} to {results.length}</h4>)
         }
-        
       </Box>
       <PaginationComponent
         pagination={pagination}
@@ -95,7 +94,7 @@ export default function AlignmentSequenceResult({ results }: AlignmentSequenceRe
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
         {results
-          .slice(pagination.from, pagination.limit)
+          .slice(pagination.from - 1, pagination.limit)
           .map((result: AlignmentSequenceCardProps, index: number) => (
             <AlignmentSequenceCard
               key={index}

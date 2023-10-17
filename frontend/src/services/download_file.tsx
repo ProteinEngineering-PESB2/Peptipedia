@@ -8,7 +8,6 @@ interface Props {
 
 export const downloadFile = async ({ url, name}: Props): Promise<any> => {
   try {
-    console.log("descargando", url)
     const res = await axios({
       url: url,
       method: "GET",

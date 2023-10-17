@@ -71,6 +71,6 @@ class BlastAlignment:
         """Runs blastp full process"""
         self.__execute_blastp()
         res = self.__parse_response()
-        if res:
+        if res is not None:
             return {"data": res}
         return {"error": "No significant results"}

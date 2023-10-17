@@ -15,9 +15,10 @@ export default function Chord(){
     useEffect(()=>{
         get_data()
     }, [])
-    useEffect(()=>{
-        console.log(data)
-    }, [data])
 
-    return(<ChordChart data = {data}/>)
+    return(
+        <>
+            <ChordChart data = {data}/>
+        </>
+    )
 }

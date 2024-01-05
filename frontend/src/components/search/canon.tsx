@@ -24,7 +24,7 @@ export default function Check({query, setQuery}:Props){
         <Switch 
           checked={canon}
           onChange={handleChange}/>
-      } label="Canonical peptides" />
+      } label="Only canonical peptides" />
     </FormControl>
   )
 }

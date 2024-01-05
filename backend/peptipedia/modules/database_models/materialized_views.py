@@ -169,6 +169,10 @@ class MVPeptideProfile(Base):
     sequence = Column(String)
     swissprot_id = Column(String)
     is_canon = Column(Boolean)
+    keyword = Column(ARRAY(String))
+    pubmed = Column(ARRAY(String))
+    doi = Column(ARRAY(String))
+    patent = Column(ARRAY(String))
     length = Column(Float)
     molecular_weight = Column(Float)
     charge = Column(Float)
@@ -190,6 +194,10 @@ class MVPeptideProfile(Base):
             p.sequence,
             p.swissprot_id,
             p.is_canon,
+            p.pubmed,
+            p.doi,
+            p.patent,
+            p.keyword,
             p.length,
             p.molecular_weight,
             p.charge,
@@ -342,13 +350,12 @@ class MVPfamByPeptide(Base):
     hmm_name = Column(String)
     type = Column(String)
     clan = Column(String)
-    e_value = Column(Float)
 
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
         select php.id_peptide,
-        php.e_value, p.hmm_acc, p.hmm_name,
+        p.hmm_acc, p.hmm_name,
         p.type, p.clan
         from peptide_has_pfam php
         join pfam as p on p.id_pfam = php.id_pfam;
@@ -360,7 +367,6 @@ class MVGoByPeptide(Base):
     __tablename__ = "go_by_peptide"
     id_peptide = Column(Integer, nullable=False, primary_key=True)
     accession = Column(String)
-    probability = Column(Float)
     term = Column(String)
     description = Column(String)
     source = Column(String)
@@ -368,7 +374,7 @@ class MVGoByPeptide(Base):
         return f"""
         create materialized view {self.__tablename__} as
         select phgo.id_peptide,
-        phgo.probability, go.accession,
+        go.accession,
         go.term, go.description, go.source
         from peptide_has_go phgo
         join gene_ontology go on phgo.id_go = go.id_go;

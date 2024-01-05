@@ -25,7 +25,7 @@ function DashboardLayout({ children}: Props) {
       }}
       style={{ backgroundImage: `url(${Background})` }}
     >
-      <CssBaseline />
+      {/* <CssBaseline /> */}
 
       <Aside />
 

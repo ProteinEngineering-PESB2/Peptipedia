@@ -3,6 +3,7 @@ from sqlalchemy import Column, Float, Boolean, Date
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
+from sqlalchemy import ARRAY
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -15,12 +16,14 @@ class Peptide(Base):
     sequence = Column(String, nullable = False)
     is_canon = Column(Boolean, nullable = False)
     swissprot_id = Column(String, nullable=True)
+    """
     ss3 = Column(String, nullable=True)
     ss8 = Column(String, nullable=True)
     acc = Column(String, nullable=True)
     diso = Column(String, nullable=True)
     tm2 = Column(String, nullable=True)
     tm8 = Column(String, nullable=True)
+    """
     act_date = Column(Date, nullable=True)
     length = Column(Integer, nullable=True)
     molecular_weight = Column(Float, nullable=True)
@@ -32,6 +35,11 @@ class Peptide(Base):
     aliphatic_index = Column(Float, nullable=True)
     boman_index = Column(Float, nullable=True)
     hydrophobic_ratio = Column(Float, nullable=True)
+    
+    keyword = Column(ARRAY(String), nullable=True)
+    pubmed = Column(ARRAY(String), nullable=True)
+    patent = Column(ARRAY(String), nullable=True)
+    doi = Column(ARRAY(String), nullable=True)
     
     peptide_has_source_r = relationship("PeptideHasSource")
     peptide_has_activity_r = relationship("PeptideHasActivity")

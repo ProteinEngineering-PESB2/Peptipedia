@@ -30,7 +30,7 @@ function ChordChart({ data }: DependecyWheelProps) {
 
   return (
     <HighchartsProvider Highcharts={Highcharts}>
-      <HighchartsChart>
+      <HighchartsChart containerProps={{ style: { height: 1000 } }}>
         <Title>Promiscuity between peptides</Title>
 
         <XAxis type="category" />

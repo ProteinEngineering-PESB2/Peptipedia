@@ -18,7 +18,7 @@ export default function Chord(){
 
     return(
         <>
-            <ChordChart data = {data}/>
+            <ChordChart data = {data} />
         </>
     )
 }

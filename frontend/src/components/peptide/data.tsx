@@ -9,6 +9,8 @@ import ListItems from "./list_items";
 import Structure from "./structure";
 import Front from "./front";
 import BackdropComponent from "../common/backdrop";
+import { Typography } from "@mui/material";
+import Cite from "./cite";
 
 interface Props{
     peptide_id: string;
@@ -22,6 +24,9 @@ export default function Data({peptide_id}: Props) {
     const [sources, setSources] = useState(undefined)
     const [id_sources, setIdSources] = useState(undefined)
     const [swissprot_id, setSwissprotId] = useState(undefined)
+    const [keyword, setKeyword] = useState(undefined)
+    const [pubmed, setPubmed] = useState([])
+
 
     const [phy_table, setPhyTable] = useState(undefined)
     const [pfam_table, setPfamTable] = useState(undefined)
@@ -41,15 +46,20 @@ export default function Data({peptide_id}: Props) {
         setSources(response.data.results.peptide.sources)
         setIdSources(response.data.results.peptide.id_sources)
         setSwissprotId(response.data.results.peptide.swissprot_id)
-        if (response.data.results.peptide.is_canon){
-          setObj({
-            "title": "Canon peptide: " + peptide_id
-          })
-        } else{
-            setObj({
-              "title": "Non-canon peptide: " + peptide_id
-            })
+        setKeyword(response.data.results.peptide.keyword)
+        setPubmed(response.data.results.peptide.pubmed)
+        let title = "Peptide " + peptide_id
+        if (swissprot_id){
+          title = title + "-" + swissprot_id
         }
+        if (response.data.results.peptide.is_canon){
+          title = title + " (canonical)"
+        } else {
+          title = title + " (non-canonical)"
+        }
+        setObj({
+          "title": title
+        })
         setIsWaiting(false)
 
       } catch (error) {
@@ -77,6 +87,10 @@ export default function Data({peptide_id}: Props) {
         getEnrichment()
       }
     }, [is_canon])
+    useEffect(()=>{
+      console.log(keyword)
+      console.log(pubmed)
+    }, [keyword, pubmed])
 
     return (
       <>
@@ -89,11 +103,20 @@ export default function Data({peptide_id}: Props) {
             <PeptideSequence sequence = {sequence}/>
           </Box>
         )}
-        {(swissprot_id) && (
+        {(keyword) &&
+        (<Box sx={{padding: 2, cursor: "pointer"}}>
+          <Typography variant="subtitle1" sx={{ fontStyle: 'italic',
+            textAlign: 'center'}}>
+          Activity keywords: {keyword}
+
+          </Typography>
+        </Box>)
+          }
+        {/* {(swissprot_id) && (
             <Box sx={{ padding: 2 }}>
               <Structure pdb_id={swissprot_id} ></Structure>
             </Box>
-          )}
+          )} */}
         {(activities) &&
           (<Box sx={{ padding: 2 }}>
             <ListItems activities={ activities } id_activities={id_activities}
@@ -103,7 +126,7 @@ export default function Data({peptide_id}: Props) {
         {(sources) &&
           (<Box sx={{ padding: 2 }}>
             <ListItems activities={ sources } id_activities={id_sources}
-            title={"References"}
+            title={"Sources"}
             redirect={config.peptide.redirect_sources}/>
           </Box>)}
         {(phy_table) &&
@@ -122,6 +145,11 @@ export default function Data({peptide_id}: Props) {
             <DataTable title={"Gene Ontology"} table={go_table}
             redirect_api={config.peptide.go_page}
             />
+          </Box>)
+        }
+        {(pubmed && pubmed.length >= 1) &&
+          (<Box sx={{padding: 2, cursor: "pointer"}}>
+            <Cite cite_data = {pubmed}></Cite>
           </Box>)
         }
       </>

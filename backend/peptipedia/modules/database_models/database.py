@@ -10,6 +10,7 @@ from peptipedia.modules.database_models.table_models import Base as BaseTables
 import networkx as nx
 from networkx.readwrite import json_graph
 from itertools import combinations
+import metapub
 
 class Database:
     """Database class"""
@@ -39,6 +40,7 @@ class Database:
         """Insert data from csv files"""
         tablename = model.__tablename__
         data = pd.read_csv(data_file, low_memory=False)
+
         data.to_sql(tablename,
             con = self.engine,
             if_exists = "append",
@@ -67,7 +69,7 @@ class Database:
             print(f"Creating download {row.name}")
             stmt = (
                 select(MVSequencesByActivity)
-                .where(MVSequencesByActivity.id_activity == row.id_activity))
+                .where(MVSequencesByActivity.id_activity == row.id_activity)).limit(10)
             df = self.get_table_query(stmt)
             fasta_text = ""
             for _,row_df in df.iterrows():
@@ -81,7 +83,7 @@ class Database:
             print(f"Creating download {row.name}")
             stmt = (
                 select(MVSequencesBySource)
-                .where(MVSequencesBySource.id_source == row.id_source))
+                .where(MVSequencesBySource.id_source == row.id_source)).limit(10)
             df = self.get_table_query(stmt)
             fasta_text = ""
             for _,row_df in df.iterrows():
@@ -93,7 +95,7 @@ class Database:
         """Create fasta in files folder"""
         #Deja los péptidos en fasta en la carpeta 
         print("Creando fasta para blast")
-        stmt = select(Peptide.id_peptide, Peptide.sequence).where(Peptide.is_canon == True)
+        stmt = select(Peptide.id_peptide, Peptide.sequence).where(Peptide.is_canon == True).limit(10)
         peptides = self.get_table_query(stmt)
         fasta_text = ""
         for _,row in peptides.iterrows():
@@ -305,6 +307,16 @@ class Database:
         df = df.astype(str)
         sequence = dict(df.iloc[0])["sequence"]
         swissprot_id = dict(df.iloc[0])["swissprot_id"]
+        keyword = eval(dict(df.iloc[0])["keyword"])
+        keyword = " - ".join(keyword)
+        pubmed = eval(dict(df.iloc[0])["pubmed"])
+        patent = eval(dict(df.iloc[0])["patent"])
+        citations = []
+        if isinstance(pubmed, list):
+            fetcher = metapub.PubMedFetcher()
+            for id in pubmed:
+                f = fetcher.article_by_pmid(id)
+                citations.append(f.citation)
 
         if swissprot_id == "None":
             swissprot_id = None
@@ -341,6 +353,9 @@ class Database:
                 "sequence": sequence,
                 "is_canon": is_canon,
                 "swissprot_id": swissprot_id,
+                "keyword": keyword,
+                "pubmed": citations,
+                "patent": patent,
                 "physicochemical_properties": phy_prop_table,
                 "activities": activities,
                 "id_activities": id_activities,
@@ -415,7 +430,8 @@ def split_sequence(sequence):
 
 def parse_data_query(query, Model, stmt):
     if "is_canon" in query.keys():
-        stmt = stmt.where(Model.is_canon == query["is_canon"])
+        if query["is_canon"]:
+            stmt = stmt.where(Model.is_canon == query["is_canon"])
 
     if "sequence" in query.keys():
         stmt = stmt.where(Model.sequence.like(f'%{query["sequence"]}%'))
@@ -445,8 +461,9 @@ def parse_data_query(query, Model, stmt):
 if __name__ == "__main__":
     path_to_tables = "~/Documentos/peptipedia_parser_scripts/tables/"
     db = Database()
+    """
     db.create_tables()
-    db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=5000)
+    db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=1000)
     print("peptide")
     db.insert_data(f"{path_to_tables}source.csv", Source, chunk=100)
     print("source")
@@ -464,6 +481,7 @@ if __name__ == "__main__":
     print("go")
     db.insert_data(f"{path_to_tables}peptide_has_go.csv", PeptideHasGO, chunk=1000)
     print("peptide_has_go")
+    """
     db.create_mv(MVPeptidesByDatabase)
     db.create_mv(MVPeptidesByActivity)
     db.create_mv(MVGeneralInformation)

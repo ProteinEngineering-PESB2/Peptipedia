@@ -1,5 +1,5 @@
 import { TextField, FormControl, Button, Paper, Box, Grid} from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import AlignmentSequenceResult from "./result";
 import BackdropComponent from "../common/backdrop";

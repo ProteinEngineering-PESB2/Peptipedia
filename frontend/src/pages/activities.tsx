@@ -31,11 +31,11 @@ export default function Activities() {
             </Grid>
           </Grid>
         </Box>
-        <Box sx={{ padding : 2 }}>
-          <Chord/>
-        </Box>
         <Box sx={{ padding: 2}}>
           <Data/>
+        </Box>
+        <Box sx={{ padding : 2 }}>
+          <Chord/>
         </Box>
       </>
     </DashboardLayout>

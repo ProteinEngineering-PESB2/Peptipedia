@@ -448,7 +448,6 @@ def parse_data_query(query, model, stmt):
 if __name__ == "__main__":
     path_to_tables = "~/Documentos/peptipedia_parser_scripts/tables/"
     db = Database()
-    """
     db.create_tables()
     db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=10000)
     print("peptide")
@@ -477,7 +476,7 @@ if __name__ == "__main__":
     db.create_mv(MVSequencesByActivity)
     db.create_mv(MVSequencesBySource)
     db.create_mv(MVActivitiesListed)
-    db.create_mv(MVSourcesListed)"""
+    db.create_mv(MVSourcesListed)
     db.create_mv(MVPeptideProfile)
     db.create_mv(MVPeptideParams)
     db.create_mv(MVSearchPeptide)

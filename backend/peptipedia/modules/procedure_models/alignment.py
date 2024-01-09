@@ -1,6 +1,4 @@
 """Blast alignment module"""
-from re import split
-import pandas as pd
 import peptipedia.config as config
 from Bio.Blast.Applications import NcbiblastpCommandline
 import json

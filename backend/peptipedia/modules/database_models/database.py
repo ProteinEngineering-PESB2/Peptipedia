@@ -1,4 +1,5 @@
 """Database functionalities module"""
+# pylint: disable=not-callable
 import pandas as pd
 from sqlalchemy import create_engine, text,select, func
 from sqlalchemy.orm import Session
@@ -10,7 +11,6 @@ from peptipedia.modules.database_models.table_models import Base as BaseTables
 import networkx as nx
 from networkx.readwrite import json_graph
 from itertools import combinations
-import metapub
 
 class Database:
     """Database class"""
@@ -40,7 +40,8 @@ class Database:
         """Insert data from csv files"""
         tablename = model.__tablename__
         data = pd.read_csv(data_file, low_memory=False)
-
+        #data = data.loc[::-1]
+        #data = data.loc[:1000]
         data.to_sql(tablename,
             con = self.engine,
             if_exists = "append",
@@ -63,7 +64,6 @@ class Database:
 
     def create_downloads(self):
         stmt = select(Activity)
-        
         act = self.get_table_query(stmt)
         for _, row in act.iterrows():
             print(f"Creating download {row.name}")
@@ -76,7 +76,6 @@ class Database:
                 fasta_text += f">{row_df.id_peptide}\n{row_df.sequence}\n"
             with open(config.downloads_folder + "/"+ row["name"] +".fasta", mode="w", encoding="utf-8") as file:
                 file.write(fasta_text)
-
         stmt = select(Source)
         act = self.get_table_query(stmt)
         for _, row in act.iterrows():
@@ -153,7 +152,7 @@ class Database:
                 "y": df_count_activities["count_peptide"].to_list(),
             }
         }
-    
+
     def get_count_activities_plot(self):
         stmt_count_activities = select(MVPeptidesByActivity).where(MVPeptidesByActivity.id_parent==None)
         df_count_activities = self.get_table_query(stmt_count_activities)
@@ -189,7 +188,7 @@ class Database:
             "description": df["description"][0],
             "count": int(df["count_peptide"][0])
         }
-    
+
     def get_source(self, id_source):
         stmt_source = select(MVPeptidesByDatabase).where(MVPeptidesByDatabase.id_source == id_source)
         df = self.get_table_query(stmt_source)
@@ -200,7 +199,7 @@ class Database:
             "url": df["url"][0],
             "count": int(df["count_peptide"][0])
         }
-    
+
     def get_sequences_by_activity(self, id_activity, data):
         limit = data["rowsPerPage"]
         page = data["page"]
@@ -235,12 +234,10 @@ class Database:
         if search_text is not None:
             stmt_sequences = stmt_sequences.where(MVSequencesBySource.sequence.contains(search_text))    
         stmt_sequences = stmt_sequences.offset(limit*page).limit(limit)
-
         df_canon = self.get_table_query(stmt_sequences)
         df_canon = df_canon.drop(columns = ["id_source", "is_canon"])
         df_canon = df_canon.astype(str)
         df_canon["sequence"] = df_canon["sequence"].map(split_sequence)
-
         return {
             "table":{
                 "data": df_canon.values.tolist(),
@@ -269,7 +266,7 @@ class Database:
         data = json_graph.tree_data(G, ident= "id", root=0, children="children")
         self.iterate_over_tree(df, data["children"])
         return { "tree": data }
-    
+
     def get_enrichment(self, id_peptide):
         stmt = select(MVPfamByPeptide).where(MVPfamByPeptide.id_peptide == id_peptide)
         pfam = self.get_table_query(stmt)
@@ -287,7 +284,6 @@ class Database:
         go = self.get_table_query(stmt)
         go = go.drop(columns=["id_go", "id_peptide"], errors="ignore")
         go = go.rename(columns = {"accession": "_id"})
-
         if len(go) > 0:
             go_dict = {
                 "data": go.values.tolist(),
@@ -299,7 +295,7 @@ class Database:
             "pfam": pfam_dict,
             "go": go_dict
         }
-    
+
     def get_peptide(self, id_peptide):
         stmt = select(MVPeptideProfile).where(MVPeptideProfile.id_peptide == id_peptide)
         df = self.get_table_query(stmt)
@@ -308,25 +304,19 @@ class Database:
         sequence = dict(df.iloc[0])["sequence"]
         swissprot_id = dict(df.iloc[0])["swissprot_id"]
         keyword = eval(dict(df.iloc[0])["keyword"])
-        keyword = " - ".join(keyword)
-        pubmed = eval(dict(df.iloc[0])["pubmed"])
+        references = eval(dict(df.iloc[0])["reference"])
+        if keyword is not None and keyword is not []:
+            keyword = " - ".join(keyword)
         patent = eval(dict(df.iloc[0])["patent"])
-        citations = []
-        if isinstance(pubmed, list):
-            fetcher = metapub.PubMedFetcher()
-            for id in pubmed:
-                f = fetcher.article_by_pmid(id)
-                citations.append(f.citation)
-
+        if patent is not None and patent is not []:
+            patent = " - ".join(patent)
         if swissprot_id == "None":
             swissprot_id = None
-
-        if is_canon == True:
+        if is_canon:
             phy_prop = df[["length", "molecular_weight", "charge",
                         "charge_density", "instability_index",
                         "aromaticity", "aliphatic_index", "boman_index",
                         "isoelectric_point", "hydrophobic_ratio" ]].T
-            
             phy_prop["property"] = phy_prop.index
             phy_prop["value"] = phy_prop[0]
             phy_prop = phy_prop[["property", "value"]]
@@ -338,7 +328,6 @@ class Database:
             }
         else:
             phy_prop_table = None
-
         activities = eval(df["activities"][0])
         id_activities = eval(df["id_activities"][0])
         if activities == []:
@@ -348,40 +337,47 @@ class Database:
         id_sources = eval(df["id_sources"][0])
         if sources == []:
             sources = None
+        enrichment = self.get_enrichment(id_peptide)
+        pfam = enrichment["pfam"]
+        go = enrichment["go"]
         return {
             "peptide": {
                 "sequence": sequence,
                 "is_canon": is_canon,
                 "swissprot_id": swissprot_id,
                 "keyword": keyword,
-                "pubmed": citations,
+                "pubmed": references,
                 "patent": patent,
                 "physicochemical_properties": phy_prop_table,
                 "activities": activities,
                 "id_activities": id_activities,
                 "sources": sources,
-                "id_sources": id_sources
+                "id_sources": id_sources,
+                "go": go,
+                "pfam": pfam
             }
         }
-    
+
     def get_peptide_params(self):
         stmt = select(MVPeptideParams)
         df = self.get_table_query(stmt)
         df.index = ["min", "max"]
-        params = df.to_dict(orient="dict")
+        df = df.T
+        df["property"] = df.index
+        params = df.to_dict(orient="records")
         stmt = select(Activity)
         df = self.get_table_query(stmt)[["id_activity", "name"]]
         activities = df.to_dict(orient="list")
         return {"physicochemical_properties": params,
                 "activities": activities}
-    
+
     def get_count_search(self, query):
-        stmt = select(func.count(MVSearchPeptide.id_peptide))
+        stmt = select(func.count()).select_from(MVSearchPeptide)
         stmt = parse_data_query(query, MVSearchPeptide, stmt)
         df = self.get_table_query(stmt)
         count = int(df.values[0][0])
         return {"count": count}
-    
+
     def get_sequences_by_search(self, data):
         limit = data["rowsPerPage"]
         page = data["page"]
@@ -412,9 +408,7 @@ class Database:
             merged_len = len(pd.merge(df[df.name == i][["id_peptide"]], df[df.name == j][["id_peptide"]], on="id_peptide"))
             if merged_len != 0:
                 data.append([i, j, merged_len])
-        return {
-            "data": data
-        }
+        return {"data": data}
 
 def capitalize_phrase(phrase):
     if phrase[0] != "_":
@@ -428,34 +422,27 @@ def split_sequence(sequence):
     sequence = "\n".join(sequence)
     return sequence
 
-def parse_data_query(query, Model, stmt):
+def parse_data_query(query, model, stmt):
     if "is_canon" in query.keys():
         if query["is_canon"]:
-            stmt = stmt.where(Model.is_canon == query["is_canon"])
-
+            stmt = stmt.where(model.is_canon == query["is_canon"])
     if "sequence" in query.keys():
-        stmt = stmt.where(Model.sequence.like(f'%{query["sequence"]}%'))
-
+        stmt = stmt.where(model.sequence.like(f'%{query["sequence"]}%'))
     if "swissprot_id" in query.keys():
-        stmt = stmt.where(Model.swissprot_id == query["swissprot_id"])
-
+        stmt = stmt.where(model.swissprot_id == query["swissprot_id"])
     if "activities" in query.keys():
         for act in query["activities"]:
-            stmt = stmt.where(Model.activities.any(act))
-
-    if query["is_canon"] != False:
+            stmt = stmt.where(model.activities.any(act))
+    if query["is_canon"] is not False:
         if "length" in query.keys():
-            stmt = stmt.where(Model.length >= query["length"][0])
-            stmt = stmt.where(Model.length <= query["length"][1])
-            
+            stmt = stmt.where(model.length >= query["length"][0])
+            stmt = stmt.where(model.length <= query["length"][1])
         if "molecular_weight" in query.keys():
-            stmt = stmt.where(Model.molecular_weight >= query["molecular_weight"][0])
-            stmt = stmt.where(Model.molecular_weight <= query["molecular_weight"][1])
-            
+            stmt = stmt.where(model.molecular_weight >= query["molecular_weight"][0])
+            stmt = stmt.where(model.molecular_weight <= query["molecular_weight"][1])
         if "charge" in query.keys():
-            stmt = stmt.where(Model.charge >= query["charge"][0])
-            stmt = stmt.where(Model.charge <= query["charge"][1])
-    
+            stmt = stmt.where(model.charge >= query["charge"][0])
+            stmt = stmt.where(model.charge <= query["charge"][1])
     return stmt
 
 if __name__ == "__main__":
@@ -463,7 +450,7 @@ if __name__ == "__main__":
     db = Database()
     """
     db.create_tables()
-    db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=1000)
+    db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=10000)
     print("peptide")
     db.insert_data(f"{path_to_tables}source.csv", Source, chunk=100)
     print("source")
@@ -481,7 +468,6 @@ if __name__ == "__main__":
     print("go")
     db.insert_data(f"{path_to_tables}peptide_has_go.csv", PeptideHasGO, chunk=1000)
     print("peptide_has_go")
-    """
     db.create_mv(MVPeptidesByDatabase)
     db.create_mv(MVPeptidesByActivity)
     db.create_mv(MVGeneralInformation)
@@ -491,7 +477,7 @@ if __name__ == "__main__":
     db.create_mv(MVSequencesByActivity)
     db.create_mv(MVSequencesBySource)
     db.create_mv(MVActivitiesListed)
-    db.create_mv(MVSourcesListed)
+    db.create_mv(MVSourcesListed)"""
     db.create_mv(MVPeptideProfile)
     db.create_mv(MVPeptideParams)
     db.create_mv(MVSearchPeptide)

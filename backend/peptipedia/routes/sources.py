@@ -33,7 +33,6 @@ def get_sequences_by_source(id_source):
     try:
         post_data = request.json
         res = db.get_sequences_by_source(id_source, post_data)
-        print(res)
         return parse_response(res)
     except Exception as e:
         print(e)

@@ -3,7 +3,12 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
-export default function SummaryCard({info}) {
+interface ValueProps {
+    type: string;
+    value: string;
+}
+
+export default function SummaryCard({type, value}: ValueProps) {
     return (
       <>
       <Card variant="outlined" sx={{ boxShadow: 3, p: 1, m: 1}}>
@@ -26,10 +31,10 @@ export default function SummaryCard({info}) {
                     }}
                     >
                     <Typography fontWeight="bold" variant="h5">
-                        {info.type}
+                        {type}
                     </Typography>
                     <Typography fontWeight="400" variant="h6">
-                        {info.value}
+                        {value}
                     </Typography>
                 </Box>
             </Box>

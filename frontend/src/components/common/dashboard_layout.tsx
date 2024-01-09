@@ -1,17 +1,13 @@
 import { ReactElement, useState } from "react";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
 import { Main } from "../layout/main";
 import { DrawerHeader } from "../layout/drawer_header";
 import Entities from "../layout/entities"
 import Aside from "../layout/aside";
-import BackdropComponent from "./backdrop";
-import Background from "../../assets/layout/fondo.jpg";
+import Background from "/images/layout/fondo.jpg";
 interface Props {
   children: ReactElement;
-  is_waiting: boolean;
 }
-
 function DashboardLayout({ children}: Props) {
   return (<>
     <Box
@@ -25,11 +21,9 @@ function DashboardLayout({ children}: Props) {
       }}
       style={{ backgroundImage: `url(${Background})` }}
     >
-      {/* <CssBaseline /> */}
-
       <Aside />
 
-      <Main open={open}>
+      <Main open={true}>
         <DrawerHeader />
         {children}
         <Box sx={{ padding: 5 }}>

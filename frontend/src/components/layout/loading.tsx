@@ -17,7 +17,7 @@ export default function LoadingComponent() {
       justifyContent="center"
       alignItems="center"
     >
-      <BarLoader color={"#2962ff"} css={override} loading={true} height={5}/>
+      <BarLoader color={"#2962ff"} loading={true} height={5}/>
     </Box>
   );
 }

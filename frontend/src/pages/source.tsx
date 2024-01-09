@@ -13,7 +13,7 @@ import RedirectButton from "../components/source/button";
 
 export default function Source() {
     const [obj, setObj] = useState({});
-    const { source_id } = useParams();
+    const {source_id} = useParams();
     const [count, setCount] = useState(0);
     const [name, setName] = useState("");
     const [url, setURL] = useState("");
@@ -23,9 +23,7 @@ export default function Source() {
     const getSpecificSourceData = async () => {
         try {
           const response = await axios.get(config.source.api + source_id);
-          setObj({
-            "title": "Source: " + response.data.results.name,
-          })
+          setObj({"title": "Source: " + response.data.results.name,})
           setCount(response.data.results.count);
           setName(response.data.results.name)
           setURL(response.data.results.url)

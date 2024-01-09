@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 interface Props{
   options: {
     name: Array<string>;
-    id_activity: Array<number>;
+    id_activity?: Array<number>;
   }
   setQuery: React.Dispatch<React.SetStateAction<{}>>;
   query: {}

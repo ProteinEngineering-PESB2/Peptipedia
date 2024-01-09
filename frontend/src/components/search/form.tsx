@@ -1,4 +1,4 @@
-import { Grid, Paper, Box, Button, Divider } from "@mui/material";
+import { Paper, Box, Button, Divider } from "@mui/material";
 import SliderForm from "./slider_form";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ export default function Form(){
   const [page, setPage] = useState(1)
   const [query, setQuery] = useState({})
   const [activities, setActivities] = useState({"name": []})
-  const [physicochemical, setPhysicochemical] = useState({})
+  const [physicochemical, setPhysicochemical] = useState([])
   const [count, setCount] = useState(undefined)
   const [showResults, setShowResults] = useState(false)
   const [show_physicochemical_params, setShowPhysicochemicalParams] = useState(false)
@@ -44,6 +44,10 @@ export default function Form(){
   useEffect(() => {
     getParams();
   }, []);
+
+  useEffect(()=>{
+    console.log(physicochemical)
+  }, [physicochemical])
   return (
     <>
       <BackdropComponent open={is_waiting}/>
@@ -76,16 +80,18 @@ export default function Form(){
             </Button>
           </Divider>
           {(show_physicochemical_params) && (
-            Object.keys(physicochemical).map((x)=>(
-              <SliderForm label = {x}
-              param_name = {x}
-              params = {physicochemical[x]}
+            physicochemical.map((x)=>(
+              <SliderForm label = {x["property"]}
+              param_name = {x["property"]}
+              params = {{min: x["min"], max: x["max"]}}
               query = {query}
               setQuery = {setQuery} />
-              )
-            )
+            ))
           )}
-          <Button variant="contained" sx={{m:1 ,width: { xl: "12rem", lg: "12rem", md: "12rem", sm: "12rem", xs: "100%" },}} onClick = {() => search()} >Search</Button>
+          <Button variant="contained"
+          sx={{m:1,
+            width: { xl: "12rem", lg: "12rem", md: "12rem", sm: "12rem", xs: "100%" },}}
+            onClick = {() => search()} >Search</Button>
         </Paper>
         
       </Box>

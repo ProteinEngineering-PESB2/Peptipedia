@@ -7,15 +7,14 @@ import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 
 
 interface Props{
-  activities: Array<string>;
-  id_activities: Array<number>;
+  labels: Array<string>;
+  ids: Array<number>;
   redirect: string;
   title: string;
 }
 
-export default function ListItems({activities, id_activities, redirect, title}: Props) {
+export default function ListItems({labels, ids, redirect, title}: Props) {
   const row_clicked = (index: number) => {
-    console.log(redirect + index)
     window.open(redirect + index)
   }
   return (
@@ -25,9 +24,9 @@ export default function ListItems({activities, id_activities, redirect, title}: 
       </Typography>
       <List component="nav" aria-label="main folders">
         {
-          activities.map((x, index)=>(
+          labels.map((x, index)=>(
             <ListItemButton
-              onClick={() => row_clicked(id_activities[index])}
+              onClick={() => row_clicked(ids[index])}
             >
               <ListItemIcon>
                 <FolderOpenIcon />

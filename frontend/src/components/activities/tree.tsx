@@ -72,8 +72,12 @@ const StyledTreeItem = styled((props: TreeItemProps) => (
   },
 }))
 ;
-
-const renderTree = (nodes) => (
+interface NodesProps{
+  name: string;
+  id: string;
+  children: any;
+}
+const renderTree = (nodes:NodesProps) => (
   <>
     <StyledTreeItem nodeId={nodes.id} label={nodes.name}> 
       {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
@@ -101,7 +105,7 @@ export default function CustomizedTreeView() {
   return (
     <TreeView
       aria-label="customized"
-      defaultExpanded={[0]}
+      defaultExpanded={['0']}
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
       defaultEndIcon={<CloseSquare />}

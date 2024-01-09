@@ -170,8 +170,7 @@ class MVPeptideProfile(Base):
     swissprot_id = Column(String)
     is_canon = Column(Boolean)
     keyword = Column(ARRAY(String))
-    pubmed = Column(ARRAY(String))
-    doi = Column(ARRAY(String))
+    reference = Column(ARRAY(String))
     patent = Column(ARRAY(String))
     length = Column(Float)
     molecular_weight = Column(Float)
@@ -194,8 +193,7 @@ class MVPeptideProfile(Base):
             p.sequence,
             p.swissprot_id,
             p.is_canon,
-            p.pubmed,
-            p.doi,
+            p.reference,
             p.patent,
             p.keyword,
             p.length,

@@ -1,6 +1,7 @@
 import MUIDataTable from "mui-datatables";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   title: string;
@@ -10,8 +11,9 @@ interface Props {
 }
 
 export default function SequencesDataTable({ title, table_api, count, redirect_api = undefined}: Props) {
+  const navigate = useNavigate();
   const clickFunction = (rowData:string[]) =>{
-    if (redirect_api !== undefined) window.open(redirect_api + rowData[0])
+    if (redirect_api !== undefined) navigate(redirect_api + rowData[0])
   }
   const [table, setTable] = useState({"data": [], "columns": []})
   const getData = async (tableState: any) => {

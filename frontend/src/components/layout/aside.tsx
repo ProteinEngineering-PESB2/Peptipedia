@@ -8,7 +8,16 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import config from "../../config.json";
 import {useEffect, useState} from "react";
+interface Props {
+  sidebar: {
+    home : Array<string>;
+    navigate: Array<string>;
+  }
+  home: {
 
+  }
+
+}
 export default function Aside() {
   const [actual_location, setActualLocation] = useState("")
   const navigate = useNavigate();
@@ -41,19 +50,42 @@ export default function Aside() {
         </ListItemButton>
       </List>
       <List component="div" disablePadding>
-        {
-        config.sidebar.navigate.map((a)=>(
-          <ListItemButton onClick={() => navigate(config[a].route)}
-          selected={actual_location == a ? true : false}
-          /* sx={{backgroundColor: actual_location == a ? "#2962ff": "#fff"}} */>
-            <ListItemIcon>
-              <ArrowRightIcon sx={{ color:"#000" }} />
-            </ListItemIcon>
-            <ListItemText primary={config[a].title} />
-          </ListItemButton>
-          )
-        )
-        }
+
+
+      <ListItemButton onClick={() => navigate(config["activities"].route)}
+      selected={actual_location == "activities" ? true : false}>
+        <ListItemIcon>
+          <ArrowRightIcon sx={{ color:"#000" }} />
+        </ListItemIcon>
+        <ListItemText primary={config["activities"].title} />
+      </ListItemButton>
+
+
+      <ListItemButton onClick={() => navigate(config["sources"].route)}
+      selected={actual_location == "sources" ? true : false}>
+        <ListItemIcon>
+          <ArrowRightIcon sx={{ color:"#000" }} />
+        </ListItemIcon>
+        <ListItemText primary={config["sources"].title} />
+      </ListItemButton>
+
+      <ListItemButton onClick={() => navigate(config["search"].route)}
+      selected={actual_location == "search" ? true : false}>
+        <ListItemIcon>
+          <ArrowRightIcon sx={{ color:"#000" }} />
+        </ListItemIcon>
+        <ListItemText primary={config["search"].title} />
+      </ListItemButton>
+
+
+      <ListItemButton onClick={() => navigate(config["alignment"].route)}
+      selected={actual_location == "alignment" ? true : false}>
+        <ListItemIcon>
+          <ArrowRightIcon sx={{ color:"#000" }} />
+        </ListItemIcon>
+        <ListItemText primary={config["alignment"].title} />
+      </ListItemButton>
+
       </List>
     </Drawer>
   );

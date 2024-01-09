@@ -29,6 +29,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.10.1",
+    "react-json-to-csv": "^1.2.0",
     "react-jsx-highcharts": "^5.0.1",
     "react-plotly.js": "^2.6.0",
     "react-router-dom": "^6.15.0",
@@ -36,5 +37,12 @@
     "react-spinners": "^0.13.8",
     "vite": "^4.4.9",
     "vite-plugin-compression": "^0.5.1"
+  },
+  "devDependencies": {
+    "@types/mui-datatables": "^4.3.12",
+    "@types/react-copy-to-clipboard": "^5.0.7",
+    "@types/react-dom": "^18.2.18",
+    "@types/react-json-to-csv": "^1.2.4",
+    "@types/react-plotly.js": "^2.6.3"
   }
 }

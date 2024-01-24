@@ -2,7 +2,7 @@ import { Typography, Container} from "@mui/material";
 import config from "../../config.json";
 import CiteItem from "./cite_item";
 interface Props{
-    cite_data: Array<string>
+    cite_data: string
 }
 
 export default function Cite({cite_data}:Props) {
@@ -16,9 +16,7 @@ export default function Cite({cite_data}:Props) {
             References
         </Typography>
 
-        {cite_data.map((cite) => (
-          <CiteItem cite_text={cite} ></CiteItem>
-        ))}
+        <CiteItem cite_text={cite_data} ></CiteItem>
         </Container>
     </>
   );

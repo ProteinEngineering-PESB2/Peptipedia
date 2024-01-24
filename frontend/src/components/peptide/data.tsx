@@ -23,20 +23,18 @@ export default function Data({peptide_id}: Props) {
     const [id_sources, setIdSources] = useState([])
     const [swissprot_id, setSwissprotId] = useState(undefined)
     const [keyword, setKeyword] = useState(undefined)
-    const [pubmed, setPubmed] = useState([])
+    const [pubmed, setPubmed] = useState(undefined)
     const [patent, setPatent] = useState(undefined)
-
-
     const [phy_table, setPhyTable] = useState(undefined)
     const [pfam_table, setPfamTable] = useState(undefined)
     const [go_table, setGOTable] = useState(undefined)
-
     const [is_waiting, setIsWaiting] = useState(false)
 
     const getSpecificPeptideData = async () => {
       try {
         setIsWaiting(true)
         const response = await axios.get(config.peptide.api + peptide_id);
+        console.log(response.data)
         setSequence(response.data.results.peptide.sequence)
         setPhyTable(response.data.results.peptide.physicochemical_properties)
         setActivities(response.data.results.peptide.activities)
@@ -45,7 +43,7 @@ export default function Data({peptide_id}: Props) {
         setIdSources(response.data.results.peptide.id_sources)
         setSwissprotId(response.data.results.peptide.swissprot_id)
         setKeyword(response.data.results.peptide.keyword)
-        setPubmed(response.data.results.peptide.reference)
+        setPubmed(response.data.results.peptide.pubmed)
         setPfamTable(response.data.results.peptide.pfam)
         setGOTable(response.data.results.peptide.go)
         setPatent(response.data.results.peptide.patent)
@@ -71,6 +69,9 @@ export default function Data({peptide_id}: Props) {
     useEffect(() => {
       getSpecificPeptideData();
     }, []);
+    useEffect(()=>{
+      console.log(pubmed)
+    }, [pubmed])
 
     return (
       <>
@@ -131,7 +132,7 @@ export default function Data({peptide_id}: Props) {
             />
           </Box>)
         }
-        {(pubmed && pubmed.length >= 1) &&
+        {(pubmed) &&
           (<Box sx={{padding: 2, cursor: "pointer"}}>
             <Cite cite_data = {pubmed}></Cite>
           </Box>)

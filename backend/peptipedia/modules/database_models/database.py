@@ -40,8 +40,6 @@ class Database:
         """Insert data from csv files"""
         tablename = model.__tablename__
         data = pd.read_csv(data_file, low_memory=False)
-        #data = data.loc[::-1]
-        #data = data.loc[:1000]
         data.to_sql(tablename,
             con = self.engine,
             if_exists = "append",
@@ -303,15 +301,17 @@ class Database:
         df = df.astype(str)
         sequence = dict(df.iloc[0])["sequence"]
         swissprot_id = dict(df.iloc[0])["swissprot_id"]
-        keyword = eval(dict(df.iloc[0])["keyword"])
-        references = eval(dict(df.iloc[0])["reference"])
-        if keyword is not None and keyword is not []:
-            keyword = " - ".join(keyword)
-        patent = eval(dict(df.iloc[0])["patent"])
-        if patent is not None and patent is not []:
-            patent = " - ".join(patent)
+        keyword = dict(df.iloc[0])["keyword"]
+        references = dict(df.iloc[0])["reference"]
+        patent = dict(df.iloc[0])["patent"]
         if swissprot_id == "None":
             swissprot_id = None
+        if keyword == "None":
+            keyword = None
+        if references == "None":
+            references = None
+        if patent == "None":
+            patent = None
         if is_canon:
             phy_prop = df[["length", "molecular_weight", "charge",
                         "charge_density", "instability_index",
@@ -340,6 +340,7 @@ class Database:
         enrichment = self.get_enrichment(id_peptide)
         pfam = enrichment["pfam"]
         go = enrichment["go"]
+        print(references)
         return {
             "peptide": {
                 "sequence": sequence,
@@ -449,18 +450,21 @@ if __name__ == "__main__":
     path_to_tables = "~/Documentos/peptipedia_parser_scripts/tables/"
     db = Database()
     db.create_tables()
-    db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=10000)
+    """
+    db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=100)
     print("peptide")
     db.insert_data(f"{path_to_tables}source.csv", Source, chunk=100)
     print("source")
     db.insert_data(f"{path_to_tables}peptide_has_source.csv", PeptideHasSource, chunk=100)
     print("peptide_has_source")
+    """
     db.insert_data(f"{path_to_tables}activity.csv", Activity, chunk=100)
     print("activity")
     db.insert_data(f"{path_to_tables}peptide_has_activity.csv", PeptideHasActivity, chunk=100)
     print("peptide_has_activity")
     db.insert_data(f"{path_to_tables}pfam.csv", Pfam, chunk=1000)
     print("pfam")
+    
     db.insert_data(f"{path_to_tables}peptide_has_pfam.csv", PeptideHasPfam, chunk=1000)
     print("peptide_has_pfam")
     db.insert_data(f"{path_to_tables}gene_ontology.csv", GeneOntology, chunk=1000)

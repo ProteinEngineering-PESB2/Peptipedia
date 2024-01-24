@@ -36,9 +36,9 @@ class Peptide(Base):
     boman_index = Column(Float, nullable=True)
     hydrophobic_ratio = Column(Float, nullable=True)
     
-    keyword = Column(ARRAY(String), nullable=True)
-    patent = Column(ARRAY(String), nullable=True)
-    reference = Column(ARRAY(String), nullable=True)
+    keyword = Column(String, nullable=True)
+    patent = Column(String, nullable=True)
+    reference = Column(String, nullable=True)
     
     peptide_has_source_r = relationship("PeptideHasSource")
     peptide_has_activity_r = relationship("PeptideHasActivity")

@@ -19,56 +19,63 @@
     "team": [
       {
         "name": "Gabriel Cabas",
-        "image": "/images/team/gabriel.jpeg",
+        "image": "/assets/team/gabriel.jpeg",
         "rol": "Software developer",
         "github": "https://www.researchgate.net/profile/Gabriel-Cabas",
         "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
       },
       {
         "name": "Anamaria Daza",
-        "image": "/images/team/anita.jpg",
+        "image": "/assets/team/anita.jpg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Anamaria-Daza-Sanchez",
         "linkedin": "https://www.linkedin.com/in/anamaria-daza-sanchez-597b3246/"
       },
       {
         "name": "Lindybeth Sarmiento",
-        "image": "/images/team/lindybeth.jpg",
+        "image": "/assets/team/lindybeth.jpg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Lindybeth-Sarmiento-2",
         "linkedin": "https://www.linkedin.com/in/lindybethsarmiento/"
       },
       {
+        "name": "Valentina Garrido",
+        "image": "/assets/team/valentina.jpg",
+        "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/Valentina_Garrido3",
+        "linkedin": "https://www.linkedin.com/in/valentina-garrido-463951238/"
+      },
+      {
         "name": "Diego Alvarez",
-        "image": "/images/team/diego.jpg",
+        "image": "/assets/team/diego.jpg",
         "rol": "Researcher",
         "github": "https://github.com/GabrielCabas",
         "linkedin": "https://www.linkedin.com/in/dialvarezs0/"
       },
       {
         "name": "Roberto Uribe",
-        "image": "/images/team/roberto_uribe.jpg",
+        "image": "/assets/team/roberto_uribe.jpg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Roberto-Uribe-Paredes",
         "linkedin": "https://www.linkedin.com/in/roberto-uribe-paredes-5868b84/" 
       },
       {
         "name": "Alvaro Olivera",
-        "image": "/images/team/alvaro.jpg",
+        "image": "/assets/team/alvaro.jpg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Alvaro-Olivera-Nappa",
         "linkedin": "https://www.linkedin.com/in/alvaro-olivera-nappa-5bb5212/" 
       },
       {
         "name": "Marcelo Navarrete",
-        "image": "/images/team/marcelo.jpeg",
+        "image": "/assets/team/marcelo.jpeg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Marcelo-Navarrete",
         "linkedin": "https://www.linkedin.com/in/marcelo-navarrete-signorile-30179576/" 
       },
       {
         "name": "David Medina",
-        "image": "/images/team/david.jpeg",
+        "image": "/assets/team/david.jpeg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/David-Medina-Ortiz",
         "linkedin": "https://www.linkedin.com/in/david-medina-924308224/"

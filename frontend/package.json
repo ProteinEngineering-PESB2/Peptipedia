@@ -35,6 +35,7 @@
     "react-router-dom": "^6.15.0",
     "react-router-loading": "^1.0.2",
     "react-spinners": "^0.13.8",
+    "typescript": "^5.3.3",
     "vite": "^4.4.9",
     "vite-plugin-compression": "^0.5.1"
   },

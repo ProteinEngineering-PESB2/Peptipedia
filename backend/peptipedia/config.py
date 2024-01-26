@@ -9,7 +9,7 @@ max_length = 150
 
 select_limit = 300
 
-user = "postgres"
+user = "pepti_user"
 db = "peptipedia"
 host = "localhost"
 port = "5432"

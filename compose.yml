@@ -34,7 +34,8 @@ services:
     networks:
       - peptipedia
     volumes:
-      - ~/container-volumes/peptipedia/db:/var/lib/postgresql/data
+      - ~/peptipedia_db:/docker-entrypoint-initdb.d:Z
+      - ~/container-volumes/peptipedia/db:/var/lib/postgresql/data:Z
     environment:
       - POSTGRES_USER=pepti_user
       - POSTGRES_PASSWORD=${DB_PASS}

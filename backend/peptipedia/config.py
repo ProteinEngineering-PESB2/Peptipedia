@@ -1,3 +1,6 @@
+import os
+
+
 downloads_folder = "./files/downloads"
 blastdb_folder = "./files/blastdb"
 static_folder = "./files/"
@@ -11,6 +14,6 @@ select_limit = 300
 
 user = "pepti_user"
 db = "peptipedia"
-host = "localhost"
-port = "5432"
+host = os.environ["DB_HOST"]
+port = os.environ["DB_PORT"]
 

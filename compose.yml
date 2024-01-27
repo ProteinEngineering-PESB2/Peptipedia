@@ -3,6 +3,10 @@ services:
     image: peptipedia-backend
     container_name: peptipedia-backend
     restart: unless-stopped
+    depends_on:
+      - db
+    links:
+      - db
     build:
       context: ./backend
       dockerfile: Containerfile
@@ -35,7 +39,7 @@ services:
       - peptipedia
     volumes:
       - ~/peptipedia_db:/docker-entrypoint-initdb.d:Z
-      - ~/container-volumes/peptipedia/db:/var/lib/postgresql/data:Z
+      - ~/container_volumes/peptipedia/db:/var/lib/postgresql/data:Z
     environment:
       - POSTGRES_USER=pepti_user
       - POSTGRES_PASSWORD=${DB_PASS}

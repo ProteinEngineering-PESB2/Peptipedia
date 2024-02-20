@@ -19,6 +19,7 @@ Flask==2.3.3
 Flask-Cors==4.0.0
 fonttools==4.42.1
 greenlet==2.0.2
+gunicorn==21.2.0
 habanero==1.2.3
 humanfriendly==10.0
 idna==3.4

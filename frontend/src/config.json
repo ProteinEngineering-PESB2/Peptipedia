@@ -168,7 +168,8 @@
     "table_api": "/api/get_count_activities_table/",
     "plot_api": "/api/get_count_activities_plot/",
     "redirect": "/activity/",
-    "tree_api": "/api/get_tree/"
+    "tree_api": "/api/get_tree/",
+    "chord_api": "/api/get_chord"
   },
 
   "sources": {

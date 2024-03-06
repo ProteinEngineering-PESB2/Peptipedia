@@ -288,7 +288,7 @@ class MVSearchPeptide(Base):
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
     
-class MVFirstLevel(Base):
+class MVChordFirstLevel(Base):
     __tablename__ = "first_level"
     id_peptide = Column(Integer, primary_key=True)
     name = Column(String)
@@ -304,6 +304,42 @@ class MVFirstLevel(Base):
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
+
+class MVChordTherapeutic(Base):
+    __tablename__ = "chord_therapeutic"
+    id_peptide = Column(Integer, primary_key=True)
+    name = Column(String)
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        SELECT p.id_peptide,
+            a.name
+        FROM peptide p
+            JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
+            JOIN activity a ON a.id_activity = pha.id_activity
+        WHERE a.id_parent = 1;
+        """
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"
+
+
+class MVChordAMP(Base):
+    __tablename__ = "chord_amps"
+    id_peptide = Column(Integer, primary_key=True)
+    name = Column(String)
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        SELECT p.id_peptide,
+            a.name
+        FROM peptide p
+            JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
+            JOIN activity a ON a.id_activity = pha.id_activity
+        WHERE a.id_parent = 2;
+        """
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"
+
 
 class MVActivitiesListed(Base):
     __tablename__ = "activities_listed"

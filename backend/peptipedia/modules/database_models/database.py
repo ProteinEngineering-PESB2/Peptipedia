@@ -340,7 +340,6 @@ class Database:
         enrichment = self.get_enrichment(id_peptide)
         pfam = enrichment["pfam"]
         go = enrichment["go"]
-        print(references)
         return {
             "peptide": {
                 "sequence": sequence,
@@ -401,7 +400,7 @@ class Database:
         }
 
     def get_chord(self):
-        stmt = select(MVFirstLevel)
+        stmt = select(MVChordFirstLevel)
         df = self.get_table_query(stmt)
         acts = df.name.unique()
         data = []
@@ -450,21 +449,18 @@ if __name__ == "__main__":
     path_to_tables = "~/Documentos/peptipedia_parser_scripts/tables/"
     db = Database()
     db.create_tables()
-    """
     db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=100)
     print("peptide")
     db.insert_data(f"{path_to_tables}source.csv", Source, chunk=100)
     print("source")
     db.insert_data(f"{path_to_tables}peptide_has_source.csv", PeptideHasSource, chunk=100)
     print("peptide_has_source")
-    """
-    db.insert_data(f"{path_to_tables}activity.csv", Activity, chunk=100)
+    db.insert_data(f"{path_to_tables}activity.csv", Activity, chunk=300)
     print("activity")
     db.insert_data(f"{path_to_tables}peptide_has_activity.csv", PeptideHasActivity, chunk=100)
     print("peptide_has_activity")
     db.insert_data(f"{path_to_tables}pfam.csv", Pfam, chunk=1000)
     print("pfam")
-    
     db.insert_data(f"{path_to_tables}peptide_has_pfam.csv", PeptideHasPfam, chunk=1000)
     print("peptide_has_pfam")
     db.insert_data(f"{path_to_tables}gene_ontology.csv", GeneOntology, chunk=1000)
@@ -484,6 +480,9 @@ if __name__ == "__main__":
     db.create_mv(MVPeptideProfile)
     db.create_mv(MVPeptideParams)
     db.create_mv(MVSearchPeptide)
-    db.create_mv(MVFirstLevel)
+    db.create_mv(MVChordFirstLevel)
     db.create_mv(MVPfamByPeptide)
     db.create_mv(MVGoByPeptide)
+    db.create_mv(MVChordTherapeutic)
+    db.create_mv(MVChordAMP)
+

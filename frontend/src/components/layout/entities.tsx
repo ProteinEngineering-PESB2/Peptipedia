@@ -4,9 +4,7 @@ import config from "../../config.json";
 export default function Entities() {
     return (
         <>
-        <Container
-        sx={{ textAlign: "center", paddingBottom: 7 }}
-        maxWidth="lg"
+        <footer
         >
         <Box
             sx={{
@@ -27,7 +25,7 @@ export default function Entities() {
                 />
             ))}
             </Box>
-        </Container>
+        </footer>
         </>
     )
     }

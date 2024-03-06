@@ -122,6 +122,7 @@ export default function Data({peptide_id}: Props) {
           (<Box sx={{padding: 2, cursor: "pointer"}}>
             <DataTable title={"Pfam"} table={pfam_table}
             redirect_api={config.peptide.pfam_page}
+            do_navigate={false}
             />
           </Box>)
         }
@@ -129,6 +130,7 @@ export default function Data({peptide_id}: Props) {
           (<Box sx={{padding: 2, cursor: "pointer"}}>
             <DataTable title={"Gene Ontology"} table={go_table}
             redirect_api={config.peptide.go_page}
+            do_navigate={false}
             />
           </Box>)
         }

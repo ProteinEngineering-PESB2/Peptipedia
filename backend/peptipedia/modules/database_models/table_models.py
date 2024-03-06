@@ -16,14 +16,7 @@ class Peptide(Base):
     sequence = Column(String, nullable = False)
     is_canon = Column(Boolean, nullable = False)
     swissprot_id = Column(String, nullable=True)
-    """
-    ss3 = Column(String, nullable=True)
-    ss8 = Column(String, nullable=True)
-    acc = Column(String, nullable=True)
-    diso = Column(String, nullable=True)
-    tm2 = Column(String, nullable=True)
-    tm8 = Column(String, nullable=True)
-    """
+    nutraceutical = Column(Boolean, nullable=True)
     act_date = Column(Date, nullable=True)
     length = Column(Integer, nullable=True)
     molecular_weight = Column(Float, nullable=True)

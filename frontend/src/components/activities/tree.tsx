@@ -8,7 +8,6 @@ import { TransitionProps } from '@mui/material/transitions';
 import axios from "axios";
 import { useState, useEffect } from "react";
 import config from "../../config.json";
-
 function MinusSquare(props: SvgIconProps) {
   return (
     <SvgIcon fontSize="inherit" style={{ width: 14, height: 14 }} {...props}>
@@ -70,8 +69,8 @@ const StyledTreeItem = styled((props: TreeItemProps) => (
     paddingLeft: 18,
     borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
   },
-}))
-;
+}));
+
 interface NodesProps{
   name: string;
   id: string;
@@ -79,7 +78,7 @@ interface NodesProps{
 }
 const renderTree = (nodes:NodesProps) => (
   <>
-    <StyledTreeItem nodeId={nodes.id} label={nodes.name}> 
+    <StyledTreeItem nodeId={nodes.id.toString()} label={nodes.name}> 
       {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
     </StyledTreeItem>
   </>
@@ -105,7 +104,7 @@ export default function CustomizedTreeView() {
   return (
     <TreeView
       aria-label="customized"
-      defaultExpanded={['0']}
+      defaultExpanded={["0"]}
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
       defaultEndIcon={<CloseSquare />}

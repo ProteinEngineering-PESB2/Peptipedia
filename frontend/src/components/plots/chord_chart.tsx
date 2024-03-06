@@ -31,13 +31,13 @@ function ChordChart({ data }: DependecyWheelProps) {
   return (
     <HighchartsProvider Highcharts={Highcharts}>
       <HighchartsChart containerProps={{ style: { height: 1000 } }}>
-        <Title>Promiscuity between peptides</Title>
+        <Title>Moonlighting peptides distribution</Title>
 
         <XAxis type="category" />
 
         <YAxis>
           <DependencyWheelSeries
-            name="Promiscuity between peptides"
+            name="Moonlighting peptides distribution"
             data={data}
             keys={["from", "to", "weight"]}
             size="100%"

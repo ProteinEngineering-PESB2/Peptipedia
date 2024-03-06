@@ -22,17 +22,13 @@ export default function Activities() {
           <Front obj={obj}/>
         </Box>
         <Box sx={{ padding : 2  }}>
-          <Grid container>
-            <Grid item xl={6} xs={6}>
-              <CustomizedTreeView/>
-            </Grid>
-            <Grid item xl={6} xs={6}>
-              <Plot/>
-            </Grid>
-          </Grid>
+          <CustomizedTreeView/>
         </Box>
         <Box sx={{ padding: 2}}>
           <Data/>
+        </Box>
+        <Box sx={{ padding: 2}}>
+          <Plot/>
         </Box>
         <Box sx={{ padding : 2 }}>
           <Chord/>

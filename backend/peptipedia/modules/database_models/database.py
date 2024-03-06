@@ -1,5 +1,6 @@
 """Database functionalities module"""
 # pylint: disable=not-callable
+import os
 import pandas as pd
 from sqlalchemy import create_engine, text,select, func
 from sqlalchemy.orm import Session
@@ -19,7 +20,7 @@ class Database:
         user = config.user
         db_name = config.db
         host = config.host
-        password = dotenv_values(".env")["DB_PASS"]
+        password = os.environ["DB_PASS"]
         port = config.port
         self.engine = create_engine(
             f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{db_name}"

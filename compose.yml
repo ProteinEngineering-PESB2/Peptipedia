@@ -1,0 +1,55 @@
+services:
+  backend:
+    image: peptipedia-backend
+    container_name: peptipedia-backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    links:
+      - db
+    build:
+      context: ./backend
+      dockerfile: Containerfile
+    ports:
+      - ${BACKEND_PORT}:8000
+    networks:
+      - peptipedia
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PASS=${DB_PASS}
+      - DB_PORT=${DB_PORT}
+
+  frontend:
+    image: peptipedia-frontend
+    container_name: peptipedia-frontend
+    restart: unless-stopped
+    build:
+      context: ./frontend
+      dockerfile: Containerfile
+    ports:
+      - ${FRONTEND_PORT}:80
+    networks:
+      - peptipedia
+    environment:
+      - BACKEND_URL=${BACKEND_URL}
+
+  db:
+    image: postgres:16
+    container_name: peptipedia-db
+    restart: unless-stopped
+    networks:
+      - peptipedia
+    volumes:
+      - ~/peptipedia_db:/docker-entrypoint-initdb.d:Z
+      - ~/container_volumes/peptipedia/db:/var/lib/postgresql/data:Z
+    environment:
+      - POSTGRES_USER=pepti_user
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=peptipedia
+    
+
+
+networks:
+  peptipedia:
+    name: peptipedia
+    driver: bridge

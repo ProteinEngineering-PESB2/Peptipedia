@@ -1,0 +1,29 @@
+FROM mambaorg/micromamba:latest as conda
+
+RUN micromamba install --prefix /opt/conda blast -c bioconda -c conda-forge && \
+	micromamba clean -aqy
+
+
+FROM python:3.11-slim as runtime
+
+ARG DEBIAN_FRONTEND=noninteractive
+ENV PYTHOHUNBUFFERED=1
+
+RUN apt-get update && \
+	apt-get upgrade -y && \
+	rm -rf /var/lib/apt/lists/*
+
+# copy conda deps
+COPY --from=conda /opt/conda /opt/conda
+ENV PATH=/opt/conda/bin:$PATH
+
+COPY ./peptipedia /app/peptipedia
+COPY requirements.txt /app/requirements.txt
+
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+ENV PYTHONPATH=/app
+WORKDIR /app
+
+EXPOSE 8000
+CMD ["gunicorn", "peptipedia.wsgi:app", "--bind", "0.0.0.0:8000", "--workers", "4"]

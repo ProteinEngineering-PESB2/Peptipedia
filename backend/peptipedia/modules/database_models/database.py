@@ -4,7 +4,6 @@ import os
 import pandas as pd
 from sqlalchemy import create_engine, text,select, func
 from sqlalchemy.orm import Session
-from dotenv import dotenv_values
 from peptipedia.modules.database_models.table_models import *
 from peptipedia.modules.database_models.materialized_views import *
 import peptipedia.config as config
@@ -69,6 +68,8 @@ class Database:
             stmt = (
                 select(MVSequencesByActivity)
                 .where(MVSequencesByActivity.id_activity == row.id_activity))
+            if not config.prod:
+                stmt = stmt.limit(10)
             df = self.get_table_query(stmt)
             fasta_text = ""
             for _,row_df in df.iterrows():
@@ -82,6 +83,8 @@ class Database:
             stmt = (
                 select(MVSequencesBySource)
                 .where(MVSequencesBySource.id_source == row.id_source))
+            if not config.prod:
+                stmt = stmt.limit(10)
             df = self.get_table_query(stmt)
             fasta_text = ""
             for _,row_df in df.iterrows():
@@ -91,9 +94,10 @@ class Database:
 
     def create_fasta_from_peptides(self):
         """Create fasta in files folder"""
-        #Deja los péptidos en fasta en la carpeta 
-        print("Creando fasta para blast")
+        #Deja los péptidos en fasta en la carpeta
         stmt = select(Peptide.id_peptide, Peptide.sequence).where(Peptide.is_canon == True)
+        if not config.prod:
+            stmt = stmt.limit(1000)
         peptides = self.get_table_query(stmt)
         fasta_text = ""
         for _,row in peptides.iterrows():

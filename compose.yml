@@ -15,6 +15,7 @@ services:
     networks:
       - peptipedia
     environment:
+      - PROD=${PROD}
       - DB_HOST=${DB_HOST}
       - DB_PASS=${DB_PASS}
       - DB_PORT=${DB_PORT}

@@ -16,4 +16,4 @@ user = "pepti_user"
 db = "peptipedia"
 host = os.environ["DB_HOST"]
 port = os.environ["DB_PORT"]
-
+prod = os.environ["PROD"]

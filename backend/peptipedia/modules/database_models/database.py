@@ -68,7 +68,7 @@ class Database:
             print(f"Creating download {row.name}")
             stmt = (
                 select(MVSequencesByActivity)
-                .where(MVSequencesByActivity.id_activity == row.id_activity)).limit(10)
+                .where(MVSequencesByActivity.id_activity == row.id_activity))
             df = self.get_table_query(stmt)
             fasta_text = ""
             for _,row_df in df.iterrows():
@@ -81,7 +81,7 @@ class Database:
             print(f"Creating download {row.name}")
             stmt = (
                 select(MVSequencesBySource)
-                .where(MVSequencesBySource.id_source == row.id_source)).limit(10)
+                .where(MVSequencesBySource.id_source == row.id_source))
             df = self.get_table_query(stmt)
             fasta_text = ""
             for _,row_df in df.iterrows():
@@ -93,7 +93,7 @@ class Database:
         """Create fasta in files folder"""
         #Deja los péptidos en fasta en la carpeta 
         print("Creando fasta para blast")
-        stmt = select(Peptide.id_peptide, Peptide.sequence).where(Peptide.is_canon == True).limit(10)
+        stmt = select(Peptide.id_peptide, Peptide.sequence).where(Peptide.is_canon == True)
         peptides = self.get_table_query(stmt)
         fasta_text = ""
         for _,row in peptides.iterrows():

@@ -12,7 +12,7 @@ max_length = 150
 
 select_limit = 300
 
-user = "pepti_user"
+user =os.environ["DB_USER"]
 db = "peptipedia"
 host = os.environ["DB_HOST"]
 port = os.environ["DB_PORT"]

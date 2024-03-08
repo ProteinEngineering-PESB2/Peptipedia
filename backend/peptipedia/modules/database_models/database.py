@@ -414,7 +414,14 @@ class Database:
             if merged_len != 0:
                 data.append([i, j, merged_len])
         return {"data": data}
-
+    
+    def get_activities_sources_list(self):
+        stmt = select(Activity.name)
+        activities_list = self.get_table_query(stmt)["name"].values.tolist()
+        stmt = select(Source.name)
+        sources_list = self.get_table_query(stmt)["name"].values.tolist()
+        return {"data": {"activities": activities_list, "sources": sources_list}}
+    
 def capitalize_phrase(phrase):
     if phrase[0] != "_":
         phrase = phrase.replace("_", " ")

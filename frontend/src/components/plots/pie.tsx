@@ -23,13 +23,14 @@ export default function PieChart({ plot, title }: Props) {
         },
       ]}
       layout={{
-        height: 1000,
+        height: 500,
         title: title,
         font: {
           size: 15,
         },
-        width: 1000
+        
       }}
+      style={{width: "100%"}}
       config={{
         displayModeBar: true,
         responsive: true,

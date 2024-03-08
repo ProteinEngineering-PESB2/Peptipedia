@@ -7,9 +7,7 @@ import Box from "@mui/material/Box";
 import config from "../config.json"
 import CustomizedTreeView from "../components/activities/tree"
 import Plot from "../components/activities/plot";
-import { Grid } from "@mui/material";
 import Chord from "../components/activities/chord";
-import {useState} from "react";
 
 export default function Activities() {
   const obj = config.activities;
@@ -21,16 +19,17 @@ export default function Activities() {
         <Box sx={{ padding: 2 }}>
           <Front obj={obj}/>
         </Box>
-        <Box sx={{ padding : 2  }}>
+        <Box sx={{ padding: 2, paddingLeft:10, paddingBottom:0}}>
           <CustomizedTreeView/>
         </Box>
+        
         <Box sx={{ padding: 2}}>
           <Data/>
         </Box>
         <Box sx={{ padding: 2}}>
           <Plot/>
         </Box>
-        <Box sx={{ padding : 2 }}>
+        <Box sx={{ padding: 2 }}>
           <Chord/>
         </Box>
       </>

@@ -30,7 +30,7 @@ function ChordChart({ data }: DependecyWheelProps) {
 
   return (
     <HighchartsProvider Highcharts={Highcharts}>
-      <HighchartsChart containerProps={{ style: { height: 1000 } }}>
+      <HighchartsChart containerProps={{ style: { height: 500 } }}>
         <Title>Moonlighting peptides distribution</Title>
 
         <XAxis type="category" />

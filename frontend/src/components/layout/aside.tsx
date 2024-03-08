@@ -86,6 +86,14 @@ export default function Aside() {
         <ListItemText primary={config["alignment"].title} />
       </ListItemButton>
 
+      <ListItemButton onClick={() => navigate(config["download"].route)}
+      selected={actual_location == "download" ? true : false}>
+        <ListItemIcon>
+          <ArrowRightIcon sx={{ color:"#000" }} />
+        </ListItemIcon>
+        <ListItemText primary={config["download"].title} />
+      </ListItemButton>
+
       </List>
     </Drawer>
   );

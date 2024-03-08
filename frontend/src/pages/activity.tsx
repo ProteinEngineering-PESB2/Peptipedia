@@ -2,7 +2,7 @@ import { useHandleSection } from "../hooks/useHandleSection";
 import useLoadingComponent from "../hooks/useLoadingComponent";
 import DashboardLayout from "../components/common/dashboard_layout";
 import Front from "../components/layout/front"
-import Box from "@mui/material/Box";
+import {Box, Grid} from "@mui/material";
 import config from "../config.json"
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -23,10 +23,10 @@ export default function Activity() {
       const response = await axios.get(config.activity.api + activity_id);
       setObj({
         "title": "Activity: " + response.data.results.name,
-        "description": response.data.results.description
+        "description": response.data.results.description + "\n" + config.activity.description
       })
       setCount(response.data.results.count)
-      setName(response.data.results.name)
+      setName(response.data.results.name + ".fasta")
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +45,9 @@ export default function Activity() {
           <Data activity_id={activity_id} count = {count}/>
         </Box>
         <Box sx={{ paddingRight: 4 }}>
-          <Download name={name}/>
+          <Grid container justifyContent="flex-end">
+            <Download name={name}/>
+          </Grid>
         </Box>
       </>
     </DashboardLayout>

@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import ListItems from "./list_items";
 import Front from "./front";
 import BackdropComponent from "../common/backdrop";
-import { Typography } from "@mui/material";
+import { Grid, Typography, Container } from "@mui/material";
 import Cite from "./cite";
 
 interface Props{
@@ -79,65 +79,89 @@ export default function Data({peptide_id}: Props) {
         <Box sx={{ padding: 2 }}>
           <Front obj={obj}/>
         </Box>
-        {(sequence) && (
+        {sequence && 
           <Box sx={{ padding: 2 }}>
             <PeptideSequence sequence = {sequence}/>
           </Box>
-        )}
-        {(keyword) &&
-        (<Box sx={{padding: 2, cursor: "pointer"}}>
-          <Typography variant="subtitle1" sx={{ fontStyle: 'italic',
-            textAlign: 'center'}}>
-          Activity keywords: {keyword}
-          </Typography>
-        </Box>)
-          }
-
-        {(patent) &&
-        (<Box sx={{padding: 2, cursor: "pointer"}}>
+        }
+        {patent &&
+        <Box sx={{padding: 2, cursor: "pointer"}}>
           <Typography variant="subtitle1" sx={{ fontStyle: 'italic',
             textAlign: 'center'}}>
           Patent: {patent}
           </Typography>
-        </Box>)
+        </Box>
           }
-
-        {(activities) &&
-          (<Box sx={{ padding: 2 }}>
-            <ListItems labels={ activities } ids={id_activities}
-            title={"Reported activities"}
-            redirect={config.peptide.redirect_activities}/>
-          </Box>)}
-        {(sources) &&
-          (<Box sx={{ padding: 2 }}>
-            <ListItems labels={ sources } ids={id_sources}
-            title={"Sources"}
-            redirect={config.peptide.redirect_sources}/>
-          </Box>)}
-        {(phy_table) &&
-          (<Box sx={{padding: 2}}>
+        {phy_table &&
+          <Box sx={{padding: 2}}>
             <DataTable title={"Physicochemical Properties"} table={phy_table}/>
-          </Box>)}
-        {(pfam_table) &&
-          (<Box sx={{padding: 2, cursor: "pointer"}}>
+        </Box>}
+        {keyword &&
+        <Box sx={{padding: 2, cursor: "pointer"}}>
+          <Typography variant="subtitle1" sx={{ fontStyle: 'italic',
+            textAlign: 'center'}}>
+          Activity keywords: {keyword}
+          </Typography>
+        </Box>
+        }
+        <Grid container>
+          <Grid item xs={6}>
+          {sources &&
+            <Box sx={{ padding: 2 }}>
+              <ListItems labels={ sources } ids={id_sources}
+              title={"Sources"}
+              redirect={config.peptide.redirect_sources}/>
+            </Box>}
+          </Grid>
+          <Grid item xs={6}>
+            {activities &&
+            <Box sx={{ padding: 2 }}>
+              <ListItems labels={ activities } ids={id_activities}
+              title={"Reported activities"}
+              redirect={config.peptide.redirect_activities}/>
+            </Box>}
+          </Grid>
+        </Grid>
+        {pfam_table &&
+          <>
+          <Container
+          sx={{ textAlign: "center" }}
+          maxWidth="lg"
+          >
+              <Typography variant="subtitle1" fontStyle="italic" marginTop={1}>
+                  {config.peptide.go_description}
+              </Typography>
+          </Container>
+          <Box sx={{padding: 2, cursor: "pointer"}}>
             <DataTable title={"Pfam"} table={pfam_table}
             redirect_api={config.peptide.pfam_page}
             do_navigate={false}
             />
-          </Box>)
+          </Box>
+          </>
         }
-        {(go_table) &&
-          (<Box sx={{padding: 2, cursor: "pointer"}}>
+        {go_table &&
+        <>
+          <Container
+          sx={{ textAlign: "center" }}
+          maxWidth="lg"
+          >
+              <Typography variant="subtitle1" fontStyle="italic" marginTop={1}>
+                  {config.peptide.go_description}
+              </Typography>
+          </Container>
+          <Box sx={{padding: 2, cursor: "pointer"}}>
             <DataTable title={"Gene Ontology"} table={go_table}
             redirect_api={config.peptide.go_page}
             do_navigate={false}
             />
-          </Box>)
+          </Box>
+        </>
         }
-        {(pubmed) &&
-          (<Box sx={{padding: 2, cursor: "pointer"}}>
+        {pubmed &&
+          <Box sx={{padding: 2, cursor: "pointer"}}>
             <Cite cite_data = {pubmed}></Cite>
-          </Box>)
+          </Box>
         }
       </>
     )

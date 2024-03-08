@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import Data from "../components/source/data";
 import Download from "../components/common/download";
 import RedirectButton from "../components/source/button";
+import { Grid } from "@mui/material";
 
 export default function Source() {
     const [obj, setObj] = useState({});
@@ -23,9 +24,9 @@ export default function Source() {
     const getSpecificSourceData = async () => {
         try {
           const response = await axios.get(config.source.api + source_id);
-          setObj({"title": "Source: " + response.data.results.name,})
+          setObj({"title": "Source: " + response.data.results.name, "description": config.source.description})
           setCount(response.data.results.count);
-          setName(response.data.results.name)
+          setName(response.data.results.name + ".fasta")
           setURL(response.data.results.url)
         } catch (error) {
           console.log(error);
@@ -48,7 +49,9 @@ export default function Source() {
                 <Data source_id={source_id} count={count}/>
             </Box>
             <Box sx={{ paddingRight: 4 }}>
-                <Download name={name}/>
+                <Grid container justifyContent="flex-end">
+                    <Download name={name} />
+                </Grid>
             </Box>
         </>
         </DashboardLayout>

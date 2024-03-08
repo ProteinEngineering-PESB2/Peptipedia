@@ -6,7 +6,7 @@ import CardsList from "./cards_list"
 import { Box} from "@mui/material";
 
 export default function Data() {
-    const [general_table, setGeneralTable] = useState([])
+    const [general_table, setGeneralTable] = useState(undefined)
     const [table, setTable] = useState({"data": [], "columns": []})
     const getHomeData = async () => {
         try {
@@ -24,8 +24,11 @@ export default function Data() {
 
   return (
     <>
-      <Box padding={3}>
-        <CardsList general_table={general_table} ></CardsList>
+      <Box>
+        {general_table &&
+        <CardsList general_table={general_table} ></CardsList>}
+      </Box>
+      <Box paddingTop={3}>
         <DataTable table={table} title={"General peptides information"}></DataTable>
       </Box>
     </> 

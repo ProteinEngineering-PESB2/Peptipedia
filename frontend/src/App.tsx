@@ -14,6 +14,7 @@ import AdvancedSearch from "./pages/search";
 import Blast from "./pages/blast";
 import ComingSoon from "./pages/coming_soon";
 import NotFound from "./pages/not_found";
+import DownloadPage from "./pages/download";
 
 import { Routes, Route } from "react-router-loading";
 import LoadingComponent from "./components/layout/loading";
@@ -39,6 +40,7 @@ export default function App() {
               <Route path={config.source.route} element={<Source />} loading />
               <Route path={config.search.route} element={<AdvancedSearch />} loading />
               <Route path={config.alignment.route} element={<Blast />} loading />
+              <Route path={config.download.route} element={<DownloadPage />} loading />
               <Route path={config.peptitools.route} element={<ComingSoon />} loading />
               <Route path="*" element={<NotFound />} loading />
             </Routes>

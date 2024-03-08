@@ -18,7 +18,7 @@ export default function Team() {
       <Box marginTop={5}>
         <Grid container spacing={2}>
           {config.home.team.map((member)=>(
-            <Grid item xl={3} lg={4} md={6} sm={12} xs={12}>
+            <Grid item xl={3} lg={4} md={6} sm={6} xs={6}>
               <CardProfile
                 name={member.name}
                 rol={member.rol}

@@ -16,6 +16,13 @@
     "description": "Peptipedia, a user-friendly web database to support peptide research using bioinformatics and machine learning strategies.",
     "route": "/",
     "diagram_path": "/images/home/Peptipedia_Only.png",
+    "description_2": "This project collects information on peptides available in the literature, databases and repositories. We organize the information in a way to extract its reported biological activities and make them available for use. Peptipedia is the largest peptide compilation database to date, with nearly 4 million sequences with their activities. In addition, we develop our own predictive activity models, and they are available on the Peptitools platform.",
+    "captions":{
+      "databases":"Total count of different sources, databases or repositories with peptides information, used in this project.",
+      "sequences":"Count of unique sequences deposited in Peptipedia.",
+      "activities":"Count of unique activities reported in sources. There's a redundancy elimination process (similar words, etc) between different databases.",
+      "last_update":"Last Peptipedia update. We use an automated scripts to parse all the data and incorporate new information."
+    },
     "team": [
       {
         "name": "Gabriel Cabas",
@@ -163,7 +170,10 @@
   
   "activities": {
     "title": "Activities",
-    "description": "Peptipedia has the highest amount of peptides with reported biological activity. We have created a hierarchical way to sort the peptides by its biological activity, considering from general activities (such as therapeutic, immunological or signal peptides) to more specific ones (such as anti-coronavirus or anti-HIV). Furthermore, we have analyzed the promiscuity of peptides to belong between groups, studying the moonlight effects.",
+    "description": "Peptipedia has the highest amount of peptides with reported biological activity. We have created a hierarchical way to sort the peptides by its biological activity, considering from general activities (such as therapeutic, immunological or signal peptides) to more specific ones (such as anti-coronavirus or anti-HIV). Furthermore, we have analyzed the promiscuity of peptides to belong between groups, studying the moonlight effects.\nBelow is the hierarchical activity tree.",
+    "description_2": "Here you can see all activities listed in descendent order by peptide counts. You can click any row and go further to see all his sequences",
+    "description_3": "First level statistics. All the counts of first level hierarchical activity trees. As you can see, most of our reported peptides has a therapeutic activity.",
+    "description_4": "Finally, you can see the dependency chord of moonlighting peptides (with more than one reported activity)",
     "route": "/activities",
     "table_api": "/api/get_count_activities_table/",
     "plot_api": "/api/get_count_activities_plot/",
@@ -174,7 +184,7 @@
 
   "sources": {
     "title": "Sources",
-    "description": "We have collected information from different available sources to populate the Peptipedia database. We considered repositories, small datasets,  and previously reported databases in the literature. This large number of sources allows having a considerable number of peptides reported in this application.",
+    "description": "We have collected information from different available sources to populate the Peptipedia database. We considered repositories, small datasets,  and previously reported databases in the literature. This large number of sources allows having a considerable number of peptides reported in this application. Please click any row to get sequences from any source.",
     "route": "/sources",
     "api": "/api/get_count_sources/",
     "redirect": "/source/"
@@ -200,7 +210,8 @@
     "route": "/activity/:activity_id",
     "api": "/api/get_activity/",
     "sequences_api": "/api/get_sequences_by_activity/",
-    "redirect": "/peptide/"
+    "redirect": "/peptide/",
+    "description": "Please click any row to see peptide details."
   },
 
   "peptide": {
@@ -212,15 +223,27 @@
     "go_page": "https://amigo.geneontology.org/amigo/term/",
     "redirect_activities": "/activity/",
     "redirect_sources": "/source/",
-    "alphafold_page": "https://alphafold.ebi.ac.uk/entry/"
+    "alphafold_page": "https://alphafold.ebi.ac.uk/entry/",
+    "go_description": "Here you can see predicted Gene Ontology Terms. This is a result of Metastudent software.",
+    "pfam_description": "Here you can see Pfam domains prediction. This is a result of Pfam_scan software."
   },
 
   "source": {
     "route": "/source/:source_id",
     "api": "/api/get_source/",
     "sequences_api": "/api/get_sequences_by_source/",
-    "redirect": "/peptide/"
+    "redirect": "/peptide/",
+    "description": "Please click any row to see peptide details."
   },
+
+
+  "download": {
+    "route": "/download",
+    "title": "Download",
+    "description": "Here you can download the peptides presented in this Peptipedia. You can select a specific biological activity or source to adquire the different datasets.",
+    "api": "/api/get_activities_sources_list/"
+  },
+
   "peptitools": {
     "route": "/peptitools/"
   }

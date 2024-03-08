@@ -108,7 +108,7 @@ export default function CustomizedTreeView() {
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
       defaultEndIcon={<CloseSquare />}
-      sx={{ height: 450, flexGrow: 1, maxWidth: 1000, overflowY: 'auto' }}
+      sx={{ height: 350, flexGrow: 1, overflowY: 'auto' }}
     >
       {tree_element}
     </TreeView>

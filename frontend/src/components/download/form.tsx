@@ -41,7 +41,7 @@ export default function Form(){
     <>
       <BackdropComponent open={false}/>
       <Box margin={1} boxShadow={3}>
-        <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
+        <Paper sx={{ p: 3, display: "flex", flexDirection: "column" }}>
         <Box padding={3}>
         <Grid container spacing={2}>
             <InputLabel id="activities">Activities</InputLabel>

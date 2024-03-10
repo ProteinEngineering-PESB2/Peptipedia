@@ -6,7 +6,7 @@ import AlignmentSequenceCard, {
   AlignmentSequenceCardProps,
 } from "./alignment_card";
 import { Alignment } from "../../hooks/useProSeqViewer";
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 
 // Interfaces
 interface AlignmentSequenceResultProps {
@@ -77,7 +77,9 @@ export default function AlignmentSequenceResult({ results }: AlignmentSequenceRe
   }, []);
 
   return (
-    <Box m={2}>
+
+    <Box m={2}  margin={1} boxShadow={3}>
+    <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
       <Box m={2}>
         <h3>Found {results.length} hits.</h3>
         {
@@ -116,6 +118,7 @@ export default function AlignmentSequenceResult({ results }: AlignmentSequenceRe
           total={results.length}
           step={20}
         />
+    </Paper>
     </Box>
   );
 }

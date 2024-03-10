@@ -144,7 +144,7 @@ class Database:
         stmt_count_activities = select(MVPeptidesByActivity)
         df_count_activities = self.get_table_query(stmt_count_activities)
         df_count_activities = df_count_activities.rename(columns={"id_activity": "_id"})
-        df_count_activities = df_count_activities.drop(columns=["description", "id_parent"])
+        df_count_activities = df_count_activities.drop(columns=["id_parent"])
         return {
             "table":{
                 "data": df_count_activities.values.tolist(),
@@ -160,7 +160,7 @@ class Database:
         stmt_count_activities = select(MVPeptidesByActivity).where(MVPeptidesByActivity.id_parent==None)
         df_count_activities = self.get_table_query(stmt_count_activities)
         df_count_activities = df_count_activities.rename(columns={"id_activity": "_id"})
-        df_count_activities = df_count_activities.drop(columns=["description", "id_parent"])
+        df_count_activities = df_count_activities.drop(columns=["description", "id_parent", "parent_name"])
         return {
             "plot":{
                 "x": df_count_activities["name"].to_list(),
@@ -184,6 +184,7 @@ class Database:
     def get_activity(self, id_activity):
         stmt_activity = select(MVPeptidesByActivity).where(MVPeptidesByActivity.id_activity == id_activity)
         df = self.get_table_query(stmt_activity)
+        df.drop(columns=["parent_name"])
         df = df.fillna("")
         df = df.astype(str)
         return {
@@ -259,6 +260,8 @@ class Database:
     def get_tree(self):
         stmt = select(MVPeptidesByActivity)
         df = self.get_table_query(stmt)
+        df = df.drop(columns=["parent_name", "description"])
+        print(df)
         G = nx.DiGraph()
         G.add_node(0)
         df = df.fillna(0)
@@ -461,8 +464,8 @@ if __name__ == "__main__":
     path_to_tables = "~/Documentos/peptipedia_parser_scripts/tables/"
     db = Database()
     db.create_tables()
-    db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=100)
-    print("peptide")
+    #db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=100)
+    #print("peptide")
     db.insert_data(f"{path_to_tables}source.csv", Source, chunk=100)
     print("source")
     db.insert_data(f"{path_to_tables}peptide_has_source.csv", PeptideHasSource, chunk=100)

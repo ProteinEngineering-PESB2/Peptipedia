@@ -46,6 +46,7 @@ class Source(Base):
     id_source = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     url = Column(String, nullable=False)
+    type = Column(String, nullable=False)
     peptide_has_source_r = relationship("PeptideHasSource")
     def __repr__(self):
         return f"Source(id={self.id}, name={self.name})"  

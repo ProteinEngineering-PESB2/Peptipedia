@@ -192,7 +192,7 @@
 
   "search": {
     "title": "Search",
-    "description": "Adjust the params to filter and search against Peptipedia database.",
+    "description": "Adjust the params to filter and search against Peptipedia database. The search is done using an AND statement.",
     "route": "/search",
     "params_api": "/api/get_peptide_params/",
     "count_api": "/api/get_count_search/",

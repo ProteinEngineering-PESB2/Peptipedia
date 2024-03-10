@@ -11,6 +11,7 @@ class MVPeptidesByDatabase(Base):
     id_source = Column(Integer, primary_key=True)
     name = Column(String)
     url = Column(String)
+    type = Column(String)
     count_peptide = Column(Integer)
     def __repr__(self):
         return f"MV_peptides_by_database(name={self.name}, count={self.count_peptide})"
@@ -18,6 +19,7 @@ class MVPeptidesByDatabase(Base):
         return f"""create materialized view {self.__tablename__} as
             SELECT s.id_source, s.name, s.url,
             t.count AS count_peptide
+            s.type
             FROM source s
                 JOIN ( SELECT phs.id_source,
                     count(*) AS count
@@ -35,6 +37,7 @@ class MVPeptidesByActivity(Base):
     name = Column(String)
     description = Column(String)
     id_parent = Column(Integer)
+    parent_name = Column(String)
     count_peptide = Column(Integer)
     def __repr__(self):
         return f"MV_peptides_by_activity(name={self.name}, count={self.count_peptide})"
@@ -42,6 +45,7 @@ class MVPeptidesByActivity(Base):
         return f"""create materialized view {self.__tablename__} as
         SELECT a.id_activity, a.name,
         a.description, a.id_parent,
+        pa.name AS parent_name,
         t.count AS count_peptide
         FROM activity a
             JOIN ( SELECT pha.id_activity,
@@ -49,6 +53,7 @@ class MVPeptidesByActivity(Base):
                 FROM peptide p
                     JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
                 GROUP BY pha.id_activity) t ON a.id_activity = t.id_activity
+        LEFT JOIN activity pa ON a.id_parent = pa.id_activity
         ORDER BY t.count DESC;"""
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"

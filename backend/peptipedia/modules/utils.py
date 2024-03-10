@@ -13,9 +13,9 @@ class Folders:
         os.makedirs(config.alignments_folder, exist_ok=True)
         
         db = Database()
-        db.create_fasta_from_peptides()
-        db.create_downloads()
-        self.makeblastdb()
+        #db.create_fasta_from_peptides()
+        #db.create_downloads()
+        #self.makeblastdb()
 
     def get_static_folder(self):
         return config.static_folder

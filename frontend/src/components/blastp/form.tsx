@@ -28,7 +28,7 @@ export default function Form() {
   <BackdropComponent open = {is_waiting}/>
   <Grid item xs={12} sm={12} md={9} lg={12} xl={4}>
     <Box margin={1} boxShadow={3}>
-      <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
+      <Paper sx={{ p: 3, display: "flex", flexDirection: "column" }}>
         <TextField
           label="Fasta Sequence"
           value={fasta_text}

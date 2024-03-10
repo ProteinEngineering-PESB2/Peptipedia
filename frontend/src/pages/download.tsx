@@ -17,10 +17,8 @@ export default function DownloadPage() {
     <Box sx={{ padding: 2 }}>
       <Front obj={obj}/>
     </Box>
-    
-    <Box sx={{ padding: 2 }}>
-      <Form/>
-    </Box>
+
+    <Form/>
     </>
   </DashboardLayout>
   )

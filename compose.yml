@@ -19,6 +19,8 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_PASS=${DB_PASS}
       - DB_PORT=${DB_PORT}
+    volumes:
+      - ./backend/files:/app/files:Z
 
   frontend:
     image: peptipedia-frontend

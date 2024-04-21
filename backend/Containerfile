@@ -4,7 +4,7 @@ RUN micromamba install --prefix /opt/conda blast -c bioconda -c conda-forge && \
 	micromamba clean -aqy
 
 
-FROM python:3.11-slim as runtime
+FROM python:3.10-slim as runtime
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHOHUNBUFFERED=1

@@ -8,6 +8,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import config from "../../config.json";
 import {useEffect, useState} from "react";
+import ConstructionIcon from '@mui/icons-material/Construction';
+import SearchIcon from '@mui/icons-material/Search';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import DownloadIcon from '@mui/icons-material/Download';
+import SourceIcon from '@mui/icons-material/Source';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 interface Props {
   sidebar: {
     home : Array<string>;
@@ -55,7 +61,7 @@ export default function Aside() {
       <ListItemButton onClick={() => navigate(config["activities"].route)}
       selected={actual_location == "activities" ? true : false}>
         <ListItemIcon>
-          <ArrowRightIcon sx={{ color:"#000" }} />
+          <KeyboardDoubleArrowRightIcon sx={{ color:"#000" }} />
         </ListItemIcon>
         <ListItemText primary={config["activities"].title} />
       </ListItemButton>
@@ -64,7 +70,7 @@ export default function Aside() {
       <ListItemButton onClick={() => navigate(config["sources"].route)}
       selected={actual_location == "sources" ? true : false}>
         <ListItemIcon>
-          <ArrowRightIcon sx={{ color:"#000" }} />
+          <SourceIcon sx={{ color:"#000" }} />
         </ListItemIcon>
         <ListItemText primary={config["sources"].title} />
       </ListItemButton>
@@ -72,7 +78,7 @@ export default function Aside() {
       <ListItemButton onClick={() => navigate(config["search"].route)}
       selected={actual_location == "search" ? true : false}>
         <ListItemIcon>
-          <ArrowRightIcon sx={{ color:"#000" }} />
+          <SearchIcon sx={{ color:"#000" }} />
         </ListItemIcon>
         <ListItemText primary={config["search"].title} />
       </ListItemButton>
@@ -81,7 +87,7 @@ export default function Aside() {
       <ListItemButton onClick={() => navigate(config["alignment"].route)}
       selected={actual_location == "alignment" ? true : false}>
         <ListItemIcon>
-          <ArrowRightIcon sx={{ color:"#000" }} />
+          <FormatAlignCenterIcon sx={{ color:"#000" }} />
         </ListItemIcon>
         <ListItemText primary={config["alignment"].title} />
       </ListItemButton>
@@ -89,11 +95,17 @@ export default function Aside() {
       <ListItemButton onClick={() => navigate(config["download"].route)}
       selected={actual_location == "download" ? true : false}>
         <ListItemIcon>
-          <ArrowRightIcon sx={{ color:"#000" }} />
+          <DownloadIcon sx={{ color:"#000" }} />
         </ListItemIcon>
         <ListItemText primary={config["download"].title} />
       </ListItemButton>
 
+      <ListItemButton onClick={() => window.location.replace(config.tools.route)}>
+        <ListItemIcon>
+          <ConstructionIcon sx={{ color:"#000" }} />
+        </ListItemIcon>
+        <ListItemText primary={"Tools"} />
+      </ListItemButton>
       </List>
     </Drawer>
   );

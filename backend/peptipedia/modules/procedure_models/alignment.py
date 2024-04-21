@@ -19,7 +19,7 @@ class BlastAlignment:
 
     def __execute_blastp(self):
         """Execute blastp with an e-value 0.5, against Peptipedia database"""
-        cline = NcbiblastpCommandline(db="files/blastdb/peptipedia.fasta", out=self.output_path, query= self.temp_file_path, outfmt="15")
+        cline = NcbiblastpCommandline(db="./files/blastdb/peptipedia.fasta", out=self.output_path, query= self.temp_file_path, outfmt="15")
         cline()
 
     def __parse_response(self):

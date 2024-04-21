@@ -39,6 +39,27 @@
         "linkedin": "https://www.linkedin.com/in/anamaria-daza-sanchez-597b3246/"
       },
       {
+        "name": "Valentina Garrido",
+        "image": "/images/team/valentina.jpeg",
+        "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/Valentina_Garrido3",
+        "linkedin": "https://www.linkedin.com/in/valentina-garrido-463951238/"
+      },
+      {
+        "name": "Nicole Soto",
+        "image": "/images/team/nicole.jpeg",
+        "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/Nicole-Soto-Garcia",
+        "linkedin": "https://www.linkedin.com/in/nicole-soto-36b146124/"
+      },
+      {
+        "name": "Diego Alvarez",
+        "image": "/images/team/diego.jpg",
+        "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/Diego-Alvarez-Saravia",
+        "linkedin": "https://www.linkedin.com/in/dialvarezs0/"
+      },
+      {
         "name": "Lindybeth Sarmiento",
         "image": "/images/team/lindybeth.jpg",
         "rol": "Researcher",
@@ -52,20 +73,6 @@
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Julieta-Sepulveda-Yanez",
         "linkedin": "https://www.linkedin.com/in/jsepulvedayanez/?originalSubdomain=cl"
-      },
-      {
-        "name": "Valentina Garrido",
-        "image": "/images/team/valentina.jpeg",
-        "rol": "Researcher",
-        "github": "https://www.researchgate.net/profile/Valentina_Garrido3",
-        "linkedin": "https://www.linkedin.com/in/valentina-garrido-463951238/"
-      },
-      {
-        "name": "Diego Alvarez",
-        "image": "/images/team/diego.jpg",
-        "rol": "Researcher",
-        "github": "https://github.com/GabrielCabas",
-        "linkedin": "https://www.linkedin.com/in/dialvarezs0/"
       },
       {
         "name": "Roberto Uribe",
@@ -87,6 +94,13 @@
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Mehdi-Davari-4",
         "linkedin": "https://de.linkedin.com/in/mehdi-d-davari-2ab15a5a" 
+      },
+      {
+        "name": "Frederic Cadet",
+        "image": "/images/team/frederic.jpg",
+        "rol": "Researcher",
+        "github": "https://www.researchgate.net/profile/Frederic-Cadet",
+        "linkedin": "https://www.linkedin.com/in/prof-frederic-cadet-83398435/"
       },
       {
         "name": "Marcelo Navarrete",
@@ -125,7 +139,7 @@
           "description": "Peptitools, a user-friendly web platform for peptide analysis.",
           "icon": "https://www.svgrepo.com/show/509077/database.svg",
           "button": "Visit Peptitools",
-          "redirect": "/peptitools/"
+          "redirect": "https://tools.peptipedia.cl"
         }
       ]
     },
@@ -167,7 +181,9 @@
     ],
     "api": "/api/get_home_statistics/"
   },
-  
+  "tools": {
+    "route": "https://tools.peptipedia.cl"
+  },
   "activities": {
     "title": "Activities",
     "description": "Peptipedia has the highest amount of peptides with reported biological activity. We have created a hierarchical way to sort the peptides by its biological activity, considering from general activities (such as therapeutic, immunological or signal peptides) to more specific ones (such as anti-coronavirus or anti-HIV). Furthermore, we have analyzed the promiscuity of peptides to belong between groups, studying the moonlight effects.\nBelow is the hierarchical activity tree.",

@@ -12,9 +12,10 @@ import Download from "../components/common/download";
 
 export default function Activity() {
   const [obj, setObj] = useState({});
-  const [count, setCount] = useState(0)
   const { activity_id } = useParams();
   const [name, setName] = useState("")
+  const [count, setCount] = useState(0)
+  const [predicted_count, setPredictedCount] = useState(0)
   useHandleSection({ section: "activity" });
   useLoadingComponent();
 
@@ -27,6 +28,7 @@ export default function Activity() {
       })
       setCount(response.data.results.count)
       setName(response.data.results.name + ".fasta")
+      setPredictedCount(response.data.results.predicted_count)
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +44,7 @@ export default function Activity() {
           <Front obj={obj}/>
         </Box>
         <Box sx={{ padding: 2 }}>
-          <Data activity_id={activity_id} count = {count}/>
+          <Data activity_id={activity_id} count = {count} predicted_count={predicted_count}/>
         </Box>
         <Box sx={{ paddingRight: 4 }}>
           <Grid container justifyContent="flex-end">

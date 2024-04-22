@@ -8,11 +8,12 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import SequencesDataTable from "./sequences_datatable";
 import config from "../../config.json";
-import Check from "./canon";
+import CheckCanon from "./check_canon";
+import CheckPredicted from "./check_predicted";
 import BackdropComponent from "../common/backdrop";
 export default function Form(){
   const [page, setPage] = useState(1)
-  const [query, setQuery] = useState({})
+  const [query, setQuery] = useState({is_canon: true, predicted: true})
   const [activities, setActivities] = useState({"name": []})
   const [physicochemical, setPhysicochemical] = useState([])
   const [count, setCount] = useState(undefined)
@@ -70,7 +71,8 @@ export default function Form(){
             setQuery = {setQuery}
             query = {query}/>
 
-          <Check setQuery = {setQuery} query = {query}/>
+          <CheckCanon setQuery = {setQuery} query = {query}/>
+          <CheckPredicted setQuery = {setQuery} query = {query}/>
 
           <Divider sx={{m:3}}>
             <Button onClick={()=>setShowPhysicochemicalParams(!show_physicochemical_params)}>

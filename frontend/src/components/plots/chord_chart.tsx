@@ -18,26 +18,30 @@ addDependencyWheelModule(Highcharts);
 
 interface DependecyWheelProps {
   data: any;
+  predicted: boolean;
 }
 
-function ChordChart({ data }: DependecyWheelProps) {
+function ChordChart({ data, predicted }: DependecyWheelProps) {
   const formattedData = Object.keys(data).reduce((arr: any, from: any) => {
     const weights: any = data[from];
     return arr.concat(
       Object.keys(weights).map((to) => [from, to, weights[to]])
     );
   }, []);
+  if (predicted === true){
+
+  }
 
   return (
     <HighchartsProvider Highcharts={Highcharts}>
       <HighchartsChart containerProps={{ style: { height: 700 } }}>
-        <Title>Moonlighting peptides distribution</Title>
+        <Title>{predicted ? ("Predicted moonlighting peptides") : ("Labeled moonlighting peptides") }</Title>
 
         <XAxis type="category" />
 
         <YAxis>
           <DependencyWheelSeries
-            name="Moonlighting peptides distribution"
+            name={predicted ? ("Predicted moonlighting peptides") : ("Labeled moonlighting peptides") }
             data={data}
             keys={["from", "to", "weight"]}
             size="100%"

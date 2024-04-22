@@ -11,16 +11,15 @@ from peptipedia.modules.database_models.table_models import Base as BaseTables
 import networkx as nx
 from networkx.readwrite import json_graph
 from itertools import combinations
-
 class Database:
     """Database class"""
     def __init__(self):
         # Config connection
-        user = config.user
-        db_name = config.db
-        host = config.host
+        user = os.environ["DB_USER"]
+        db_name = os.environ["DB_NAME"]
+        host = os.environ["DB_HOST"]
         password = os.environ["DB_PASS"]
-        port = config.port
+        port = os.environ["DB_PORT"]
         self.engine = create_engine(
             f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{db_name}"
         )
@@ -47,6 +46,26 @@ class Database:
             chunksize = chunk,
             index = False,
             schema="public")
+    def insert_big_data(self, data_file, model, chunk):
+        """Insert data from csv files"""
+        tablename = model.__tablename__
+        header = pd.read_csv(data_file, nrows=1).columns
+        for i in range(1, 200):
+            data = pd.read_csv(data_file, low_memory=False, nrows=10**6, skiprows = i*10**6+2 + 104000000, header=None)
+            data.columns = header
+            print(data)
+            #else:
+            #    #data = pd.read_csv(data_file, low_memory=False, nrows=10**6)
+            if len(data) > 0:
+                data.to_sql(tablename,
+                    con = self.engine,
+                    if_exists = "append",
+                    method = "multi",
+                    chunksize = chunk,
+                    index = False,
+                    schema="public")
+            else:
+                break
 
     def create_tables(self):
         """Create tables from ddl"""
@@ -127,9 +146,10 @@ class Database:
         df_peptides = self.get_table_query(stmt_peptides)
         stmt_labeled_peptides = select(MVLabeledPeptidesGeneralCounts)
         df_labeled = self.get_table_query(stmt_labeled_peptides)
-        df = pd.concat([df_peptides, df_labeled], ignore_index=True)
-        df.loc[2] = df.loc[0] - df.loc[1]
-        df["type"] = ["All", "Labeled", "Unlabeled"]
+        stmt_predicted_peptides = select(MVPredictedPeptidesGeneralCounts)
+        df_predicted = self.get_table_query(stmt_predicted_peptides)
+        df = pd.concat([df_peptides, df_labeled, df_predicted], ignore_index=True)
+        df["type"] = ["All", "Labeled", "Predicted"]
         df = df[["type", "all_peptides", "canon_peptides", "non_canon_peptides"]]
         general_dict = [{"type": capitalize_phrase(col), "value": df_general_counts[col].to_list()[0]} for col in df_general_counts.columns]
         return {
@@ -145,14 +165,28 @@ class Database:
         df_count_activities = self.get_table_query(stmt_count_activities)
         df_count_activities = df_count_activities.rename(columns={"id_activity": "_id"})
         df_count_activities = df_count_activities.drop(columns=["id_parent"])
+        
+        stmt_labeled_counts = select(MVLabeledPeptidesGeneralCounts)
+        labeled_count = self.get_table_query(stmt_labeled_counts)["all_peptides"].values[0]
+
+        stmt_predicted_counts = select(MVPredictedPeptidesGeneralCounts)
+        predicted_count = self.get_table_query(stmt_predicted_counts)["all_peptides"].values[0]
+
+        df_count_activities["percentaje_labeled"] =  round(df_count_activities.labeled_peptides / labeled_count * 100, 2)
+        df_count_activities["percentaje_predicted"] =  round(df_count_activities.predicted_peptides / predicted_count * 100, 2)
+        df_count_activities.percentaje_labeled = df_count_activities.percentaje_labeled.astype(str)
+        df_count_activities.percentaje_predicted = df_count_activities.percentaje_predicted.astype(str)
+        df_count_activities.labeled_peptides = df_count_activities.labeled_peptides.astype(str)
+        df_count_activities.predicted_peptides = df_count_activities.predicted_peptides.astype(str)
+
+        df_count_activities["labeled_peptides"] = df_count_activities["labeled_peptides"] + " (" + df_count_activities["percentaje_labeled"] + "%)"
+        df_count_activities["predicted_peptides"] = df_count_activities["predicted_peptides"] + " (" + df_count_activities["percentaje_predicted"] + "%)"
+        df_count_activities = df_count_activities.drop(columns=["percentaje_labeled", "percentaje_predicted"])
+
         return {
             "table":{
                 "data": df_count_activities.values.tolist(),
                 "columns": [capitalize_phrase(phrase) for phrase in df_count_activities.columns.to_list()]
-            },
-            "plot":{
-                "x": df_count_activities["name"].to_list(),
-                "y": df_count_activities["count_peptide"].to_list(),
             }
         }
 
@@ -164,7 +198,8 @@ class Database:
         return {
             "plot":{
                 "x": df_count_activities["name"].to_list(),
-                "y": df_count_activities["count_peptide"].to_list(),
+                "y_label": df_count_activities["labeled_peptides"].to_list(),
+                "y_predicted": df_count_activities["predicted_peptides"].to_list(),
             }
         }
 
@@ -190,7 +225,8 @@ class Database:
         return {
             "name": df["name"][0],
             "description": df["description"][0],
-            "count": int(df["count_peptide"][0])
+            "count": int(df["labeled_peptides"][0]),
+            "predicted_count": int(df["predicted_peptides"][0])
         }
 
     def get_source(self, id_source):
@@ -227,6 +263,30 @@ class Database:
             }
         }
 
+    def get_predicted_sequences_by_activity(self, id_activity, data):
+        limit = data["rowsPerPage"]
+        page = data["page"]
+        search_text = data["searchText"]
+        stmt_activity = (
+            select(MVPredictedSequencesByActivity)
+            .where(MVPredictedSequencesByActivity.id_activity == id_activity))
+        if search_text is not None:
+            stmt_activity = stmt_activity.where(MVPredictedSequencesByActivity.sequence.contains(search_text))
+        stmt_activity = stmt_activity.offset(limit*page).limit(limit)
+
+        df_canon = self.get_table_query(stmt_activity)
+        df_canon = df_canon.drop(columns = ["id_activity", "is_canon"])
+        df_canon = df_canon.astype(str)
+        df_canon["sequence"] = df_canon["sequence"].map(split_sequence)
+        
+        return {
+            "table":{
+                "data": df_canon.values.tolist(),
+                "columns": [capitalize_phrase(phrase) for phrase in df_canon.columns.to_list()]
+            }
+        }
+
+
     def get_sequences_by_source(self, id_sources, data):
         limit = data["rowsPerPage"]
         page = data["page"]
@@ -254,14 +314,14 @@ class Database:
             if "children" in row.keys():
                 self.iterate_over_tree(df, row["children"])
             name = df[df["id_activity"] == row["id"]]["name"].values[0]
-            count = df[df["id_activity"] == row["id"]]["count_peptide"].values[0]
-            row["name"] = f"""{name} ({count})"""
+            labeled = df[df["id_activity"] == row["id"]]["labeled_peptides"].values[0]
+            predicted = df[df["id_activity"] == row["id"]]["predicted_peptides"].values[0]
+            row["name"] = f"""{name} | {labeled} | {predicted}"""
 
     def get_tree(self):
         stmt = select(MVPeptidesByActivity)
         df = self.get_table_query(stmt)
         df = df.drop(columns=["parent_name", "description"])
-        print(df)
         G = nx.DiGraph()
         G.add_node(0)
         df = df.fillna(0)
@@ -407,15 +467,23 @@ class Database:
             }
         }
 
-    def get_chord(self):
-        stmt = select(MVChordFirstLevel)
-        df = self.get_table_query(stmt)
+    def get_chord(self, predicted = False):
+        if predicted:
+            stmt = select(MVChordFirstLevelPredicted)
+            df = self.get_table_query(stmt).sample(1000000)
+        else:
+            stmt = select(MVChordFirstLevel)
+            df = self.get_table_query(stmt)
+        df["value"] = 1
+        pivoted = df.pivot(columns="name", index="id_peptide", values="value")
         acts = df.name.unique()
         data = []
         for i, j in combinations(acts, 2):
-            merged_len = len(pd.merge(df[df.name == i][["id_peptide"]], df[df.name == j][["id_peptide"]], on="id_peptide"))
-            if merged_len != 0:
-                data.append([i, j, merged_len])
+            count_len = pivoted[[i,j]]
+            count_len = count_len.sum(axis = 1)
+            count_len = count_len[count_len == 2].shape[0]
+            if count_len != 0:
+                data.append([i, j, count_len])
         return {"data": data}
     
     def get_activities_sources_list(self):
@@ -438,6 +506,7 @@ def split_sequence(sequence):
     return sequence
 
 def parse_data_query(query, model, stmt):
+    print(query)
     if "is_canon" in query.keys():
         if query["is_canon"]:
             stmt = stmt.where(model.is_canon == query["is_canon"])
@@ -446,6 +515,9 @@ def parse_data_query(query, model, stmt):
     if "swissprot_id" in query.keys():
         stmt = stmt.where(model.swissprot_id == query["swissprot_id"])
     if "activities" in query.keys():
+        if "predicted" in query.keys():
+            if not query["predicted"]:
+                stmt = stmt.where(model.predicted == False)
         for act in query["activities"]:
             stmt = stmt.where(model.activities.any(act))
     if query["is_canon"] is not False:
@@ -461,18 +533,18 @@ def parse_data_query(query, model, stmt):
     return stmt
 
 if __name__ == "__main__":
-    path_to_tables = "~/Documentos/peptipedia_parser_scripts/tables/"
+    path_to_tables = "~/Documentos/UMAG/peptipedia_parser_scripts/tables/"
     db = Database()
     db.create_tables()
-    #db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=100)
-    #print("peptide")
+    db.insert_data(f"{path_to_tables}peptide.csv", Peptide, chunk=100)
+    print("peptide")
     db.insert_data(f"{path_to_tables}source.csv", Source, chunk=100)
     print("source")
-    db.insert_data(f"{path_to_tables}peptide_has_source.csv", PeptideHasSource, chunk=100)
+    db.insert_data(f"{path_to_tables}peptide_has_source.csv", PeptideHasSource, chunk=1000)
     print("peptide_has_source")
     db.insert_data(f"{path_to_tables}activity.csv", Activity, chunk=300)
     print("activity")
-    db.insert_data(f"{path_to_tables}peptide_has_activity.csv", PeptideHasActivity, chunk=100)
+    db.insert_data(f"{path_to_tables}peptide_has_activity.csv", PeptideHasActivity, chunk=1000)
     print("peptide_has_activity")
     db.insert_data(f"{path_to_tables}pfam.csv", Pfam, chunk=1000)
     print("pfam")
@@ -500,4 +572,6 @@ if __name__ == "__main__":
     db.create_mv(MVGoByPeptide)
     db.create_mv(MVChordTherapeutic)
     db.create_mv(MVChordAMP)
-
+    db.create_mv(MVPredictedPeptidesGeneralCounts)
+    db.create_mv(MVPredictedSequencesByActivity)
+    db.create_mv(MVChordFirstLevelPredicted)

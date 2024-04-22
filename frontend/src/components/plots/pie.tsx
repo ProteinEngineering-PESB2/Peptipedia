@@ -2,7 +2,8 @@ import Plot from "react-plotly.js";
 
 interface IData {
   x: Array<any>;
-  y: Array<number>;
+  y_label: Array<number>;
+  y_predicted: Array<number>;
 }
 interface Props {
   plot: IData;
@@ -15,11 +16,29 @@ export default function PieChart({ plot, title }: Props) {
       data={[
         {
           labels: plot.x,
-          values: plot.y,
+          values: plot.y_label,
           type: "pie",
           marker: {
             color: "#2962ff",
           },
+          domain: {
+            row: 0,
+            column: 0
+          },
+          name: 'Labeled',
+        },
+        {
+          labels: plot.x,
+          values: plot.y_predicted,
+          type: "pie",
+          marker: {
+            color: "#2962ff",
+          },
+          domain: {
+            row: 0,
+            column: 1
+          },
+          name: 'Predicted',
         },
       ]}
       layout={{
@@ -28,7 +47,8 @@ export default function PieChart({ plot, title }: Props) {
         font: {
           size: 15,
         },
-        autosize: true
+        autosize: true,
+        grid: {rows: 1, columns: 2}
       }}
       style={{width: "100%"}}
       config={{

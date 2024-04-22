@@ -32,6 +32,7 @@ class Peptide(Base):
     keyword = Column(String, nullable=True)
     patent = Column(String, nullable=True)
     reference = Column(String, nullable=True)
+    half_life = Column(String, nullable=True)
     
     peptide_has_source_r = relationship("PeptideHasSource")
     peptide_has_activity_r = relationship("PeptideHasActivity")
@@ -90,9 +91,9 @@ class PeptideHasSource(Base):
 class PeptideHasActivity(Base):
     """Peptide has activity table"""
     __tablename__ = "peptide_has_activity"
-    id_peptide = Column(Integer, ForeignKey("peptide.id_peptide"), nullable=False, primary_key=True,)
+    id_peptide = Column(Integer, ForeignKey("peptide.id_peptide"), nullable=False, primary_key=True)
     id_activity = Column(Integer, ForeignKey("activity.id_activity"), nullable=False,  primary_key=True)
-
+    predicted = Column(Boolean, nullable=False)
     def __repr__(self):
         return f"PeptideHasActivity(id_peptide={self.id_peptide}, id_activity={self.id_activity})"
 
@@ -125,3 +126,11 @@ class PeptideHasPfam(Base):
     bit_score = Column(Float)
     def __repr__(self):
         return f"PeptideHasPfam(id_peptide={self.id_peptide}, id_pfam={self.id_pfam})"
+        
+class PredictiveModel(Base):
+    __tablename__ = "predictive_model"
+    id_activity = Column(Integer, ForeignKey("activity.id_activity"), nullable=False, primary_key=True)
+    algorithm = Column(String, nullable=False)
+    encoder = Column(String, nullable=False)
+    def __repr__(self):
+        return f"PredictiveModel(id_activity={self.id_activity})"

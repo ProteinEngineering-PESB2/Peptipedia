@@ -21,7 +21,7 @@ export default function Plot() {
           </Container>
         </Box>
          <Box padding={1}>
-          <PieChart plot={plot} title={"Activities"} ></PieChart>
+          <PieChart plot={plot} title={"Labeled Peptides                                                                          Predicted peptides"} ></PieChart>
         </Box>
       </>
   );

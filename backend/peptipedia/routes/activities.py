@@ -27,11 +27,12 @@ def get_count_activities_plot():
         print(e)
         session.rollback()
 
-@activities_blueprint.route("/get_chord/", methods=["GET"])
+@activities_blueprint.route("/get_chord/", methods=["POST"])
 def get_chord():
     """Gets count of peptides by activity"""
     try:
-        res = db.get_chord()
+        post_data = request.json
+        res = db.get_chord(post_data["predicted"])
         return parse_response(res)
     except Exception as e:
         print(e)
@@ -57,6 +58,19 @@ def get_sequences_by_activity(id_activity):
     except Exception as e:
         print(e)
         session.rollback()
+
+
+@activities_blueprint.route("/get_predicted_sequences_by_activity/<id_activity>", methods=["POST"])
+def get_predicted_sequences_by_activity(id_activity):
+    """Gets sequences by activity"""
+    try:
+        post_data = request.json
+        res = db.get_predicted_sequences_by_activity(id_activity, post_data)
+        return parse_response(res)
+    except Exception as e:
+        print(e)
+        session.rollback()
+
 
 @activities_blueprint.route("/get_tree/", methods=["GET"])
 def get_tree():

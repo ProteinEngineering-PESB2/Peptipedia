@@ -189,7 +189,7 @@
     "description": "Peptipedia has the highest amount of peptides with reported biological activity. We have created a hierarchical way to sort the peptides by its biological activity, considering from general activities (such as therapeutic, immunological or signal peptides) to more specific ones (such as anti-coronavirus or anti-HIV). Furthermore, we have analyzed the promiscuity of peptides to belong between groups, studying the moonlight effects.\nBelow is the hierarchical activity tree.",
     "description_2": "Here you can see all activities listed in descendent order by peptide counts. You can click any row and go further to see all his sequences",
     "description_3": "First level statistics. All the counts of first level hierarchical activity trees. As you can see, most of our reported peptides has a therapeutic activity.",
-    "description_4": "Finally, you can see the dependency chord of moonlighting peptides (with more than one reported activity)",
+    "description_4": "Finally, you can see the dependency chord of moonlighting peptides (Peptides with more than one reported activity). First all labeled peptides, and above, predicted peptides. Last one is only a 1M sampling because we have a huge number of predicted peptides.",
     "route": "/activities",
     "table_api": "/api/get_count_activities_table/",
     "plot_api": "/api/get_count_activities_plot/",
@@ -226,6 +226,7 @@
     "route": "/activity/:activity_id",
     "api": "/api/get_activity/",
     "sequences_api": "/api/get_sequences_by_activity/",
+    "predicted_sequences_api": "/api/get_predicted_sequences_by_activity/",
     "redirect": "/peptide/",
     "description": "Please click any row to see peptide details."
   },

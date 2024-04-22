@@ -18,7 +18,7 @@ class MVPeptidesByDatabase(Base):
     def definition(self):
         return f"""create materialized view {self.__tablename__} as
             SELECT s.id_source, s.name, s.url,
-            t.count AS count_peptide
+            t.count AS count_peptide,
             s.type
             FROM source s
                 JOIN ( SELECT phs.id_source,
@@ -38,22 +38,33 @@ class MVPeptidesByActivity(Base):
     description = Column(String)
     id_parent = Column(Integer)
     parent_name = Column(String)
-    count_peptide = Column(Integer)
+    labeled_peptides = Column(Integer)
+    predicted_peptides = Column(Integer)
     def __repr__(self):
         return f"MV_peptides_by_activity(name={self.name}, count={self.count_peptide})"
     def definition(self):
         return f"""create materialized view {self.__tablename__} as
-        SELECT a.id_activity, a.name,
-        a.description, a.id_parent,
+        SELECT a.id_activity,
+        a.name,
+        a.description,
+        a.id_parent,
         pa.name AS parent_name,
-        t.count AS count_peptide
+        t.count AS labeled_peptides,
+        COALESCE(y.count, 0::bigint) AS predicted_peptides
         FROM activity a
             JOIN ( SELECT pha.id_activity,
-                count(*) AS count
+                    count(*) AS count
                 FROM peptide p
                     JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
+                WHERE pha.predicted IS FALSE
                 GROUP BY pha.id_activity) t ON a.id_activity = t.id_activity
-        LEFT JOIN activity pa ON a.id_parent = pa.id_activity
+            LEFT JOIN ( SELECT pha.id_activity,
+                    count(*) AS count
+                FROM peptide p
+                    JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
+                WHERE pha.predicted IS TRUE
+                GROUP BY pha.id_activity) y ON a.id_activity = y.id_activity
+            LEFT JOIN activity pa ON a.id_parent = pa.id_activity
         ORDER BY t.count DESC;"""
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
@@ -69,18 +80,17 @@ class MVGeneralInformation(Base):
     def definition(self):
         return f"""create materialized view {self.__tablename__} as
             SELECT cs.count AS databases,
-            ca.count AS activity,
-            lu.max AS last_update,
-            cp.count AS sequences
-            FROM
-                (SELECT count(s.id_source) AS count
-                FROM source s) as cs,
-                (SELECT count(a.id_activity) AS count
-                FROM activity a) as ca,
-                (SELECT max(p.act_date) AS max
-                FROM peptide p) lu,
-                (SELECT count(p.id_peptide) AS count
-                FROM peptide p) cp;"""
+                ca.count AS activity,
+                lu.max AS last_update,
+                cp.count AS sequences
+            FROM ( SELECT count(s.id_source) AS count
+                    FROM source s) cs,
+                ( SELECT count(a.id_activity) AS count
+                    FROM activity a) ca,
+                ( SELECT max(p.act_date) AS max
+                    FROM peptide p) lu,
+                ( SELECT count(p.id_peptide) AS count
+                    FROM peptide p) cp;"""
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
  
@@ -110,10 +120,14 @@ class MVPeptidesGeneralCounts(Base):
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
-        select peptides as all_peptides, canon_peptides, (peptides - canon_peptides) as non_canon_peptides
-        from (select count(*) as peptides from peptide) as peptides_t,
-        (select count(*) as canon_peptides from peptide
-        where is_canon is true) as canon_peptides_t;
+        SELECT peptides_t.peptides AS all_peptides,
+            canon_peptides_t.canon_peptides,
+            peptides_t.peptides - canon_peptides_t.canon_peptides AS non_canon_peptides
+        FROM ( SELECT count(*) AS peptides
+                FROM peptide) peptides_t,
+            ( SELECT count(*) AS canon_peptides
+                FROM peptide
+                WHERE peptide.is_canon IS TRUE) canon_peptides_t;
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
@@ -126,14 +140,38 @@ class MVLabeledPeptidesGeneralCounts(Base):
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
-        select all_peptides, canon_peptides, all_peptides - canon_peptides as non_canon_peptides
-        from
-        (select count(distinct id_peptide) as all_peptides
-        from peptide_has_activity) as all_peptides_labeled_t,
-        (select count(distinct pha.id_peptide) as canon_peptides
-        from peptide_has_activity pha
-        join peptide p on p.id_peptide = pha.id_peptide
-        where p.is_canon is true) as canon_peptides_labeled_t;"""
+        SELECT all_peptides_labeled_t.all_peptides,
+            canon_peptides_labeled_t.canon_peptides,
+            all_peptides_labeled_t.all_peptides - canon_peptides_labeled_t.canon_peptides AS non_canon_peptides
+        FROM ( SELECT count(DISTINCT pha.id_peptide) AS all_peptides
+                FROM peptide_has_activity pha
+                WHERE pha.predicted IS FALSE) all_peptides_labeled_t,
+            ( SELECT count(DISTINCT pha.id_peptide) AS canon_peptides
+                FROM peptide_has_activity pha
+                    JOIN peptide p ON p.id_peptide = pha.id_peptide
+                WHERE p.is_canon IS TRUE AND pha.predicted IS FALSE) canon_peptides_labeled_t;"""
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"
+
+
+class MVPredictedPeptidesGeneralCounts(Base):
+    __tablename__ = "predicted_peptides_general_counts"
+    all_peptides = Column(Integer, primary_key=True)
+    canon_peptides = Column(Integer)
+    non_canon_peptides = Column(Integer)
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        SELECT all_peptides_labeled_t.all_peptides,
+            canon_peptides_labeled_t.canon_peptides,
+            all_peptides_labeled_t.all_peptides - canon_peptides_labeled_t.canon_peptides AS non_canon_peptides
+        FROM ( SELECT count(DISTINCT pha.id_peptide) AS all_peptides
+                FROM peptide_has_activity pha
+                WHERE pha.predicted IS TRUE) all_peptides_labeled_t,
+            ( SELECT count(DISTINCT pha.id_peptide) AS canon_peptides
+                FROM peptide_has_activity pha
+                    JOIN peptide p ON p.id_peptide = pha.id_peptide
+                WHERE p.is_canon IS TRUE AND pha.predicted IS TRUE) canon_peptides_labeled_t;"""
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
 
@@ -148,7 +186,28 @@ class MVSequencesByActivity(Base):
         create materialized view {self.__tablename__} as
         select p.id_peptide, p.sequence, p.is_canon, pha.id_activity
         from peptide_has_activity pha 
-        join peptide p on pha.id_peptide = p.id_peptide
+        join peptide p on pha.id_peptide = p.id_peptide 
+        where pha.predicted is FALSE
+        """
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"
+    
+class MVPredictedSequencesByActivity(Base):
+    __tablename__ = "predicted_sequences_by_activity"
+    id_peptide = Column(Integer, primary_key=True)
+    sequence = Column(String)
+    is_canon = Column(Boolean)
+    id_activity = Column(Integer, primary_key=True)
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        SELECT p.id_peptide,
+            p.sequence,
+            p.is_canon,
+            pha.id_activity
+        FROM peptide_has_activity pha
+            JOIN peptide p ON pha.id_peptide = p.id_peptide
+        WHERE pha.predicted IS TRUE;
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
@@ -273,6 +332,7 @@ class MVSearchPeptide(Base):
     charge = Column(Float)
     swissprot_id = Column(String)
     activities = Column(ARRAY(String))
+    predicted = Column(Boolean)
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -301,14 +361,33 @@ class MVChordFirstLevel(Base):
         return f"""
         create materialized view {self.__tablename__} as
         SELECT p.id_peptide,
-            a.name
+        a.name
         FROM peptide p
             JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
             JOIN activity a ON a.id_activity = pha.id_activity
-        WHERE a.id_parent IS NULL;
+        WHERE a.id_parent IS NULL AND pha.predicted IS FALSE;
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
+
+class MVChordFirstLevelPredicted(Base):
+    __tablename__ = "first_level_predicted"
+    id_peptide = Column(Integer, primary_key=True)
+    name = Column(String)
+    def definition(self):
+        return f"""
+        create materialized view {self.__tablename__} as
+        SELECT p.id_peptide,
+        a.name
+        FROM peptide p
+            JOIN peptide_has_activity pha ON p.id_peptide = pha.id_peptide
+            JOIN activity a ON a.id_activity = pha.id_activity
+        WHERE a.id_parent IS NULL AND pha.predicted IS TRUE;
+        """
+    def refresh(self):
+        return f"refresh materialized view {self.__tablename__};"
+
+
 
 class MVChordTherapeutic(Base):
     __tablename__ = "chord_therapeutic"
@@ -355,8 +434,8 @@ class MVActivitiesListed(Base):
         return f"""
         create materialized view {self.__tablename__} as
         SELECT pha.id_peptide,
-            array_agg(act.id_activity) AS id_activities,
-            array_agg(act.name) AS activities
+        array_agg(act.id_activity) AS id_activities,
+        array_agg(act.name) AS activities
         FROM peptide_has_activity pha
             LEFT JOIN activity act ON act.id_activity = pha.id_activity
         GROUP BY pha.id_peptide;
@@ -412,11 +491,13 @@ class MVGoByPeptide(Base):
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
-        select phgo.id_peptide,
-        go.accession,
-        go.term, go.description, go.source
-        from peptide_has_go phgo
-        join gene_ontology go on phgo.id_go = go.id_go;
+        SELECT phgo.id_peptide,
+            go.accession,
+            go.term,
+            go.description,
+            go.source
+        FROM peptide_has_go phgo
+            JOIN gene_ontology go ON phgo.id_go = go.id_go;
         """
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"

@@ -3,7 +3,7 @@ import { FormControl, FormControlLabel } from '@mui/material';
 import {useState, useEffect} from 'react';
 
 interface Props{
-  setQuery: React.Dispatch<React.SetStateAction<{}>>;
+  setQuery: React.Dispatch<React.SetStateAction<any>>;
   query: {}
 }
 

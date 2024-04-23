@@ -13,7 +13,7 @@ interface Props{
     name: Array<string>;
     id_activity?: Array<number>;
   }
-  setQuery: React.Dispatch<React.SetStateAction<{}>>;
+  setQuery: React.Dispatch<React.SetStateAction<any>>;
   query: {}
 }
 

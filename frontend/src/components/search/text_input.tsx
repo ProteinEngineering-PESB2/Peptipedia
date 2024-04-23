@@ -4,7 +4,7 @@ interface Props{
   label: string;
   form_label: string;
   rows: number;
-  setQuery: React.Dispatch<React.SetStateAction<{}>>;
+  setQuery: React.Dispatch<React.SetStateAction<any>>;
   query: {};
 }
 export default function TextInput({label, form_label, rows, setQuery, query}:Props){

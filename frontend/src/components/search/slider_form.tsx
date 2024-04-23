@@ -12,7 +12,7 @@ interface Props{
   label: string;
   param_name: string;
   params: Params;
-  setQuery: React.Dispatch<React.SetStateAction<{}>>;
+  setQuery: React.Dispatch<React.SetStateAction<any>>;
   query: {}
 }
 

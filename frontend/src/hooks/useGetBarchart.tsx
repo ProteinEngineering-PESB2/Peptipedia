@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 const useGetBarchart = (api:string) =>{
-  const [plot, setPlot] = useState({ "x": [], "y": [] })
+  const [plot, setPlot] = useState({ "x": [], "y_label": [] , y_predicted: []})
   const getData = async () => {
     try {
       const response = await axios.get(api);

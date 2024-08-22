@@ -1,12 +1,12 @@
-# PeptipediaDB: peptide sequence database and user-friendly web platform.
+# Peptipedia v2.0: A peptide sequence database and user-friendly web platform. A major update
 
 
 This repository contains the source files and supplementary information for the implementations and use cases presented in the work: <br>
 Gabriel Cabas-Mora<sup>1</sup>, Anamaría Daza<sup>2</sup>, Lindybeth Sarmiento-Varón<sup>3</sup>, Diego Alvarez<sup>3,4</sup>, Valentina Garrido<sup>1</sup>, Julieta H. Sepúlveda<sup>5</sup>, Roberto Uribe-Paredes<sup>1</sup>, Álvaro Olivera-Nappa<sup>2</sup>, Mehdi D. Davari<sup>6</sup>, Marcelo Navarrete<sup>3,4</sup> and David Medina-Ortiz<sup>1,2*</sup>.<br>
 
-PeptipediaDB: peptide sequence database and user-friendly web platform. A major update. <br>
+Peptipedia v2.0: A peptide sequence database and user-friendly web platform. A major update <br>
 
-https://doi.org/XXXX<br>
+https://www.biorxiv.org/content/10.1101/2024.07.11.603053v1<br>
 
 <sup>*1*</sup><sub>Departamento de Ingeniería en Computación, Universidad de Magallanes, Av. Pdte. Manuel Bulnes 01855, 6210427, Punta Arenas, Chile.</sub> <br>
 <sup>*2*</sup><sub>Centre for Biotechnology and Bioengineering, CeBiB, Universidad de Chile, Avenida Beauchef 851, 8320000, Santiago, Chile.</sub> <br>
@@ -35,10 +35,8 @@ Peptides have gained greater relevance in recent years thanks to their therapeut
 
 This web application was implemented using a client-server architecture. The frontend and backend folder contains information about requirements and instalation in his own README.md.
 
-Peptipedia database is located on this Google Drive [folder](https://drive.google.com/file/d/11P-hQrWxDpsYVExgYFssjKunfoCrSHNA/view?usp=sharing).
-
 <a name="data"></a>
 
 ## Data sources
 
-The detailed data processing is found in this [repository](https://github.com/ProteinEngineering-PESB2/peptipedia_parser_scripts).
+The detailed data processing is found in this [repository](https://github.com/ProteinEngineering-PESB2/PeptipediaParser).

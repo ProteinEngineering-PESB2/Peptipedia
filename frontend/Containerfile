@@ -5,8 +5,8 @@ ENV VITE_BACKEND_URL=https://api.app.peptipedia.cl
 WORKDIR /app
 COPY ./ .
 RUN npm install
-RUN npm run build
 
+RUN npm run build
 
 FROM nginx:stable as runtime
 

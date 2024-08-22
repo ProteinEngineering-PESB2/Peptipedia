@@ -50,7 +50,7 @@ export default function Source() {
             </Box>
             <Box sx={{ paddingRight: 4 }}>
                 <Grid container justifyContent="flex-end">
-                    <Download name={name} />
+                    <Download name={name} button_text="Download sequences"/>
                 </Grid>
             </Box>
         </>

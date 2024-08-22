@@ -12,8 +12,8 @@ export default function Form(){
   const [activities, setActivities] = useState([])
   const [sources, setSources] = useState([])
 
-  const [selected_activity, setSelectedActivity] = useState<string>()
-  const [selected_source, setSelectedSource] = useState<string>()
+  const [selected_activity, setSelectedActivity] = useState<string>("")
+  const [selected_source, setSelectedSource] = useState<string>("")
 
   const getParams = async () => {
     try {
@@ -36,14 +36,14 @@ export default function Form(){
   useEffect(()=>{
     getParams()
   }, [])
-
+  
   return (
     <>
       <BackdropComponent open={false}/>
       <Box margin={1} boxShadow={3}>
         <Paper sx={{ p: 3, display: "flex", flexDirection: "column" }}>
         <Box padding={3}>
-        <Grid container spacing={2}>
+        <Grid container spacing = {3}>
             <InputLabel id="activities">Activities</InputLabel>
             <Grid item xs={5}>
                 <Select
@@ -59,13 +59,16 @@ export default function Form(){
                 ))}
                 </Select>
             </Grid>
-            <Grid item xs={5}>
-                <Download name={selected_activity + ".fasta"} button_text="Download by activity"></Download>
+            <Grid item xs = {2}>
+                <Download name={selected_activity} button_text="Download fasta by activity" format = ".fasta"></Download>
+            </Grid>
+            <Grid item xs = {2}>
+                <Download name={selected_activity} button_text="Download csv by activity" format = ".csv"></Download>
             </Grid>
         </Grid>
         </Box>
         <Box padding={3}>
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
               <InputLabel id="sources">Sources</InputLabel>
               <Grid item xs={5}>
                   <Select
@@ -81,13 +84,16 @@ export default function Form(){
                       ))}
                   </Select>
               </Grid>
-              <Grid item xs={5}>
-                  <Download name={selected_source + ".fasta"} button_text="Download by source"></Download>
+              <Grid item xs={2}>
+                  <Download name={selected_source} button_text="Download fasta by source" format = ".fasta" ></Download>
+              </Grid>
+              <Grid item xs={2}>
+                  <Download name={selected_source} button_text="Download csv by source" format = ".csv" ></Download>
               </Grid>
           </Grid>
         </Box>
         <Box padding={1}>
-          <Download name={"all_peptides.fasta"} button_text="Full download"></Download>
+          <Download name={"all_peptides"} button_text="Full download"></Download>
         </Box>
         </Paper>
       </Box>

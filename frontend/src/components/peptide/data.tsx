@@ -34,7 +34,6 @@ export default function Data({peptide_id}: Props) {
       try {
         setIsWaiting(true)
         const response = await axios.get(config.peptide.api + peptide_id);
-        console.log(response.data)
         setSequence(response.data.results.peptide.sequence)
         setPhyTable(response.data.results.peptide.physicochemical_properties)
         setActivities(response.data.results.peptide.activities)
@@ -75,7 +74,7 @@ export default function Data({peptide_id}: Props) {
 
     return (
       <>
-      <BackdropComponent open={is_waiting}></BackdropComponent>
+      <BackdropComponent open={is_waiting}/>
         <Box sx={{ padding: 2 }}>
           <Front obj={obj}/>
         </Box>

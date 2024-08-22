@@ -4,7 +4,7 @@ RUN micromamba install --prefix /opt/conda blast -c bioconda -c conda-forge && \
 	micromamba clean -aqy
 
 
-FROM python:3.10-slim as runtime
+FROM python:3.9-slim as runtime
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHOHUNBUFFERED=1
@@ -15,7 +15,7 @@ RUN apt-get update && \
 
 # copy conda deps
 COPY --from=conda /opt/conda /opt/conda
-ENV PATH=/opt/conda/bin:$PATH
+ENV PATH=$PATH:/opt/conda/bin
 
 COPY ./peptipedia /app/peptipedia
 COPY requirements.txt /app/requirements.txt

@@ -57,6 +57,11 @@ export default function DataTable({ table, title, redirect_api = undefined, do_n
               download: false,
               print: false,
               onRowClick: (rowData)=> clickFunction(rowData),
+              textLabels: {
+                body: {
+                  noMatch: ""
+                }
+              }
           }}
         />
     </>

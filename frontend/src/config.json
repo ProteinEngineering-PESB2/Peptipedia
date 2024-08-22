@@ -15,7 +15,7 @@
     "title": "Peptipedia",
     "description": "Peptipedia, a user-friendly web database to support peptide research using bioinformatics and machine learning strategies.",
     "route": "/",
-    "diagram_path": "/images/home/Peptipedia_Only.png",
+    "diagram_path": "/images/home/Peptipedia.png",
     "description_2": "This project collects information on peptides available in the literature, databases and repositories. We organize the information in a way to extract its reported biological activities and make them available for use. Peptipedia is the largest peptide compilation database to date, with nearly 4 million sequences with their activities. In addition, we develop our own predictive activity models, and they are available on the Peptitools platform.",
     "captions":{
       "databases":"Total count of different sources, databases or repositories with peptides information, used in this project.",
@@ -208,7 +208,7 @@
 
   "search": {
     "title": "Search",
-    "description": "Adjust the params to filter and search against Peptipedia database. The search is done using an AND statement.",
+    "description": "Adjust the params to filter and search against Peptipedia database. The search is done using an AND statement. In 'Sequence' input, just look for one peptide sequence, and don't use fasta format, just simple text. Click the '+' symbol to use another physicochemical parameters in your search. If you ask for only canonical peptides, only will search for peptides with 20 common residues. If you look for predicted activities too, click the check called 'Include predicted activities'.",
     "route": "/search",
     "params_api": "/api/get_peptide_params/",
     "count_api": "/api/get_count_search/",
@@ -257,7 +257,7 @@
   "download": {
     "route": "/download",
     "title": "Download",
-    "description": "Here you can download the peptides presented in this Peptipedia. You can select a specific biological activity or source to adquire the different datasets.",
+    "description": "Here you can download the peptides presented in this Peptipedia. You can select a specific biological activity or source to adquire the different datasets. The dataset will be downloaded once you click the button.",
     "api": "/api/get_activities_sources_list/"
   },
 

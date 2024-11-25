@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: peptipedia
+data:
+  TZ: "America/Santiago"
+  PROD: "True"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: peptipedia
+  name: pod-peptipedia
+spec:
+  containers:
+    - name: db
+      image: postgres:17
+      envFrom:
+        - configMapRef:
+            name: peptipedia
+        - secretRef:
+            name: peptipedia
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+      ports:
+        - containerPort: 5432
+      volumeMounts:
+        - name: peptipedia-db-init
+          mountPath: /docker-entrypoint-initdb.d/:z
+          readOnly: true
+        - name: peptipedia-db-pvc
+          mountPath: /var/lib/postgresql/data:U,Z
+        - name: peptipedia-db-tmp
+          mountPath: /var/run/postgresql:U
+
+    - name: backend
+      image: peptipedia_backend:latest
+      restartPolicy: OnFailure
+      envFrom:
+        - configMapRef:
+            name: peptipedia
+        - secretRef:
+            name: peptipedia
+      securityContext:
+        runAsUser: 1002
+        runAsGroup: 1002
+      ports:
+        - containerPort: 8000
+          hostPort: 10002
+      volumeMounts:
+        - name: peptipedia-files
+          mountPath: /app/files:U,Z
+
+    - name: frontend
+      image: peptipedia_frontend:latest
+      securityContext:
+        runAsUser: 1003
+        runAsGroup: 1003
+      ports:
+        - containerPort: 8080
+          hostPort: 10003
+
+  volumes:
+    - name: peptipedia-db-init
+      hostPath:
+        path: ./db_init/
+        type: DirectoryOrCreate
+    - name: peptipedia-db-pvc
+      persistentVolumeClaim:
+        claimName: peptipedia-db-pvc
+    - name: peptipedia-db-tmp
+      emptyDir: { }
+    - name: peptipedia-files
+      hostPath:
+        path: ./peptipedia_files/
+        type: DirectoryOrCreate

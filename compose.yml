@@ -49,8 +49,6 @@ services:
       - POSTGRES_USER=pepti_user
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=peptipedia
-    
-
 
 networks:
   peptipedia:

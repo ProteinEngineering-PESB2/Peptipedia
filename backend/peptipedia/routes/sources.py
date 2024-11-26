@@ -9,7 +9,7 @@ sources_blueprint = Blueprint("sources_blueprint", __name__)
 
 @sources_blueprint.route("/get_count_sources/", methods=["GET"])
 def get_count_sources():
-    """Gets count of peptides by activity"""
+    """Gets count of peptides by source"""
     try:
         res = db.get_count_sources()
         return parse_response(res)
@@ -19,7 +19,7 @@ def get_count_sources():
 
 @sources_blueprint.route("/get_source/<id_source>", methods=["GET"])
 def get_source(id_source):
-    """Gets activity information"""
+    """Gets sources information"""
     try:
         res = db.get_source(id_source)
         return parse_response(res)
@@ -29,7 +29,7 @@ def get_source(id_source):
 
 @sources_blueprint.route("/get_sequences_by_source/<id_source>", methods=["POST"])
 def get_sequences_by_source(id_source):
-    """Gets count of peptides by activity"""
+    """Gets count of peptides by sources"""
     try:
         post_data = request.json
         res = db.get_sequences_by_source(id_source, post_data)

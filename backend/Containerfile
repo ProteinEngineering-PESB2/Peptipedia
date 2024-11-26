@@ -27,7 +27,7 @@ ENV VIRTUAL_ENV=/app/.venv
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH=/app
 
-RUN adduser --uid 1002 --system --no-create-home app
+RUN adduser --uid 1001 --system --no-create-home app
 USER app
 
 EXPOSE 8000

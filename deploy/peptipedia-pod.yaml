@@ -22,8 +22,8 @@ spec:
         - secretRef:
             name: peptipedia
       securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
+        runAsUser: 1000
+        runAsGroup: 1000
       ports:
         - containerPort: 5432
       volumeMounts:
@@ -44,11 +44,11 @@ spec:
         - secretRef:
             name: peptipedia
       securityContext:
-        runAsUser: 1002
-        runAsGroup: 1002
+        runAsUser: 1001
+        runAsGroup: 1001
       ports:
         - containerPort: 8000
-          hostPort: 10002
+          hostPort: 10001
       volumeMounts:
         - name: peptipedia-files
           mountPath: /app/files:U,Z
@@ -56,11 +56,11 @@ spec:
     - name: frontend
       image: peptipedia_frontend:latest
       securityContext:
-        runAsUser: 1003
-        runAsGroup: 1003
+        runAsUser: 1002
+        runAsGroup: 1002
       ports:
         - containerPort: 8080
-          hostPort: 10003
+          hostPort: 10002
 
   volumes:
     - name: peptipedia-db-init

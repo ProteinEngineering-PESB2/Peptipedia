@@ -51,7 +51,7 @@ spec:
           hostPort: 10001
       volumeMounts:
         - name: peptipedia-files
-          mountPath: /app/files:U,Z
+          mountPath: /app/files:Z
 
     - name: frontend
       image: peptipedia_frontend:latest

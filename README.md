@@ -1,44 +1,32 @@
-# PeptipediaDB: peptide sequence database and user-friendly web platform.
+# Peptipedia: a peptide sequence database and user-friendly web platform
 
+This repository contains the source code for the Peptipedia platform, available at [peptipedia.cl](https://peptipedia.cl/).
 
-This repository contains the source files and supplementary information for the implementations and use cases presented in the work: <br>
-Gabriel Cabas-Mora<sup>1</sup>, Anamaría Daza<sup>2</sup>, Lindybeth Sarmiento-Varón<sup>3</sup>, Diego Alvarez<sup>3,4</sup>, Valentina Garrido<sup>1</sup>, Julieta H. Sepúlveda<sup>5</sup>, Roberto Uribe-Paredes<sup>1</sup>, Álvaro Olivera-Nappa<sup>2</sup>, Mehdi D. Davari<sup>6</sup>, Marcelo Navarrete<sup>3,4</sup> and David Medina-Ortiz<sup>1,2*</sup>.<br>
+## Abstract
 
-PeptipediaDB: peptide sequence database and user-friendly web platform. A major update. <br>
+In recent years, peptides have gained significant relevance due to their therapeutic properties. The surge in peptide production and synthesis has generated vast amounts of data, enabling the creation of comprehensive databases and information repositories. Advances in sequencing techniques and artificial intelligence have further accelerated the design of tailor-made peptides. However, leveraging these techniques requires versatile and continuously updated storage systems, along with tools that facilitate peptide research and the implementation of machine learning for predictive systems. This work introduces Peptipedia v2.0, one of the most comprehensive public repositories of peptides, supporting biotechnological research by simplifying peptide study and annotation. Peptipedia v2.0 has expanded its collection by over 45% with peptide sequences that have reported biological activities. The functional biological activity tree has been revised and enhanced, incorporating new categories such as cosmetic and dermatological activities, molecular binding, and antiageing properties. Utilizing protein language models and machine learning, more than 90 binary classification models have been trained, validated, and incorporated into Peptipedia v2.0. These models exhibit average sensitivities and specificities of 0.877±0.0530 and 0.873±0.054, respectively, facilitating the annotation of more than 3.6 million peptide sequences with unknown biological activities, also registered in Peptipedia v2.0. Additionally, Peptipedia v2.0 introduces description tools based on structural and ontological properties and user-friendly machine learning tools to facilitate the application of machine learning strategies to study peptide sequences.
 
-https://doi.org/XXXX<br>
+## How to cite
 
-<sup>*1*</sup><sub>Departamento de Ingeniería en Computación, Universidad de Magallanes, Av. Pdte. Manuel Bulnes 01855, 6210427, Punta Arenas, Chile.</sub> <br>
-<sup>*2*</sup><sub>Centre for Biotechnology and Bioengineering, CeBiB, Universidad de Chile, Avenida Beauchef 851, 8320000, Santiago, Chile.</sub> <br>
-<sup>*3*</sup><sub>Centro Asistencial de Docencia e Investigación, CADI, Universidad de Magallanes, Av. Los Flamencos 01364, 6210005, Punta Arenas, Chile.</sub> <br>
-<sup>*4*</sup><sub>Escuela de Medicina, Universidad de Magallanes, Av. Pdte. Manuel Bulnes 01855, 6210427, Punta Arenas, Chile.</sub> <br>
-<sup>*5*</sup><sub>Facultad de Ciencias de la Salud, Universidad de Magallanes, Av. Pdte. Manuel Bulnes 01855, 6210427, Punta Arenas, Chile.</sub> <br>
-<sup>*6*</sup><sub>Department of Bioorganic Chemistry, Leibniz Institute of Plant Biochemistry, Weinberg 3, 06120, Halle, Germany.</sub> <br>
-<sup>*\**</sup><sub>Corresponding author</sub> <br>
+If you use Peptipedia in your research, please cite the following article:
 
----
-## Table of Contents
-- [A summary of the proposed work](#summary)
-- [Requirements and instalation](#requirements)
-- [Data sources](#data)
----
+Gabriel Cabas-Mora, Anamaría Daza, Nicole Soto-García, Valentina Garrido, Diego Alvarez, Marcelo Navarrete, Lindybeth Sarmiento-Varón, Julieta H Sepúlveda Yañez, Mehdi D Davari, Frederic Cadet, Álvaro Olivera-Nappa, Roberto Uribe-Paredes, David Medina-Ortiz, Peptipedia v2.0: a peptide sequence database and user-friendly web platform. A major update, Database, Volume 2024, 2024, baae113, https://doi.org/10.1093/database/baae113
 
-<a name="summary"></a>
+```bibtex
+@article{cabas2024peptipedia,
+  title     = {Peptipedia v2. 0: a peptide sequence database and user-friendly web platform. A major update},
+  author    = {Cabas-Mora, Gabriel and Daza, Anamar{\'\i}a and Soto-Garc{\'\i}a, Nicole and Garrido, Valentina and Alvarez, Diego and Navarrete, Marcelo and Sarmiento-Var{\'o}n, Lindybeth and Sep{\'u}lveda Ya{\~n}ez, Julieta H and Davari, Mehdi D and Cadet, Frederic and others},
+  journal   = {Database},
+  volume    = {2024},
+  pages     = {baae113},
+  year      = {2024},
+  publisher = {Oxford University Press UK},
+  doi       = {10.1093/database/baae113}
+}
+```
 
-# PeptipediaDB: peptide sequence database and user-friendly web platform. A major update.
+## Requirements and instalation
 
-Peptides have gained greater relevance in recent years thanks to their therapeutic properties. The increase in the production and synthesis of peptides has resulted in a large volume of data, allowing the generation of databases and information repositories. Significant advances in sequencing techniques and artificial intelligence aimed at accelerating peptide design. However, applying these techniques requires versatile and constantly updated storage systems, along with tools that facilitate peptide research and the application of machine learning techniques for building predictive systems. In this work, we present a significant update of our Peptipedia database, increasing by more than 45% the sequences with experimentally validated biological activity and more than 3.9 million peptides with biological activity predicted through machine learning models. All peptide sequences are described using physicochemical, thermodynamic, structural, and ontologic descriptions. Finally, peptide description tools are incorporated through structural and ontological properties, predictive models of relevant properties to peptide design, and more than 70 binary biological classification models are added along with a moonlight effect estimation system. This new Peptipedia version represents the most significant public repository of peptides and facilitates the study of peptides as support for biotechnological research. Peptipedia is publicly accessible on https://peptipedia.cl/ for non-commercial use licensed under the MIT License.
+This web application was implemented using a client-server architecture. The `frontend` and `backend` directories contain information about requirements and instalation in their own `README.md`.
 
-<a name="requirements"></a>
-
-## Requirements and instalation.
-
-This web application was implemented using a client-server architecture. The frontend and backend folder contains information about requirements and instalation in his own README.md.
-
-Peptipedia database is located on this Google Drive [folder](https://drive.google.com/file/d/11P-hQrWxDpsYVExgYFssjKunfoCrSHNA/view?usp=sharing).
-
-<a name="data"></a>
-
-## Data sources
-
-The detailed data processing is found in this [repository](https://github.com/ProteinEngineering-PESB2/peptipedia_parser_scripts).
+You can find Peptipedia database in [this Google Drive folder](https://drive.google.com/file/d/11P-hQrWxDpsYVExgYFssjKunfoCrSHNA/view?usp=sharing).

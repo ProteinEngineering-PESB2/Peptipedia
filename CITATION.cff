@@ -1,0 +1,57 @@
+cff-version: 1.2.0
+message: If you use this software, please cite both the article from preferred-citation and the software itself.
+authors:
+  - family-names: Cabas-Mora
+    given-names: Gabriel
+  - family-names: Daza
+    given-names: Anamar\'\ia
+  - family-names: Soto-Garc\'\ia
+    given-names: Nicole
+  - family-names: Garrido
+    given-names: Valentina
+  - family-names: Alvarez
+    given-names: Diego
+  - family-names: Navarrete
+    given-names: Marcelo
+  - family-names: Sarmiento-Varón
+    given-names: Lindybeth
+  - family-names: Sepúlveda Yañez
+    given-names: Julieta H
+  - family-names: Davari
+    given-names: Mehdi D
+  - family-names: Cadet
+    given-names: Frederic
+title: 'Peptipedia v2.0: a peptide sequence database and user-friendly web platform. A major update'
+version: 1.0.0
+doi: 10.1093/database/baae113
+date-released: '2024-11-27'
+preferred-citation:
+  authors:
+    - family-names: Cabas-Mora
+      given-names: Gabriel
+    - family-names: Daza
+      given-names: Anamar\'\ia
+    - family-names: Soto-Garc\'\ia
+      given-names: Nicole
+    - family-names: Garrido
+      given-names: Valentina
+    - family-names: Alvarez
+      given-names: Diego
+    - family-names: Navarrete
+      given-names: Marcelo
+    - family-names: Sarmiento-Varón
+      given-names: Lindybeth
+    - family-names: Sepúlveda Yañez
+      given-names: Julieta H
+    - family-names: Davari
+      given-names: Mehdi D
+    - family-names: Cadet
+      given-names: Frederic
+  title: 'Peptipedia v2.0: a peptide sequence database and user-friendly web platform. A major update'
+  doi: 10.1093/database/baae113
+  type: article-journal
+  pages: baae113
+  year: '2024'
+  conference: {}
+  publisher:
+    name: Oxford University Press UK

@@ -1,0 +1,10 @@
+[Unit]
+Description=Peptipedia pod
+
+[Install]
+WantedBy=multi-user.target default.target
+
+[Kube]
+Yaml=/home/peptipedia/peptipedia/peptipedia-pod.yaml
+Network=peptipedia.network
+SetWorkingDirectory=yaml

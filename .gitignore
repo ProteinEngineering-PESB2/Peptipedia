@@ -1,4 +1,7 @@
-.env
-tables/
+.idea/
+.vscode/
+
+db_init/
 files/
+
 *.zip

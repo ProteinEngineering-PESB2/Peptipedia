@@ -1,6 +1,8 @@
 # Peptipedia v2.0
 
-This repository contains the source code for the Peptipedia, a peptide sequence database and user-friendly web platform, available at [peptipedia.cl](https://peptipedia.cl/).
+![](assets/peptipedia.webp)
+
+This repository contains the source code for the Peptipedia, a peptide sequence database and user-friendly web platform, available at [app.peptipedia.cl](https://app.peptipedia.cl/).
 
 ## Summary
 

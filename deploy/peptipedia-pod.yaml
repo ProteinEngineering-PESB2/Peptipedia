@@ -48,7 +48,7 @@ spec:
         runAsGroup: 1001
       ports:
         - containerPort: 8000
-          hostPort: 10001
+          hostPort: 11001
       volumeMounts:
         - name: peptipedia-files
           mountPath: /app/files:Z
@@ -60,7 +60,7 @@ spec:
         runAsGroup: 1002
       ports:
         - containerPort: 8080
-          hostPort: 10002
+          hostPort: 11002
 
   volumes:
     - name: peptipedia-db-init

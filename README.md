@@ -16,7 +16,7 @@ If you use Peptipedia in your research, please cite the following article:
 
 ```bibtex
 @article{cabas2024peptipedia,
-  title     = {Peptipedia v2. 0: a peptide sequence database and user-friendly web platform. A major update},
+  title     = {Peptipedia v2.0: a peptide sequence database and user-friendly web platform. A major update},
   author    = {Cabas-Mora, Gabriel and Daza, Anamar{\'\i}a and Soto-Garc{\'\i}a, Nicole and Garrido, Valentina and Alvarez, Diego and Navarrete, Marcelo and Sarmiento-Var{\'o}n, Lindybeth and Sep{\'u}lveda Ya{\~n}ez, Julieta H and Davari, Mehdi D and Cadet, Frederic and others},
   journal   = {Database},
   volume    = {2024},

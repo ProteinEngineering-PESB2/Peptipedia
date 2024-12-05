@@ -1,11 +1,15 @@
 """Home routes"""
+
 from flask import Blueprint, request
-from peptipedia.modules.database_models.database import Database
 from sqlalchemy.orm import Session
+
+from peptipedia.modules.database_models.database import Database
 from peptipedia.modules.utils import parse_response
+
 db = Database()
 session = Session()
 sources_blueprint = Blueprint("sources_blueprint", __name__)
+
 
 @sources_blueprint.route("/get_count_sources/", methods=["GET"])
 def get_count_sources():
@@ -17,6 +21,7 @@ def get_count_sources():
         print(e)
         session.rollback()
 
+
 @sources_blueprint.route("/get_source/<id_source>", methods=["GET"])
 def get_source(id_source):
     """Gets sources information"""
@@ -26,6 +31,7 @@ def get_source(id_source):
     except Exception as e:
         print(e)
         session.rollback()
+
 
 @sources_blueprint.route("/get_sequences_by_source/<id_source>", methods=["POST"])
 def get_sequences_by_source(id_source):

@@ -1,20 +1,24 @@
-
-from sqlalchemy import Column, Date, Integer, String, ARRAY
+from sqlalchemy import ARRAY, Column, Date, Integer, String
 from sqlalchemy.orm import declarative_base
+
 from peptipedia.modules.database_models.table_models import *
 
 Base = declarative_base()
 
+
 class MVPeptidesByDatabase(Base):
     """Materialized view peptide_by_database"""
+
     __tablename__ = "peptides_by_database"
     id_source = Column(Integer, primary_key=True)
     name = Column(String)
     url = Column(String)
     type = Column(String)
     count_peptide = Column(Integer)
+
     def __repr__(self):
         return f"MV_peptides_by_database(name={self.name}, count={self.count_peptide})"
+
     def definition(self):
         return f"""create materialized view {self.__tablename__} as
             SELECT s.id_source, s.name, s.url,
@@ -27,11 +31,14 @@ class MVPeptidesByDatabase(Base):
                         JOIN peptide_has_source phs ON p.id_peptide = phs.id_peptide
                     GROUP BY phs.id_source) t ON s.id_source = t.id_source
             ORDER BY t.count DESC;"""
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
 
+
 class MVPeptidesByActivity(Base):
     """Materialized view peptide_by_activity"""
+
     __tablename__ = "peptides_by_activity"
     id_activity = Column(String, primary_key=True)
     name = Column(String)
@@ -40,8 +47,10 @@ class MVPeptidesByActivity(Base):
     parent_name = Column(String)
     labeled_peptides = Column(Integer)
     predicted_peptides = Column(Integer)
+
     def __repr__(self):
         return f"MV_peptides_by_activity(name={self.name}, count={self.count_peptide})"
+
     def definition(self):
         return f"""create materialized view {self.__tablename__} as
         SELECT a.id_activity,
@@ -66,8 +75,10 @@ class MVPeptidesByActivity(Base):
                 GROUP BY pha.id_activity) y ON a.id_activity = y.id_activity
             LEFT JOIN activity pa ON a.id_parent = pa.id_activity
         ORDER BY t.count DESC;"""
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
+
 
 class MVGeneralInformation(Base):
     __tablename__ = "general_information"
@@ -75,8 +86,10 @@ class MVGeneralInformation(Base):
     sequences = Column(Integer, primary_key=True)
     activity = Column(Integer, primary_key=True)
     last_update = Column(Date, primary_key=True)
+
     def __repr__(self):
         return f"general_information(databases={self.databases}, sequences={self.sequences}, activity={self.activity}, last_update={self.last_update})"
+
     def definition(self):
         return f"""create materialized view {self.__tablename__} as
             SELECT cs.count AS databases,
@@ -91,16 +104,20 @@ class MVGeneralInformation(Base):
                     FROM peptide p) lu,
                 ( SELECT count(p.id_peptide) AS count
                     FROM peptide p) cp;"""
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
- 
+
+
 class MVPeptideWithActivity(Base):
     __tablename__ = "peptide_with_activity"
     id_peptide = Column(Integer, primary_key=True)
     sequence = Column(String)
     activities = Column(String)
+
     def __repr__(self):
         return f"peptide_with_activity(sequence={self.sequence}, activities={self.activities}"
+
     def definition(self):
         return f"""create materialized view {self.__tablename__} as
         select p.id_peptide as id_peptide, p.sequence as sequence, string_agg(a.name, ',') as activities
@@ -109,14 +126,17 @@ class MVPeptideWithActivity(Base):
         join activity a on pha.id_activity = a.id_activity
         WHERE p.is_canon is true
         group by p.sequence, p.id_peptide;"""
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
+
 
 class MVPeptidesGeneralCounts(Base):
     __tablename__ = "peptides_general_counts"
     all_peptides = Column(Integer, primary_key=True)
     canon_peptides = Column(Integer)
     non_canon_peptides = Column(Integer)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -129,14 +149,17 @@ class MVPeptidesGeneralCounts(Base):
                 FROM peptide
                 WHERE peptide.is_canon IS TRUE) canon_peptides_t;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
+
 
 class MVLabeledPeptidesGeneralCounts(Base):
     __tablename__ = "labeled_peptides_general_counts"
     all_peptides = Column(Integer, primary_key=True)
     canon_peptides = Column(Integer)
     non_canon_peptides = Column(Integer)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -150,6 +173,7 @@ class MVLabeledPeptidesGeneralCounts(Base):
                 FROM peptide_has_activity pha
                     JOIN peptide p ON p.id_peptide = pha.id_peptide
                 WHERE p.is_canon IS TRUE AND pha.predicted IS FALSE) canon_peptides_labeled_t;"""
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
 
@@ -159,6 +183,7 @@ class MVPredictedPeptidesGeneralCounts(Base):
     all_peptides = Column(Integer, primary_key=True)
     canon_peptides = Column(Integer)
     non_canon_peptides = Column(Integer)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -172,8 +197,10 @@ class MVPredictedPeptidesGeneralCounts(Base):
                 FROM peptide_has_activity pha
                     JOIN peptide p ON p.id_peptide = pha.id_peptide
                 WHERE p.is_canon IS TRUE AND pha.predicted IS TRUE) canon_peptides_labeled_t;"""
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
+
 
 class MVSequencesByActivity(Base):
     __tablename__ = "sequences_by_activity"
@@ -181,6 +208,7 @@ class MVSequencesByActivity(Base):
     sequence = Column(String)
     is_canon = Column(Boolean)
     id_activity = Column(Integer, primary_key=True)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -189,15 +217,18 @@ class MVSequencesByActivity(Base):
         join peptide p on pha.id_peptide = p.id_peptide 
         where pha.predicted is FALSE
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-    
+
+
 class MVPredictedSequencesByActivity(Base):
     __tablename__ = "predicted_sequences_by_activity"
     id_peptide = Column(Integer, primary_key=True)
     sequence = Column(String)
     is_canon = Column(Boolean)
     id_activity = Column(Integer, primary_key=True)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -209,24 +240,29 @@ class MVPredictedSequencesByActivity(Base):
             JOIN peptide p ON pha.id_peptide = p.id_peptide
         WHERE pha.predicted IS TRUE;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-    
+
+
 class MVSequencesBySource(Base):
     __tablename__ = "sequences_by_source"
     id_peptide = Column(Integer, primary_key=True)
     sequence = Column(String)
     is_canon = Column(Boolean)
     id_source = Column(Integer, primary_key=True)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
         select p.id_peptide, p.sequence, p.is_canon, phs.id_source
         from peptide_has_source phs join peptide p on phs.id_peptide = p.id_peptide;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-    
+
+
 class MVPeptideProfile(Base):
     __tablename__ = "peptide_profile"
     id_peptide = Column(Integer, primary_key=True)
@@ -250,6 +286,7 @@ class MVPeptideProfile(Base):
     activities = Column(String)
     id_sources = Column(String)
     sources = Column(String)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -278,9 +315,11 @@ class MVPeptideProfile(Base):
             LEFT JOIN activities_listed al ON p.id_peptide = al.id_peptide
             LEFT JOIN sources_listed sl ON p.id_peptide = sl.id_peptide;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-    
+
+
 class MVPeptideParams(Base):
     __tablename__ = "peptide_params"
     length = Column(Float, primary_key=True)
@@ -292,6 +331,7 @@ class MVPeptideParams(Base):
     aliphatic_index = Column(Float)
     boman_index = Column(Float)
     hydrophobic_ratio = Column(Float)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -319,9 +359,11 @@ class MVPeptideParams(Base):
         max(p.hydrophobic_ratio) as hydrophobic_ratio
         from peptide p);
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-    
+
+
 class MVSearchPeptide(Base):
     __tablename__ = "search_peptide"
     id_peptide = Column(Integer, primary_key=True)
@@ -333,6 +375,7 @@ class MVSearchPeptide(Base):
     swissprot_id = Column(String)
     activities = Column(ARRAY(String))
     predicted = Column(Boolean)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -350,13 +393,16 @@ class MVSearchPeptide(Base):
         GROUP BY p.id_peptide, p.sequence, p.length, p.molecular_weight, p.charge
         order by p.id_peptide;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-    
+
+
 class MVChordFirstLevel(Base):
     __tablename__ = "first_level"
     id_peptide = Column(Integer, primary_key=True)
     name = Column(String)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -367,13 +413,16 @@ class MVChordFirstLevel(Base):
             JOIN activity a ON a.id_activity = pha.id_activity
         WHERE a.id_parent IS NULL AND pha.predicted IS FALSE;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
+
 
 class MVChordFirstLevelPredicted(Base):
     __tablename__ = "first_level_predicted"
     id_peptide = Column(Integer, primary_key=True)
     name = Column(String)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -384,15 +433,16 @@ class MVChordFirstLevelPredicted(Base):
             JOIN activity a ON a.id_activity = pha.id_activity
         WHERE a.id_parent IS NULL AND pha.predicted IS TRUE;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-
 
 
 class MVChordTherapeutic(Base):
     __tablename__ = "chord_therapeutic"
     id_peptide = Column(Integer, primary_key=True)
     name = Column(String)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -403,6 +453,7 @@ class MVChordTherapeutic(Base):
             JOIN activity a ON a.id_activity = pha.id_activity
         WHERE a.id_parent = 1;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
 
@@ -411,6 +462,7 @@ class MVChordAMP(Base):
     __tablename__ = "chord_amps"
     id_peptide = Column(Integer, primary_key=True)
     name = Column(String)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -421,6 +473,7 @@ class MVChordAMP(Base):
             JOIN activity a ON a.id_activity = pha.id_activity
         WHERE a.id_parent = 2;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
 
@@ -430,6 +483,7 @@ class MVActivitiesListed(Base):
     id_peptide = Column(Integer, primary_key=True)
     id_activities = Column(String)
     activities = Column(String)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -440,14 +494,17 @@ class MVActivitiesListed(Base):
             LEFT JOIN activity act ON act.id_activity = pha.id_activity
         GROUP BY pha.id_peptide;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
+
 
 class MVSourcesListed(Base):
     __tablename__ = "sources_listed"
     id_peptide = Column(Integer, primary_key=True)
     id_sources = Column(String)
     sources = Column(String)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -458,9 +515,11 @@ class MVSourcesListed(Base):
             LEFT JOIN source s ON s.id_source = phs.id_source
         GROUP BY phs.id_peptide;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-    
+
+
 class MVPfamByPeptide(Base):
     __tablename__ = "pfam_by_peptide"
     id_peptide = Column(Integer, nullable=False, primary_key=True)
@@ -478,9 +537,11 @@ class MVPfamByPeptide(Base):
         from peptide_has_pfam php
         join pfam as p on p.id_pfam = php.id_pfam;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"
-    
+
+
 class MVGoByPeptide(Base):
     __tablename__ = "go_by_peptide"
     id_peptide = Column(Integer, nullable=False, primary_key=True)
@@ -488,6 +549,7 @@ class MVGoByPeptide(Base):
     term = Column(String)
     description = Column(String)
     source = Column(String)
+
     def definition(self):
         return f"""
         create materialized view {self.__tablename__} as
@@ -499,5 +561,6 @@ class MVGoByPeptide(Base):
         FROM peptide_has_go phgo
             JOIN gene_ontology go ON phgo.id_go = go.id_go;
         """
+
     def refresh(self):
         return f"refresh materialized view {self.__tablename__};"

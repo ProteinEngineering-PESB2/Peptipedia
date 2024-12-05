@@ -1,12 +1,15 @@
 """Home routes"""
+
 from flask import Blueprint
-from peptipedia.modules.database_models.database import Database
 from sqlalchemy.orm import Session
+
+from peptipedia.modules.database_models.database import Database
 from peptipedia.modules.utils import parse_response
 
 db = Database()
 session = Session()
 home_blueprint = Blueprint("home_blueprint", __name__)
+
 
 @home_blueprint.route("/get_home_statistics/", methods=["GET"])
 def api_get_home_statistics():

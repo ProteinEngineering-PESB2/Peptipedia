@@ -1,11 +1,15 @@
 """Home routes"""
+
 from flask import Blueprint, request
-from peptipedia.modules.database_models.database import Database
 from sqlalchemy.orm import Session
+
+from peptipedia.modules.database_models.database import Database
 from peptipedia.modules.utils import parse_response
+
 db = Database()
 session = Session()
 activities_blueprint = Blueprint("activities_blueprint", __name__)
+
 
 @activities_blueprint.route("/get_count_activities_table/", methods=["GET"])
 def get_count_activities_table():
@@ -17,6 +21,7 @@ def get_count_activities_table():
         print(e)
         session.rollback()
 
+
 @activities_blueprint.route("/get_count_activities_plot/", methods=["GET"])
 def get_count_activities_plot():
     """Gets count of peptides by activity"""
@@ -26,6 +31,7 @@ def get_count_activities_plot():
     except Exception as e:
         print(e)
         session.rollback()
+
 
 @activities_blueprint.route("/get_chord/", methods=["POST"])
 def get_chord():
@@ -38,6 +44,7 @@ def get_chord():
         print(e)
         session.rollback()
 
+
 @activities_blueprint.route("/get_activity/<id_activity>", methods=["GET"])
 def get_activity(id_activity):
     """Gets activity information"""
@@ -47,6 +54,7 @@ def get_activity(id_activity):
     except Exception as e:
         print(e)
         session.rollback()
+
 
 @activities_blueprint.route("/get_sequences_by_activity/<id_activity>", methods=["POST"])
 def get_sequences_by_activity(id_activity):

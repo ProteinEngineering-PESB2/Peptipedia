@@ -1,13 +1,18 @@
 """Blast alignment module"""
+
+import json
+from uuid import uuid4
+
 import peptipedia.config as config
 from Bio.Blast.Applications import NcbiblastpCommandline
-import json
+
+
 class BlastAlignment:
     """Alignment class, it performs a blast+ function for to align against Peptipedia Database"""
 
     def __init__(self, data):
         alignment_folder = config.alignments_folder
-        alignment_file = "file.fasta"
+        alignment_file = f"file_{uuid4().hex}.fasta"
         self.temp_file_path = f"{alignment_folder}/{alignment_file}"
         self.output_path = self.temp_file_path.replace(".fasta", ".out")
         self.fasta_text_to_file(data["fasta_text"])
@@ -19,7 +24,12 @@ class BlastAlignment:
 
     def __execute_blastp(self):
         """Execute blastp with an e-value 0.5, against Peptipedia database"""
-        cline = NcbiblastpCommandline(db="./files/blastdb/peptipedia.fasta", out=self.output_path, query= self.temp_file_path, outfmt="15")
+        cline = NcbiblastpCommandline(
+            db="./files/blastdb/peptipedia.fasta",
+            out=self.output_path,
+            query=self.temp_file_path,
+            outfmt="15",
+        )
         cline()
 
     def __parse_response(self):
@@ -51,14 +61,14 @@ class BlastAlignment:
                             "id": 1,
                             "label": id_sbjct,
                             "sequence": hsp["qseq"],
-                            "startIndex": hsp["hit_from"]
-                            },
+                            "startIndex": hsp["hit_from"],
+                        },
                         {
                             "id": 2,
                             "label": id_query,
                             "sequence": hsp["hseq"],
-                            "startIndex": hsp["query_from"]
-                            }
+                            "startIndex": hsp["query_from"],
+                        },
                     ]
                     data.append(row)
             return data

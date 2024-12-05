@@ -3,7 +3,7 @@ import os
 downloads_folder = "./files/downloads"
 blastdb_folder = "./files/blastdb"
 static_folder = "./files/"
-alignments_folder = "./files/alignments"
+alignments_folder = os.environ.get("ALIGNMENTS_PATH", "./files/alignments")
 
 min_sequences = 1
 max_sequences = 1

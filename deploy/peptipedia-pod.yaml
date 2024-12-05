@@ -5,6 +5,7 @@ metadata:
 data:
   TZ: "America/Santiago"
   PROD: "True"
+  ALIGNMENTS_PATH: "/tmp/app/alignments/"
 ---
 apiVersion: v1
 kind: Pod
@@ -52,6 +53,8 @@ spec:
       volumeMounts:
         - name: peptipedia-files
           mountPath: /app/files:Z
+        - name: peptipedia-tmp
+          mountPath: /tmp/app:U
 
     - name: frontend
       image: peptipedia_frontend:latest
@@ -76,3 +79,5 @@ spec:
       hostPath:
         path: ./peptipedia_files/
         type: DirectoryOrCreate
+    - name: peptipedia-tmp
+      emptyDir: { }

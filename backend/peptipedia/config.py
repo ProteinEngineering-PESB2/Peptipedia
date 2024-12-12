@@ -1,17 +1,33 @@
-import os
+from pathlib import Path
 
-downloads_folder = "./files/downloads"
-blastdb_folder = "./files/blastdb"
-static_folder = "./files/"
-alignments_folder = os.environ.get("ALIGNMENTS_PATH", "./files/alignments")
+from pydantic import AnyUrl
+from pydantic_settings import (
+    BaseSettings,
+    PydanticBaseSettingsSource,
+    SettingsConfigDict,
+    TomlConfigSettingsSource,
+)
 
-min_sequences = 1
-max_sequences = 1
-max_length = 150
 
-select_limit = 300
+class Settings(BaseSettings):
+    debug: bool = False
+    database_url: AnyUrl = AnyUrl("postgresql+asyncpg://user:password@localhost/db")
 
-user = os.environ.get("POSTGRES_USER", "peptiuser")
-port = os.environ.get("POSTGRES_PORT", 5432)
-host = os.environ.get("POSTGRES_HOST", "db")
-db = os.environ.get("POSTGRES_DB", "peptipedia")
+    model_config = SettingsConfigDict(toml_file=Path("config.toml").resolve(), extra="ignore")
+
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        return (
+            TomlConfigSettingsSource(settings_cls),
+            init_settings,
+        )
+
+
+settings = Settings()

@@ -1,6 +1,7 @@
 from pathlib import Path
+from typing import Annotated
 
-from pydantic import AnyUrl
+from pydantic import AnyUrl, UrlConstraints
 from pydantic_settings import (
     BaseSettings,
     PydanticBaseSettingsSource,
@@ -11,7 +12,9 @@ from pydantic_settings import (
 
 class Settings(BaseSettings):
     debug: bool = False
-    database_url: AnyUrl = AnyUrl("postgresql+asyncpg://user:password@localhost/db")
+    database_url: Annotated[AnyUrl, UrlConstraints(host_required=False)] = AnyUrl(
+        "postgresql+asyncpg://user:password@localhost/db"
+    )
 
     model_config = SettingsConfigDict(toml_file=Path("config.toml").resolve(), extra="ignore")
 

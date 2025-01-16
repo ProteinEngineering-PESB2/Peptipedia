@@ -3,23 +3,27 @@ name = "peptipedia-backend"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "asyncpg>=0.30.0",
-    "litestar[sqlalchemy,standard]>=2.13.0",
-    "pydantic-settings>=2.6.1",
+    "litestar[sqlalchemy,standard]>=2.14.0",
+    "pydantic-settings>=2.7.1",
     "sqlalchemy-utils>=0.41.2",
 ]
 
 [dependency-groups]
 dev = [
-    "mypy>=1.13.0",
-    "ruff>=0.8.2",
+    "mypy>=1.14.1",
+    "poethepoet>=0.32.1",
+    "ruff>=0.9.2",
 ]
+
+[tool.poe.tasks]
+start = 'litestar --app peptipedia:app run --reload --reload-dir peptipedia/'
 
 [tool.ruff]
 line-length = 110
-target-version = "py312"
+target-version = "py313"
 
 [tool.mypy]
 plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]

@@ -11,9 +11,9 @@ from sqlalchemy import create_engine, func, select, text
 from sqlalchemy.orm import Session
 
 import peptipedia.config as config
-from peptipedia.modules.database_models.materialized_views import *
-from peptipedia.modules.database_models.table_models import *
-from peptipedia.modules.database_models.table_models import Base as BaseTables
+from peptipedia_old.modules.database_models.materialized_views import *
+from peptipedia_old.modules.database_models.table_models import *
+from peptipedia_old.modules.database_models.table_models import Base as BaseTables
 
 
 class Database:

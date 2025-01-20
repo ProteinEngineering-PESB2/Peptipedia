@@ -1,11 +1,13 @@
 from datetime import date
 from typing import Optional
 
+from advanced_alchemy.base import CommonTableAttributes
 from sqlalchemy import ForeignKey
+from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
-class Base(DeclarativeBase):
+class Base(CommonTableAttributes, AsyncAttrs, DeclarativeBase):
     pass
 
 
@@ -66,8 +68,10 @@ class Activity(Base):
     description: Mapped[Optional[str]]
     parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("activities.id"))
 
+    parent: Mapped[Optional["Activity"]] = relationship(back_populates="children", remote_side=[id])
+    children: Mapped[list["Activity"]] = relationship(back_populates="parent")
+
     # peptide_has_activity_r = relationship("PeptideHasActivity")
-    # activity_has_parent_r = relationship("Activity")
 
     def __repr__(self):
         return f"Activity(id={self.id}, name={self.name})"
@@ -114,7 +118,7 @@ class PredictiveModel(Base):
 
 
 class PeptidesSources(Base):
-    __tablename__ = "peptides_sources"
+    __tablename__ = "peptides_to_sources"
 
     peptide_id: Mapped[int] = mapped_column(ForeignKey("peptides.id"), primary_key=True)
     source_id: Mapped[int] = mapped_column(ForeignKey("sources.id"), primary_key=True)
@@ -124,7 +128,7 @@ class PeptidesSources(Base):
 
 
 class PeptidesActivities(Base):
-    __tablename__ = "peptides_activities"
+    __tablename__ = "peptides_to_activities"
 
     peptide_id: Mapped[int] = mapped_column(ForeignKey("peptides.id"), primary_key=True)
     activity_id: Mapped[int] = mapped_column(ForeignKey("activities.id"), primary_key=True)
@@ -135,7 +139,7 @@ class PeptidesActivities(Base):
 
 
 class PeptidesGOs(Base):
-    __tablename__ = "peptides_gos"
+    __tablename__ = "peptides_to_gos"
 
     peptide_id: Mapped[int] = mapped_column(ForeignKey("peptides.id"), primary_key=True)
     go_id: Mapped[int] = mapped_column(ForeignKey("gene_ontologies.id"), primary_key=True)
@@ -146,7 +150,7 @@ class PeptidesGOs(Base):
 
 
 class PeptidesPfams(Base):
-    __tablename__ = "peptides_pfams"
+    __tablename__ = "peptides_to_pfams"
 
     peptide_id: Mapped[int] = mapped_column(ForeignKey("peptides.id"), primary_key=True)
     pfam_id: Mapped[int] = mapped_column(ForeignKey("pfams.id"), primary_key=True)

@@ -4,10 +4,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from peptipedia.database.models import Activity
 
 
-class ActivitiesRepository(SQLAlchemyAsyncRepository[Activity]):
+class ActivityRepository(SQLAlchemyAsyncRepository[Activity]):
     model_type = Activity
 
+    async def list_with_extra_info(self):
+        return await self.list()
 
-async def provide_acitvities_repository(db_session: AsyncSession) -> ActivitiesRepository:
-    async with ActivitiesRepository(session=db_session) as repository:
-        yield repository
+
+async def provide_acitvities_repository(db_session: AsyncSession) -> ActivityRepository:
+    return ActivityRepository(session=db_session)

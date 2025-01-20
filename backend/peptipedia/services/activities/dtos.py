@@ -4,4 +4,4 @@ from peptipedia.database.models import Activity
 
 
 class ActivityReadDTO(SQLAlchemyDTO[Activity]):
-    config = SQLAlchemyDTOConfig(exclude={"children"})
+    config = SQLAlchemyDTOConfig(exclude={"children", "peptides"})

@@ -2,9 +2,9 @@ from datetime import date
 from typing import Optional
 
 from advanced_alchemy.base import CommonTableAttributes
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, func, select, text
 from sqlalchemy.ext.asyncio import AsyncAttrs
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import DeclarativeBase, Mapped, column_property, mapped_column, relationship
 
 
 class Base(CommonTableAttributes, AsyncAttrs, DeclarativeBase):
@@ -38,6 +38,10 @@ class Peptide(Base):
     reference: Mapped[Optional[str]]
     half_life: Mapped[Optional[str]]
 
+    activities: Mapped[list["Activity"]] = relationship(
+        secondary="peptides_to_activities", back_populates="peptides"
+    )
+
     # peptide_has_source_r = relationship("PeptideHasSource")
     # peptide_has_activity_r = relationship("PeptideHasActivity")
     # peptide_has_go_r = relationship("PeptideHasGO")
@@ -70,6 +74,20 @@ class Activity(Base):
 
     parent: Mapped[Optional["Activity"]] = relationship(back_populates="children", remote_side=[id])
     children: Mapped[list["Activity"]] = relationship(back_populates="parent")
+    peptides: Mapped[list["Peptide"]] = relationship(
+        secondary="peptides_to_activities", back_populates="activities"
+    )
+    peptide_relations: Mapped[list["PeptidesActivities"]] = relationship(
+        "PeptidesActivities", back_populates="activity"
+    )
+
+    # total_peptides: Mapped[int] = column_property(
+    #     select(func.count("distinct peptides_to_activities.peptide_id"))
+    #     .select_from(text("peptides_to_activities join activities on activities.id = peptides_to_activities.activity_id"))
+    #     .where(text("peptides_to_activities.activity_id = activities.id"))
+    #     .scalar_subquery(),
+    #     deferred=False,
+    # )
 
     # peptide_has_activity_r = relationship("PeptideHasActivity")
 
@@ -134,6 +152,8 @@ class PeptidesActivities(Base):
     activity_id: Mapped[int] = mapped_column(ForeignKey("activities.id"), primary_key=True)
     predicted: Mapped[bool]
 
+    activity: Mapped[Activity] = relationship("Activity", back_populates="peptide_relations")
+
     def __repr__(self):
         return f"PeptidesActivities(peptide_id={self.peptide_id}, activity_id={self.activity_id})"
 
@@ -160,3 +180,9 @@ class PeptidesPfams(Base):
 
     def __repr__(self):
         return f"PeptidesPfams(peptide_id={self.peptide_id}, pfam_id={self.pfam_id})"
+
+
+Activity.total_peptides = column_property(
+    select(func.count(PeptidesActivities.peptide_id.distinct())).scalar_subquery(),
+    deferred=False
+)

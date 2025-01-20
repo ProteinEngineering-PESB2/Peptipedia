@@ -1,7 +1,7 @@
 from sqlalchemy import ARRAY, Column, Date, Integer, String
 from sqlalchemy.orm import declarative_base
 
-from peptipedia.modules.database_models.table_models import *
+from peptipedia_old.modules.database_models.table_models import *
 
 Base = declarative_base()
 

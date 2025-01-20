@@ -2,3 +2,4 @@
 .vscode/
 
 *.zip
+db_init/

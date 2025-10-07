@@ -31,4 +31,4 @@ If you use Peptipedia in your research, please cite the following article:
 
 This web application was implemented using a client-server architecture. The `frontend` and `backend` directories contain information about requirements and instalation in their own `README.md`.
 
-You can find Peptipedia database in [this Google Drive folder](https://drive.google.com/file/d/11P-hQrWxDpsYVExgYFssjKunfoCrSHNA/view?usp=sharing).
+You can find Peptipedia database in [in this Google Drive link]([https://drive.google.com/file/d/11P-hQrWxDpsYVExgYFssjKunfoCrSHNA/view?usp=sharing](https://drive.google.com/file/d/1uvTGOdjpsPYxvx00g8KbMv5tTDKsjSAg/view?usp=drive_link)).

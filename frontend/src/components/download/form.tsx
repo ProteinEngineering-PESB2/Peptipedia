@@ -1,4 +1,5 @@
-import { Paper, Box, Grid } from "@mui/material";
+import { Paper, Box, Grid, Button, Typography } from "@mui/material";
+import StorageIcon from '@mui/icons-material/Storage';
 import axios from "axios";
 import config from "../../config.json";
 import BackdropComponent from "../common/backdrop";
@@ -88,6 +89,20 @@ export default function Form(){
         </Box>
         <Box padding={1}>
           <Download name={"all_peptides.fasta"} button_text="Full download"></Download>
+        </Box>
+        <Box padding={1}>
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            The complete Peptipedia v2.0 database is also available in this Zenodo record:
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<StorageIcon />}
+            href={config.download.zenodo_url}
+            target="_blank"
+            rel="noopener"
+          >
+            {config.download.zenodo_text}
+          </Button>
         </Box>
         </Paper>
       </Box>

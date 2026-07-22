@@ -5,6 +5,7 @@ import DashboardLayout from "../components/common/dashboard_layout";
 import Team from "../components/home/team";
 import Links from "../components/home/links"
 import Cite from "../components/home/cite"
+import License from "../components/home/license"
 import Data from "../components/home/data"
 import Front from "../components/home/front"
 import config from "../config.json"
@@ -44,6 +45,10 @@ export default function Home() {
 
         <Box sx={{ padding: 3 }}>
           <Cite/>
+        </Box>
+
+        <Box sx={{ padding: 3 }}>
+          <License/>
         </Box>
 
         <Box sx={{ padding: 3}}>

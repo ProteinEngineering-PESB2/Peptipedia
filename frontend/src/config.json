@@ -10,18 +10,17 @@
       "alignment"
     ]
   },
-
   "home": {
     "title": "Peptipedia",
     "description": "Peptipedia, a user-friendly web database to support peptide research using bioinformatics and machine learning strategies.",
     "route": "/",
     "diagram_path": "/images/home/Peptipedia_Only.png",
     "description_2": "This project collects information on peptides available in the literature, databases and repositories. We organize the information in a way to extract its reported biological activities and make them available for use. Peptipedia is the largest peptide compilation database to date, with nearly 4 million sequences with their activities. In addition, we develop our own predictive activity models, and they are available on the Peptitools platform.",
-    "captions":{
-      "databases":"Total count of different sources, databases or repositories with peptides information, used in this project.",
-      "sequences":"Count of unique sequences deposited in Peptipedia.",
-      "activities":"Count of unique activities reported in sources. There's a redundancy elimination process (similar words, etc) between different databases.",
-      "last_update":"Last Peptipedia update. We use an automated scripts to parse all the data and incorporate new information."
+    "captions": {
+      "databases": "Total count of different sources, databases or repositories with peptides information, used in this project.",
+      "sequences": "Count of unique sequences deposited in Peptipedia.",
+      "activities": "Count of unique activities reported in sources. There's a redundancy elimination process (similar words, etc) between different databases.",
+      "last_update": "Last Peptipedia update. We use an automated scripts to parse all the data and incorporate new information."
     },
     "team": [
       {
@@ -29,7 +28,7 @@
         "image": "/images/team/gabriel.jpeg",
         "rol": "Software developer",
         "github": "https://www.researchgate.net/profile/Gabriel-Cabas",
-        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4" 
+        "linkedin": "https://cl.linkedin.com/in/gabriel-cabas-1834601b4"
       },
       {
         "name": "Anamaria Daza",
@@ -66,7 +65,6 @@
         "github": "https://www.researchgate.net/profile/Lindybeth-Sarmiento-2",
         "linkedin": "https://www.linkedin.com/in/lindybethsarmiento/"
       },
-
       {
         "name": "Julieta Sepúlveda Yáñez",
         "image": "/images/team/julieta.jpeg",
@@ -79,21 +77,21 @@
         "image": "/images/team/roberto_uribe.jpg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Roberto-Uribe-Paredes",
-        "linkedin": "https://www.linkedin.com/in/roberto-uribe-paredes-5868b84/" 
+        "linkedin": "https://www.linkedin.com/in/roberto-uribe-paredes-5868b84/"
       },
       {
         "name": "Alvaro Olivera",
         "image": "/images/team/alvaro.jpg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Alvaro-Olivera-Nappa",
-        "linkedin": "https://www.linkedin.com/in/alvaro-olivera-nappa-5bb5212/" 
+        "linkedin": "https://www.linkedin.com/in/alvaro-olivera-nappa-5bb5212/"
       },
       {
         "name": "Mehdi D. Davari",
         "image": "/images/team/mehdi.jpg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Mehdi-Davari-4",
-        "linkedin": "https://de.linkedin.com/in/mehdi-d-davari-2ab15a5a" 
+        "linkedin": "https://de.linkedin.com/in/mehdi-d-davari-2ab15a5a"
       },
       {
         "name": "Frederic Cadet",
@@ -107,7 +105,7 @@
         "image": "/images/team/marcelo.jpeg",
         "rol": "Researcher",
         "github": "https://www.researchgate.net/profile/Marcelo-Navarrete",
-        "linkedin": "https://www.linkedin.com/in/marcelo-navarrete-signorile-30179576/" 
+        "linkedin": "https://www.linkedin.com/in/marcelo-navarrete-signorile-30179576/"
       },
       {
         "name": "David Medina",
@@ -153,6 +151,13 @@
         }
       ]
     },
+    "license": {
+      "title": "License",
+      "platform": "The user-friendly web platform is publicly accessible through https://app.peptipedia.cl/ for non-commercial uses, licensed under a Creative Commons CC BY-NC-ND 4.0 license.",
+      "platform_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "database": "The Peptipedia v2.0 database is licensed under an ODbL license.",
+      "database_url": "https://opendatacommons.org/licenses/odbl/1-0/"
+    },
     "entities": [
       {
         "url": "/images/entities/umag.png",
@@ -197,7 +202,6 @@
     "tree_api": "/api/get_tree/",
     "chord_api": "/api/get_chord/"
   },
-
   "sources": {
     "title": "Sources",
     "description": "We have collected information from different available sources to populate the Peptipedia database. We considered repositories, small datasets,  and previously reported databases in the literature. This large number of sources allows having a considerable number of peptides reported in this application. Please click any row to get sequences from any source.",
@@ -205,7 +209,6 @@
     "api": "/api/get_count_sources/",
     "redirect": "/source/"
   },
-
   "search": {
     "title": "Search",
     "description": "Adjust the params to filter and search against Peptipedia database. The search is done using an AND statement.",
@@ -215,13 +218,11 @@
     "search_api": "/api/get_sequences_by_search/",
     "redirect": "/peptide/"
   },
-
   "alignment": {
     "title": "Alignment",
     "description": "Execute Blastp against canonical peptides from Peptipedia database.",
     "route": "/alignment"
   },
-
   "activity": {
     "route": "/activity/:activity_id",
     "api": "/api/get_activity/",
@@ -230,7 +231,6 @@
     "redirect": "/peptide/",
     "description": "Please click any row to see peptide details."
   },
-
   "peptide": {
     "route": "/peptide/:peptide_id",
     "api": "/api/get_peptide/",
@@ -244,7 +244,6 @@
     "go_description": "Here you can see predicted Gene Ontology Terms. This is a result of Metastudent software.",
     "pfam_description": "Here you can see Pfam domains prediction. This is a result of Pfam_scan software."
   },
-
   "source": {
     "route": "/source/:source_id",
     "api": "/api/get_source/",
@@ -252,15 +251,12 @@
     "redirect": "/peptide/",
     "description": "Please click any row to see peptide details."
   },
-
-
   "download": {
     "route": "/download",
     "title": "Download",
     "description": "Here you can download the peptides presented in this Peptipedia. You can select a specific biological activity or source to adquire the different datasets.",
     "api": "/api/get_activities_sources_list/"
   },
-
   "peptitools": {
     "route": "/peptitools/"
   }

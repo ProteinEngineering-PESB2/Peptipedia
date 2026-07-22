@@ -32,3 +32,9 @@ If you use Peptipedia in your research, please cite the following article:
 This web application was implemented using a client-server architecture. The `frontend` and `backend` directories contain information about requirements and instalation in their own `README.md`.
 
 You can find Peptipedia database in [in this Google Drive link](https://drive.google.com/file/d/1uvTGOdjpsPYxvx00g8KbMv5tTDKsjSAg/view?usp=drive_link).
+
+## License
+
+The user-friendly web platform is publicly accessible through [app.peptipedia.cl](https://app.peptipedia.cl/) for non-commercial uses, licensed under a [Creative Commons CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) license.
+
+The Peptipedia v2.0 database is licensed under an [ODbL](https://opendatacommons.org/licenses/odbl/1-0/) license.

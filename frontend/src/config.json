@@ -182,6 +182,12 @@
         "alt": "Centro Asistencial Docente e Investigación",
         "width": "230rem",
         "height": "100rem"
+      },
+      {
+        "url": "/images/entities/peaccel.webp",
+        "alt": "PEACCEL",
+        "width": "357rem",
+        "height": "100rem"
       }
     ],
     "api": "/api/get_home_statistics/"

@@ -1,6 +1,6 @@
 """Profile routes"""
 
-from flask import Blueprint, request
+from flask import Blueprint, Response, request
 from sqlalchemy.orm import Session
 
 from peptipedia.modules.database_models.database import Database
@@ -30,3 +30,14 @@ def get_sequences_by_search():
     """Gets result count from query"""
     result = db.get_sequences_by_search(request.json)
     return parse_response(result)
+
+
+@search_blueprint.route("/get_sequences_by_search_csv/", methods=["POST"])
+def get_sequences_by_search_csv():
+    """Download all sequences matching the query as a CSV file"""
+    csv_data = db.get_search_csv(request.json)
+    return Response(
+        csv_data,
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment; filename=peptipedia_search.csv"},
+    )

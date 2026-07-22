@@ -529,6 +529,26 @@ class Database:
             }
         }
 
+    def get_search_csv(self, query):
+        """Get all sequences matching the search query as CSV (no pagination)"""
+        stmt = select(
+            MVSearchPeptide.id_peptide, MVSearchPeptide.sequence, MVSearchPeptide.is_canon
+        )
+        stmt = parse_data_query(query, MVSearchPeptide, stmt)
+        df = self.get_table_query(stmt)
+        df = df.drop(columns=["id_source"], errors="ignore")
+        df = df.astype(str)
+        df = df.replace(to_replace="True", value="Canon")
+        df = df.replace(to_replace="False", value="Non canon")
+        df = df.rename(
+            columns={
+                "id_peptide": "Id peptide",
+                "sequence": "Sequence",
+                "is_canon": "Type",
+            }
+        )
+        return df.to_csv(index=False)
+
     def get_chord(self, predicted=False):
         if predicted:
             stmt = select(MVChordFirstLevelPredicted)

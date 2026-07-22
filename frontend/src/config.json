@@ -222,6 +222,7 @@
     "params_api": "/api/get_peptide_params/",
     "count_api": "/api/get_count_search/",
     "search_api": "/api/get_sequences_by_search/",
+    "download_csv_api": "/api/get_sequences_by_search_csv/",
     "redirect": "/peptide/"
   },
   "alignment": {

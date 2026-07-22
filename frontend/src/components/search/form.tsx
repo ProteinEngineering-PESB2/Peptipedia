@@ -6,6 +6,7 @@ import SelectOptions from "./select_options";
 import TextInput from "./text_input"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import DownloadIcon from '@mui/icons-material/Download';
 import SequencesDataTable from "./sequences_datatable";
 import config from "../../config.json";
 import CheckCanon from "./check_canon";
@@ -42,6 +43,29 @@ export default function Form(){
       console.log(error)
     }
   }
+  const downloadCsv = async () => {
+    try {
+      setIsWaiting(true)
+      const response = await axios.post(config.search.download_csv_api, query, {
+        responseType: "blob",
+      })
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: "text/csv" })
+      )
+      const link = document.createElement("a")
+      link.href = url
+      link.setAttribute("download", "peptipedia_search.csv")
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+      setIsWaiting(false)
+    } catch (error) {
+      console.log(error)
+      setIsWaiting(false)
+    }
+  }
+
   useEffect(() => {
     getParams();
   }, []);
@@ -99,7 +123,18 @@ export default function Form(){
       </Box>
       
       {(showResults === true)&& (
-        <Box margin={1} boxShadow={3} sx= {{cursor: "pointer"}}>
+        <Box margin={1} boxShadow={3}>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1 }}>
+            <Button
+              variant="outlined"
+              startIcon={<DownloadIcon />}
+              disabled={!count}
+              onClick={() => downloadCsv()}
+            >
+              Download CSV
+            </Button>
+          </Box>
+          <Box sx= {{cursor: "pointer"}}>
           <SequencesDataTable title ="Results"
             page = {page}
             setPage = {setPage}
@@ -107,6 +142,7 @@ export default function Form(){
             query = {query}
             table_api={config.search.search_api}
             redirect_api={config.search.redirect}/>
+          </Box>
         </Box>
       )
       }
